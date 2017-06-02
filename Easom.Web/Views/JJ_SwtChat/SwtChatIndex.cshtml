@@ -1,0 +1,98 @@
+﻿@{
+    ViewBag.Title = "商务通对话分析";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container_12">
+    <div class="widget-panel grid_12">
+        <div class="widget-content module">
+            <div class="form-grid">
+                <ul class="icons-labeled">
+                    <li>
+                        <div class="fieldwrap">
+                            <span class="left">
+                                <input name="starttime" readonly=readonly value="@DateTime.Now.ToString("yyyy-MM-01")" type="text" title="起始时间" class="datepicker" id="starttime" />
+                                <label class="fldLabel">
+                                    起始时间</label>
+                            </span><span class="fldDivider left">- </span><span class="left">
+                                <input type="text" readonly=readonly value="@System.DateTime.Now.AddMonths(1).AddDays(-(System.DateTime.Now.Day)).ToString("yyyy-MM-dd")" title="终止时间" class="datepicker" name="endtime" id="endtime" />
+                                <label class="fldLabel">
+                                    终止时间</label>
+                            </span><span>
+                                <label>
+                                    &nbsp;&nbsp;速填</label>&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:setDate("@System.DateTime.Now.AddDays(-(System.DateTime.Now.Day) + 1).ToString("yyyy-MM-dd")","@System.DateTime.Now.AddMonths(1).AddDays(-(System.DateTime.Now.Day)).ToString("yyyy-MM-dd")")'>本月</a>&nbsp;
+                                <a href='javascript:setDate("@DateTime.Now.AddMonths(-1).ToString("yyyy-MM-01")","@System.DateTime.Now.AddDays(-(System.DateTime.Now.Day)).ToString("yyyy-MM-dd")")'>
+                                    上月</a> </span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container_12">
+    <div class="grid_6" style="width: 100%">
+        @{
+            Dictionary<string, string> chatState = ConvertUtility.GetEnumDic(typeof(Easom.Core.Support.ChatStateEnum));
+            foreach (var chat in chatState)
+            {
+            <div style="margin-right: 20px; width: 40%; float: left; margin-left: 20px;" class="widget-panel">
+                <div class="widget-top">
+                    <h4>
+                        @chat.Value
+                    </h4>
+                    <span class="w-count"></span>
+                </div>
+                <div class="widget-content module">
+                    <div class="content-block tbl-default">
+                        <table>
+                            <tbody>
+                                @{
+                Dictionary<string, string> dic = ConvertUtility.GetEnumDic(typeof(Easom.Core.Support.SwtTableSortEnum));
+                foreach (var dics in dic)
+                {
+                                    <tr>
+                                        <td>
+                                            <a href="javascript:searchSwtTable(@Convert.ToInt32(ConvertUtility.EnumParse(typeof(Easom.Core.Support.ChatStateEnum), @chat.Key, 0)),@Convert.ToInt32(ConvertUtility.EnumParse(typeof(Easom.Core.Support.SwtTableSortEnum), @dics.Key, 0)))">@dics.Value</a>
+                                        </td>
+                                    </tr>
+                }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            }
+        }
+    </div>
+</div>
+<script type="text/javascript">
+    function searchSwtTable(chatState, tableState) {
+        var begintime = $("#starttime").val();
+        var endtime = $("#endtime").val();
+        location.href = "/JJ_SwtChat/SwtChatTableView?begintime=" + begintime + "&endtime=" + endtime + "&chatState=" + chatState + "&tableState=" + tableState + "";
+    } function initPage() {
+        $(".datepicker").datepicker({
+            showButtonPanel: true
+        });
+    }
+    $("table tr").mouseover(function () {
+        $(this).css({ "background-color": "#FFFF99" });
+    }).mouseout(function (event) {
+        var $index = $(this).index();
+        if ($index % 2 == 0) {
+            $(this).css({ "background-color": "#fff" });
+        } else {
+            $(this).css({ "background-color": "#F0F0F0" });
+        }
+    });
+    $("table tr:nth-child(even)").css({ "background-color": "#F0F0F0" });
+
+    function setDate(startDate, endDate) {
+        $("#starttime").val(startDate);
+        $("#endtime").val(endDate);
+    }
+
+
+    $().pageUtility.addEvent(initPage);
+</script>

@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "条件过滤";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+<div class="widget-panel grid_12" style="width: 450px;">
+    <div class="widget-content module">
+        <div class="form-grid">
+            <form method="post" name="form1" id="form1" class="topLabel">
+            <ul>
+                
+              
+                <li>
+                    <label class="fldTitle">
+                       查询日期</label>
+                    <div class="fieldwrap">
+                        <span class="left">
+                            <input id="startDate" value="@DateTime.Now.ToShortDateString()" name="startDate" type="text" class="datepicker" />
+                            <label class="fldLabel">
+                                起始</label>
+                        </span>
+                       
+                    </div>
+                </li>
+                <li class="buttons bottom-round noboder">
+                    <div class="fieldwrap">
+                        <input type="submit" value="查询" class="submit-button" />
+                      
+                    </div>
+                </li>
+            </ul>
+            <input type="hidden" id="hidPass" value="true" />
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $(".datepicker").datepicker({
+            showButtonPanel: true
+        });
+    });
+
+    $().formValidator.addValidator([
+        { controlID: 'hidPass', must: true, mustMsg: '' }
+    ]);
+    $().formValidator.init("form");
+    $().formValidator.onPassCallBack = function () {
+        $().pageUtility.loading("操作中，请稍等...")
+        var searchData = [
+            { id: 'startDate', value: $("#startDate").val() }
+        ];
+        $().pageUtility.loading("搜索中，请稍等...");
+
+        if (parent) {
+            var searchURLData = $().pageUtility.getFormData(searchData);
+            parent.location.href = "/JJ_BaiduHour/CurrentDayData?" + searchURLData;
+        }
+    }
+</script>

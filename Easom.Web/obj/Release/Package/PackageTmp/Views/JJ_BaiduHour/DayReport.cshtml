@@ -1,0 +1,178 @@
+﻿@{
+    ViewBag.Title = "百度日消费报表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container_12">
+    <div class="widget-panel grid_12">
+        <div class="widget-content module">
+            <div style="width: 100%; margin: 0 auto; text-align: center;">
+                <ul class="icons-labeled">
+                    <li>竞价账号：</li>
+                    @{
+                        foreach (var item in ViewBag.Account as IList<JJ_Account>)
+                        {
+                        <li><a title="" href='/JJ_BaiduHour/DayReport?accountID=@item.ID&begintime=@ViewBag.startDate'><span class="icon-block-black clock-b">
+                        </span>@item.AccountName</a></li>
+                        }
+                    }
+
+                   
+                 
+                </ul>
+              
+            </div>
+            <div class="form-grid">
+             <ul class="icons-labeled">
+                    <li>
+                        <div class="fieldwrap">
+                            <span class="left">
+                                <input name="starttime" readonly="readonly" value="@ViewBag.startDate" type="text" title="报表日期" class="datepicker" id="starttime" />
+                                <label class="fldLabel">
+                                    报表日期</label>
+                            </span>
+                        </div>
+                    </li>
+                    <li><a title="确定" href="javascript:newForm()">
+                    <span class="icon-block-color find-c"></span>确定</a></li>
+                        @if (LoginManager.HasAutority(AuthorityConst.KEY_TONGJI_JJ_BAIDU_DAY))
+                        {
+                        <li><a title="确定" href="javascript:dayimport()">
+                    <span class="icon-block-color add-c"></span>日关键词上传</a></li>
+                        }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container_12">
+    <div class="widget-panel grid_12">
+        <div class="widget-top">
+            <h4>
+                @ViewBag.accountName｜关键词管理</h4>
+        </div>
+        <div class="widget-content module">
+          
+            <table id="lstTable" class="display data-table-theme">
+                <tfoot>
+                    <tr>
+                       
+                        <th>
+                             推广计划
+                        </th>
+                        <th>
+                            推广单元
+                        </th>
+                        <th>
+                            关键词
+                        </th>
+                        <th>
+                           展现量
+                        </th>
+                          <th>
+                           点击量
+                        </th>
+                          <th>
+                           消费
+                        </th>
+                        
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function checkedALL() {
+        $().pageUtility.checkedAll("lstTable");
+    }
+
+  
+    function dayimport() {
+        if ("@Html.Raw(@ViewBag.accountName)" != "") {
+            $().pageUtility.pop("@Html.Raw(@ViewBag.accountName)导入关键词报告", '/JJ_BaiduHour/dayimport?accountID=@ViewBag.accountID&datetime=@ViewBag.startDate');
+        } else {
+            alert("请添加竞价账户");
+        }
+    }
+
+    function newForm() {
+        var begintime = $("#starttime").val();
+        window.location.href = "/JJ_BaiduHour/DayReport?begintime=" + begintime + "&accountID=@ViewBag.accountID"
+    }
+
+    function setDataTable(searchData) {
+        $('.data-table-theme').dataTable({
+            "sPaginationType": "full_numbers",
+            "bProcessing": true,
+            "bDestroy": true,
+            "bServerSide": true,
+            "aLengthMenu": [[20000, 30, 50, 100], [20000, 30, 50, "100"]],
+            "iDisplayLength": 20000,
+            "aaSorting": [[5, "desc"]],
+            "sAjaxSource": "/JJ_BaiduHour/GetDayReportData?accountID=@ViewBag.accountID&datetime=@ViewBag.startDate",
+            "fnServerParams": function (aoData) {
+                if (searchData) {
+                    $.each(searchData, function (index, obj) {
+                        aoData.push({ "name": obj.name, "value": obj.value });
+                    });
+                }
+            },
+            "oLanguage": {
+                "sUrl": "/files/admin/js/jquery.dataTables.lang.zhcn.txt?4"
+            },
+            "aoColumns": [
+                
+                {
+                    "sName": "JJ_Plan",
+                    "sTitle": "推广计划",
+                    "bSortable": false
+                },
+                {
+                    "sName": "JJ_Cell",
+                    "sTitle": "推广单元",
+                    "sClass": "td_wid_datetime",
+                    "sClass": "center",
+                    "bSortable": false
+                },
+                 {
+                     "sName": "JJ_KeyWordsName",
+                     "sTitle": "关键词",
+                     "bSortable": false
+                 },
+                  {
+                      "sName": "ShowNum",
+                      "sTitle": "展现量",
+                      "bSortable": true
+                  },
+                    {
+                        "sName": "ClickNum",
+                        "sTitle": "点击量",
+                        "bSortable": true
+                    },
+
+                      {
+                          "sName": "PayNum",
+                          "sTitle": "消费",
+                          "bSortable": true
+                      }
+            ]
+
+        });
+    }
+
+    function initPage() {
+        $(".datepicker").datepicker({
+            showButtonPanel: true
+        });
+        setDataTable();
+    }
+    $().pageUtility.addEvent(initPage);
+   
+
+    function callback() {
+        history.go(-1);
+    }
+
+</script>
+

@@ -1,0 +1,88 @@
+2015-05-14 23:28:34,870 [18] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=1 AND OrderState=0  AND SectionID in (1,-100 ) AND RoleID in (1,2,3,6,7,8,9,10,11,12,13,14,15,16,17,18,20,21,-100 )System.Data.SqlClient.SqlException (0x80131904): 列名 'Action' 无效。
+   在 System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   在 System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   在 System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   在 System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   在 System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   在 System.Data.SqlClient.SqlDataReader.get_MetaData()
+   在 System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   在 System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   在 System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   在 System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   在 Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteReader(DbCommand command, CommandBehavior cmdBehavior)
+   在 Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteReader(DbCommand command)
+   在 Easom.Core.DataAdapters.OrdersDataAdapter.SearchView(Int32& pageCount, Int32 pageIndex, Int32 pageSize, String where, String orderField, Boolean isDesc) 位置 e:\MyObjects\Easom\Easom.Core\DataAdapters\OrdersDataAdapter.cs:行号 350
+   在 Easom.Core.Services.OrdersService.SearchView(Int32& pageCount, Int32 pageIndex, Int32 pageSize, String where, String orderField, Boolean isDesc) 位置 e:\MyObjects\Easom\Easom.Core\Services\OrdersService.cs:行号 98
+   在 Easom.Web.Support.Controllers.CustomerServiceController.OrderToShow(Int32& pageCount, Int32 pageIndex, Int32 pageSize, String where, String orderFields, Boolean isDesc, UserInfo user) 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 378
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 340
+ClientConnectionId:2e77a83c-69cd-4fe6-bac6-2684f654af16
+
+2015-05-14 23:33:23,845 [41] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=1 AND OrderState=0  AND SectionID in (1,-100 ) AND RoleID in (1,2,3,6,7,8,9,10,11,12,13,14,15,16,17,18,20,21,-100 )System.Data.SqlClient.SqlException (0x80131904): 列名 'Action' 无效。
+   在 System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   在 System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   在 System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   在 System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   在 System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   在 System.Data.SqlClient.SqlDataReader.get_MetaData()
+   在 System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   在 System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   在 System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   在 System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   在 Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteReader(DbCommand command, CommandBehavior cmdBehavior)
+   在 Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteReader(DbCommand command)
+   在 Easom.Core.DataAdapters.OrdersDataAdapter.SearchView(Int32& pageCount, Int32 pageIndex, Int32 pageSize, String where, String orderField, Boolean isDesc) 位置 e:\MyObjects\Easom\Easom.Core\DataAdapters\OrdersDataAdapter.cs:行号 350
+   在 Easom.Core.Services.OrdersService.SearchView(Int32& pageCount, Int32 pageIndex, Int32 pageSize, String where, String orderField, Boolean isDesc) 位置 e:\MyObjects\Easom\Easom.Core\Services\OrdersService.cs:行号 98
+   在 Easom.Web.Support.Controllers.CustomerServiceController.OrderToShow(Int32& pageCount, Int32 pageIndex, Int32 pageSize, String where, String orderFields, Boolean isDesc, UserInfo user) 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 378
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 340
+ClientConnectionId:f6431d10-bc2e-430c-a787-f67f57e57488
+
+2015-05-14 23:34:49,832 [37] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=1 AND OrderState=0  AND SectionID in (1,-100 ) AND RoleID in (1,2,3,6,7,8,9,10,11,12,13,14,15,16,17,18,20,21,-100 )System.Data.SqlClient.SqlException (0x80131904): 列名 'Action' 无效。
+   在 System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   在 System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   在 System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   在 System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   在 System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   在 System.Data.SqlClient.SqlDataReader.get_MetaData()
+   在 System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   在 System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   在 System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   在 System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   在 Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteReader(DbCommand command, CommandBehavior cmdBehavior)
+   在 Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteReader(DbCommand command)
+   在 Easom.Core.DataAdapters.OrdersDataAdapter.SearchView(Int32& pageCount, Int32 pageIndex, Int32 pageSize, String where, String orderField, Boolean isDesc) 位置 e:\MyObjects\Easom\Easom.Core\DataAdapters\OrdersDataAdapter.cs:行号 350
+   在 Easom.Core.Services.OrdersService.SearchView(Int32& pageCount, Int32 pageIndex, Int32 pageSize, String where, String orderField, Boolean isDesc) 位置 e:\MyObjects\Easom\Easom.Core\Services\OrdersService.cs:行号 98
+   在 Easom.Web.Support.Controllers.CustomerServiceController.OrderToShow(Int32& pageCount, Int32 pageIndex, Int32 pageSize, String where, String orderFields, Boolean isDesc, UserInfo user) 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 378
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 340
+ClientConnectionId:f6431d10-bc2e-430c-a787-f67f57e57488
+
+2015-05-14 23:35:40,594 [22] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=1 AND OrderState=0  AND SectionID in (1,-100 ) AND RoleID in (1,2,3,6,7,8,9,10,11,12,13,14,15,16,17,18,20,21,-100 )System.Data.SqlClient.SqlException (0x80131904): 列名 'Action' 无效。
+   在 System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   在 System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   在 System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   在 System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   在 System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   在 System.Data.SqlClient.SqlDataReader.get_MetaData()
+   在 System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   在 System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   在 System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   在 System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   在 Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteReader(DbCommand command, CommandBehavior cmdBehavior)
+   在 Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteReader(DbCommand command)
+   在 Easom.Core.DataAdapters.OrdersDataAdapter.SearchView(Int32& pageCount, Int32 pageIndex, Int32 pageSize, String where, String orderField, Boolean isDesc) 位置 e:\MyObjects\Easom\Easom.Core\DataAdapters\OrdersDataAdapter.cs:行号 350
+   在 Easom.Core.Services.OrdersService.SearchView(Int32& pageCount, Int32 pageIndex, Int32 pageSize, String where, String orderField, Boolean isDesc) 位置 e:\MyObjects\Easom\Easom.Core\Services\OrdersService.cs:行号 98
+   在 Easom.Web.Support.Controllers.CustomerServiceController.OrderToShow(Int32& pageCount, Int32 pageIndex, Int32 pageSize, String where, String orderFields, Boolean isDesc, UserInfo user) 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 378
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 340
+ClientConnectionId:f6431d10-bc2e-430c-a787-f67f57e57488
+

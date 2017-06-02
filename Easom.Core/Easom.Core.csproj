@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C896B07F-7D1B-47F6-B809-D59197C482B7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Easom.Core</RootNamespace>
+    <AssemblyName>Easom.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CHCMS.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\CHCMS.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Memcached.ClientLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=42c0400964dcc297, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Memcached.ClientLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bins\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ObjectBuilder2, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Microsoft.Practices.ObjectBuilder2.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Authority.cs" />
+    <Compile Include="AuthorityConst.cs" />
+    <Compile Include="BaiDuDataModel.cs" />
+    <Compile Include="CallOnData.cs" />
+    <Compile Include="Contracts\IAuthority.cs" />
+    <Compile Include="Contracts\ICallOnData.cs" />
+    <Compile Include="Contracts\IDisease.cs" />
+    <Compile Include="Contracts\IDoctor.cs" />
+    <Compile Include="Contracts\IHospital.cs" />
+    <Compile Include="Contracts\IHospitalToServe.cs" />
+    <Compile Include="Contracts\IHospitalWebsite.cs" />
+    <Compile Include="Contracts\IJJ_Account.cs" />
+    <Compile Include="Contracts\IJJ_Cell.cs" />
+    <Compile Include="Contracts\IJJ_DayKeyWords_Report.cs" />
+    <Compile Include="Contracts\IJJ_KeyWords.cs" />
+    <Compile Include="Contracts\IJJ_KeyWords_Report.cs" />
+    <Compile Include="Contracts\IJJ_Plan.cs" />
+    <Compile Include="Contracts\IJJ_Swt_Report.cs" />
+    <Compile Include="Contracts\IMediaSource.cs" />
+    <Compile Include="Contracts\IMessageLog.cs" />
+    <Compile Include="Contracts\IMessageTemplate.cs" />
+    <Compile Include="Contracts\IMyServe.cs" />
+    <Compile Include="Contracts\INotifier.cs" />
+    <Compile Include="Contracts\INotifyLog.cs" />
+    <Compile Include="Contracts\IOperationLog.cs" />
+    <Compile Include="Contracts\IOrders.cs" />
+    <Compile Include="Contracts\IOutOrder.cs" />
+    <Compile Include="Contracts\IRole.cs" />
+    <Compile Include="Contracts\IRoleToAuthority.cs" />
+    <Compile Include="Contracts\ISection.cs" />
+    <Compile Include="Contracts\IUserInfo.cs" />
+    <Compile Include="Contracts\IUserToHospital.cs" />
+    <Compile Include="Contracts\IUserToSection.cs" />
+    <Compile Include="DataAdapters\AuthorityDataAdapter.cs" />
+    <Compile Include="DataAdapters\CallOnDataDataAdapter.cs" />
+    <Compile Include="DataAdapters\DataAdapter.cs" />
+    <Compile Include="DataAdapters\DiseaseDataAdapter.cs" />
+    <Compile Include="DataAdapters\DoctorDataAdapter.cs" />
+    <Compile Include="DataAdapters\HospitalDataAdapter.cs" />
+    <Compile Include="DataAdapters\HospitalToServeDataAdapter.cs" />
+    <Compile Include="DataAdapters\HospitalWebsiteDataAdapter.cs" />
+    <Compile Include="DataAdapters\JJ_AccountDataAdapter.cs" />
+    <Compile Include="DataAdapters\JJ_CellDataAdapter.cs" />
+    <Compile Include="DataAdapters\JJ_DayKeyWords_ReportDataAdapter.cs" />
+    <Compile Include="DataAdapters\JJ_KeyWordsDataAdapter.cs" />
+    <Compile Include="DataAdapters\JJ_KeyWords_ReportDataAdapter.cs" />
+    <Compile Include="DataAdapters\JJ_PlanDataAdapter.cs" />
+    <Compile Include="DataAdapters\JJ_Swt_ReportDataAdapter.cs" />
+    <Compile Include="DataAdapters\MediaSourceDataAdapter.cs" />
+    <Compile Include="DataAdapters\MessageLogDataAdapter.cs" />
+    <Compile Include="DataAdapters\MessageTemplateDataAdapter.cs" />
+    <Compile Include="DataAdapters\MyServeDataAdapter.cs" />
+    <Compile Include="DataAdapters\NotifierDataAdapter.cs" />
+    <Compile Include="DataAdapters\NotifyLogDataAdapter.cs" />
+    <Compile Include="DataAdapters\OperationLogDataAdapter.cs" />
+    <Compile Include="DataAdapters\OrdersDataAdapter.cs" />
+    <Compile Include="DataAdapters\OutOrderDataAdapter.cs" />
+    <Compile Include="DataAdapters\RoleDataAdapter.cs" />
+    <Compile Include="DataAdapters\RoleToAuthorityDataAdapter.cs" />
+    <Compile Include="DataAdapters\SectionDataAdapter.cs" />
+    <Compile Include="DataAdapters\UserInfoDataAdapter.cs" />
+    <Compile Include="DataAdapters\UserToHospitalDataAdapter.cs" />
+    <Compile Include="DataAdapters\UserToSectionDataAdapter.cs" />
+    <Compile Include="Disease.cs" />
+    <Compile Include="Doctor.cs" />
+    <Compile Include="Hospital.cs" />
+    <Compile Include="HospitalToServe.cs" />
+    <Compile Include="HospitalWebsite.cs" />
+    <Compile Include="JJ_Account.cs" />
+    <Compile Include="JJ_Cell.cs" />
+    <Compile Include="JJ_DayKeyWords_Report.cs" />
+    <Compile Include="JJ_KeyWords.cs" />
+    <Compile Include="JJ_KeyWords_Report.cs" />
+    <Compile Include="JJ_Plan.cs" />
+    <Compile Include="JJ_Swt_Report.cs" />
+    <Compile Include="MediaSource.cs" />
+    <Compile Include="MessageLog.cs" />
+    <Compile Include="MessageTemplate.cs" />
+    <Compile Include="Model.cs" />
+    <Compile Include="MyServe.cs" />
+    <Compile Include="Notifier.cs" />
+    <Compile Include="NotifyLog.cs" />
+    <Compile Include="OperationLog.cs" />
+    <Compile Include="Orders.cs" />
+    <Compile Include="OutOrder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Role.cs" />
+    <Compile Include="RoleToAuthority.cs" />
+    <Compile Include="Section.cs" />
+    <Compile Include="ServeConst.cs" />
+    <Compile Include="Services\AuthorityService.cs" />
+    <Compile Include="Services\CallOnDataService.cs" />
+    <Compile Include="Services\DataService.cs" />
+    <Compile Include="Services\DiseaseService.cs" />
+    <Compile Include="Services\DoctorService.cs" />
+    <Compile Include="Services\HospitalService.cs" />
+    <Compile Include="Services\HospitalToServeService.cs" />
+    <Compile Include="Services\HospitalWebsiteService.cs" />
+    <Compile Include="Services\JJ_AccountService.cs" />
+    <Compile Include="Services\JJ_CellService.cs" />
+    <Compile Include="Services\JJ_DayKeyWords_ReportService.cs" />
+    <Compile Include="Services\JJ_KeyWordsService.cs" />
+    <Compile Include="Services\JJ_KeyWords_ReportService.cs" />
+    <Compile Include="Services\JJ_PlanService.cs" />
+    <Compile Include="Services\JJ_Swt_ReportService.cs" />
+    <Compile Include="Services\MediaSourceService.cs" />
+    <Compile Include="Services\MessageLogService.cs" />
+    <Compile Include="Services\MessageTemplateService.cs" />
+    <Compile Include="Services\MyServeService.cs" />
+    <Compile Include="Services\NotifierService.cs" />
+    <Compile Include="Services\NotifyLogService.cs" />
+    <Compile Include="Services\OperationLogService.cs" />
+    <Compile Include="Services\OrdersService.cs" />
+    <Compile Include="Services\OutOrderService.cs" />
+    <Compile Include="Services\RoleService.cs" />
+    <Compile Include="Services\RoleToAuthorityService.cs" />
+    <Compile Include="Services\SectionService.cs" />
+    <Compile Include="Services\UserInfoService.cs" />
+    <Compile Include="Services\UserToHospitalService.cs" />
+    <Compile Include="Services\UserToSectionService.cs" />
+    <Compile Include="Support\AreaTypeEnum.cs" />
+    <Compile Include="Support\ArriveStateEnum.cs" />
+    <Compile Include="Support\ChatStateEnum.cs" />
+    <Compile Include="Support\CountTypeEnum.cs" />
+    <Compile Include="Support\EquipmentEnum.cs" />
+    <Compile Include="Support\LoginState.cs" />
+    <Compile Include="Support\MessageLastRunStateEnum.cs" />
+    <Compile Include="Support\NotifyCycleEnum.cs" />
+    <Compile Include="Support\NotifyTypeEnum.cs" />
+    <Compile Include="Support\OperationTypeEnum.cs" />
+    <Compile Include="Support\OrderStateEnum.cs" />
+    <Compile Include="Support\SendState.cs" />
+    <Compile Include="Support\ServeDateTypeEnum.cs" />
+    <Compile Include="Support\SorceTypeEnum.cs" />
+    <Compile Include="Support\SwtTableSortEnum.cs" />
+    <Compile Include="Support\TemplateTypeEnum.cs" />
+    <Compile Include="Support\UserInformationEum.cs" />
+    <Compile Include="Support\UserStateEnum.cs" />
+    <Compile Include="Support\WebSitePath.cs" />
+    <Compile Include="Support\WebSitePathConstant.cs" />
+    <Compile Include="UserInfo.cs" />
+    <Compile Include="UserToHospital.cs" />
+    <Compile Include="UserToSection.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,223 @@
+﻿@model Easom.Core.Orders
+@{
+    ViewBag.Title = "来院状态";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+@section styles
+{
+    <link rel="stylesheet" href="/files/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" href="/files/css/jquery.tagsinput.css" />
+    <link rel="stylesheet" href="/files/css/dropzone.css" />
+}
+@section scripts
+{
+    <script src="/files/js/jquery.autogrow-textarea.js"></script>
+    <script src="/files/js/bootstrap-timepicker.min.js"></script>
+    <script src="/files/js/jquery.maskedinput.min.js"></script>
+    <script src="/files/js/jquery.tagsinput.min.js"></script>
+    <script src="/files/js/jquery.mousewheel.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/dropzone.min.js"></script>
+
+    <script src="/files/js/custom.js"></script>
+
+    <script type="text/javascript">
+
+        function initPage() {
+            $().formValidator.init("form");
+            loading();
+            $().formValidator.addValidator([
+            { controlID: 'doctorid', mustMsg: '你必须选择一个接待医生！', rule: 'radioboxs' }
+            ]);
+            //$('#ordertime').datepicker({
+            //    format: 'yyyy-MM-dd'
+            //});
+            //$('#ordertimeHours').timepicker({ showMeridian: false });
+            $('#recordtime').datepicker({
+                format: 'yyyy-MM-dd'
+            });
+            $('#recordtimeHours').timepicker({ showMeridian: false });
+
+           // getordertime('ordertimeHours', '@Model.OrderTime.ToString("HH:mm")');
+            @if (Easom.Core.Support.ArriveStateEnum.Wait == Model.ArriveStateType || Easom.Core.Support.ArriveStateEnum.NoArrive == Model.ArriveStateType)
+        {
+         @Html.Raw("getordertime('recordtimeHours','" + @DateTime.Now.ToString("HH:mm") + "');");
+        }
+        else
+        {
+        @Html.Raw("getordertime('recordtimeHours','" + @Model.RecordTime.ToString("HH:mm") + "');");
+        }
+        }
+        $().pageUtility.addEvent(initPage);
+
+        $().formValidator.onPassCallBack = function () {
+            var formValues = [
+                   { id: 'arrivetype', value: $("input[name='arrivetype']:checked").val() },
+                   { id: 'doctorid', value: $("input[name='doctorid']:checked").val() },
+                   { id: 'dremark', value: $("#dremark").val() },
+                   { id: 'ordertime', value: $("#ordertime").val() },
+                   { id: 'recordtime', value: $("#recordtime").val() },
+                   { id: 'ordertimeHour', value: $("#ordertimeHours").val() },
+                   { id: 'recordtimeHour', value: $("#recordtimeHours").val() }
+
+            ];
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: '/customerservice/arrivestate/@Model.ID',
+                data: $().pageUtility.getFormData(formValues),
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.createNotify("growl-success", false, "提示", "操作成功！正在跳转至列表页面...");
+                        setTimeout("parent.location.reload()", 1000);
+                    }
+                    else {
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                }
+            });
+        }
+        function loading() {
+            if ($("input[name=arrivetype]:checked").val() == 1) {
+                $("#recordTimes").attr("style", "display:block");
+            }
+            else {
+                $("#recordTimes").attr("style", "display:none");
+            }
+        }
+
+        function select(obj1) {//预约时间日期
+            $("#ordertime").val(obj1);
+        }
+        function getordertime(id, obj) {//预约时间小时
+            $("#" + id + "_chzn a span").text(obj);
+        }
+        $("input[name=arrivetype]").change(function () {
+            loading();
+        })
+    </script>
+}
+<div class="panel panel-default">
+    <div class="panel-body">
+        <form method="post" name="form1" id="form1" class="form-horizontal form-bordered">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="control-label">
+                            患者姓名<span class="asterisk">*</span>
+                        </label>
+                        <input id="name" name="name" class="form-control" title="请输入姓名" type="text" maxlength="255" value="@Model.Name" disabled= disabled />
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="control-label">
+                            赴约状态<span class="asterisk">*</span>
+                        </label>
+                        <div>
+                            <span class="rdio">
+                                <input id="arriedID" name="arrivetype" @Html.Raw(Easom.Core.Support.ArriveStateEnum.Arrived == Model.ArriveStateType || Easom.Core.Support.ArriveStateEnum.NoArrive == Model.ArriveStateType ? "checked='checked'" : "") type="radio" value="1" />
+                                <label for="arriedID">
+                                    已到
+                                </label>
+                            </span>
+                            <span class="rdio">
+                                <input id="waitID" name="arrivetype" @Html.Raw(Easom.Core.Support.ArriveStateEnum.Wait == Model.ArriveStateType ? "checked='checked'" : "") type="radio" value="0" />
+                                <label for="waitID">
+                                    等待
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="control-label">
+                            预约日期<span class="asterisk">*</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                            <input type="text" readonly="readonly" class="form-control" placeholder="请输入年月日 如：2015-05-31" id="ordertime" value="@Model.OrderTime.ToString("yyyy-MM-dd")">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="control-label">
+                            时间<span class="asterisk">*</span>
+                        </label>
+                        <div class="input-group mb15">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                            <div class="bootstrap-timepicker">
+                                <input readonly="readonly" id="ordertimeHours" value="@Model.OrderTime.ToString("HH:mm")" type="text" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="recordTimes">
+                    <div class="col-sm-6">
+                        <label class="control-label">
+                            到院日期<span class="asterisk">*</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                            <input type="text" class="form-control" placeholder="请输入年月日 如：2015-05-31" id="recordtime" @Html.Raw(Easom.Core.Support.ArriveStateEnum.Wait == Model.ArriveStateType || Easom.Core.Support.ArriveStateEnum.NoArrive == Model.ArriveStateType ? "value='" + DateTime.Now.ToString("yyyy-MM-dd") + "'" : "value='" + @Model.RecordTime.ToString("yyyy-MM-dd") + "'") />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="control-label">
+                            时间<span class="asterisk">*</span>
+                        </label>
+                        <div class="input-group mb15">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                            <div class="bootstrap-timepicker">
+                                <input id="recordtimeHours" type="text" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="control-label">接待医生<span class="asterisk">*</span></label>
+                            <div>
+                                <span class="rdio">
+                                    <input name="doctorid" checked='checked' type="radio" id="doctorid" value="-1" />
+                                    <label for="doctorid">
+                                        未选择
+                                    </label>
+                                </span>
+                                @if (ViewBag.doctorList != null)
+                                {
+                                    foreach (var item in ViewBag.doctorList)
+                                    {
+                                        <span class="rdio">
+                                            <input type="radio" name="doctorid" id="@item.ID" @if (item.ID == Model.DoctorID) { @Html.Raw("checked='checked'") } value="@item.ID" />
+                                            <label for="@item.ID">
+                                                @item.Name
+                                            </label>
+                                        </span>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="control-label">
+                                备注
+                            </label>
+                            <div class="fieldwrap">
+                                <textarea id="dremark" name="description" class="form-control" rows="10" cols="50">@Model.DRemark</textarea>
+                            </div>
+                            <div class="buttons bottom-round noboder">
+                                <div class="panel-footer">
+                                    <button class="btn btn-primary">提交</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </form>
+    </div>
+</div>

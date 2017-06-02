@@ -1,0 +1,119 @@
+﻿@{
+    ViewBag.Title = "角色设置";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+<div class="widget-panel">
+    <div class="widget-content module">
+        <div class="form-grid">
+            <form method="post" name="form1" id="form1" class="topLabel">
+            <ul>
+                <li>
+                    <fieldset>
+                        <legend class="choiceFld">角色名称</legend>
+                        <div class="blockStyle input-uniform">
+                            @if (ViewBag.allRole != null)
+                            {
+                                int index = 1;
+                                foreach (var item in ViewBag.allRole)
+                                {
+                                    if (index > 6)
+                                    {
+                                <br />
+                                        if (ViewBag.userRole != null)
+                                        {
+                                            if (UserInfo.IsCheckedRole(ViewBag.userRole, item.ID))
+                                            {
+                                <span style=" margin-right: @LoginManager.SubStringDisName(7,@item.Name)px;">
+                                    <input name="checkboxInput" class="radio" type="radio" id="role_@item.ID" value="@item.ID" checked="checked"/>
+                                    <label title="@item.Name" for="role_@item.ID">@CHCMS.Utility.StringUtility.CutString(@item.Name, 7, true)</label>
+                                </span>
+                                            }
+                                            else
+                                            {
+                                <span  style=" margin-right: @LoginManager.SubStringDisName(7,@item.Name)px;">
+                                    <input name="checkboxInput"  id="role_@item.ID" class="radio" type="radio" value="@item.ID"/>
+                                    <label title="@item.Name" for="role_@item.ID">@CHCMS.Utility.StringUtility.CutString(@item.Name, 7, true)</label>
+                                </span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                <span  style=" margin-right: @LoginManager.SubStringDisName(7,@item.Name)px;">
+                                    <input name="checkboxInput" class="radio" id="role_@item.ID" type="radio" value="@item.ID"/>
+                                    <label title="@item.Name" for="role_@item.ID">@CHCMS.Utility.StringUtility.CutString(@item.Name, 7, true)</label>
+                                </span>
+                                        }
+                                        index = 1;
+                                    }
+                                    else
+                                    {
+                                        if (ViewBag.userRole != null)
+                                        {
+                                            if (UserInfo.IsCheckedRole(ViewBag.userRole, item.ID))
+                                            {
+                                <span  style=" margin-right: @LoginManager.SubStringDisName(7,@item.Name)px;">
+                                    <input name="checkboxInput" class="radio" id="role_@item.ID" type="radio" value="@item.ID" checked="checked"/>
+                                    <label title="@item.Name" for="role_@item.ID">@CHCMS.Utility.StringUtility.CutString(@item.Name, 7, true)</label>
+                                </span>
+                                            }
+                                            else
+                                            {
+                                <span  style=" margin-right: @LoginManager.SubStringDisName(7,@item.Name)px;">
+                                    <input name="checkboxInput" class="radio" id="role_@item.ID" type="radio" value="@item.ID"/>
+                                    <label title="@item.Name" for="role_@item.ID">@CHCMS.Utility.StringUtility.CutString(@item.Name, 7, true)</label>
+                                </span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                <span  style="margin-right: @LoginManager.SubStringDisName(7,@item.Name)px;">
+                                    <input name="checkboxInput" class="radio" id="role_@item.ID" type="radio" value="@item.ID"/>
+                                    <label title="@item.Name" for="role_@item.ID">@CHCMS.Utility.StringUtility.CutString(@item.Name, 7, true)</label>
+                                </span>
+                                        }
+                                    }
+                                    index++;
+                                }
+                            }
+                        </div>
+                    </fieldset>
+                </li>
+                <li class="buttons bottom-round noboder">
+                    <div class="fieldwrap">
+                        <input name="" type="submit" value="提交" class="submit-button" />
+                    </div>
+                </li>
+            </ul>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function initPage() {
+        $().formValidator.init("form");
+    }
+    $().formValidator.addValidator([{ controlID: 'checkboxInput', mustMsg: '您必须至少选择一个角色！', rule: 'checkboxs'}]);
+    $().pageUtility.addEvent(initPage);
+    $().formValidator.onPassCallBack = function () {
+        var formValues = $("input[name='checkboxInput']:checked").val();
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: '/administrator/user/setrole/@ViewData["userid"]',
+            data: "ids=" + formValues,
+            success: function (data) {
+                if (data.flag == "success") {
+                    $().pageUtility.createNotify("growl-success", false, "提示：", "操作成功！正在跳转至列表页面...");
+                    setTimeout("parent.location.reload()", 1000);
+                }
+                else {
+                    $().pageUtility.closeLoading();
+                    $().formValidator.setSubmitButtonState(true);
+                }
+                if (data.flag == "error") {
+                    $().pageUtility.createNotify("growl-warning", false, "错误提示：", "出错了，请稍后再试！");
+                }
+            }
+        });
+    }
+</script>

@@ -1,0 +1,132 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles
+{
+    <style>
+        .table tbody > tr > td {
+            padding: 5px;
+        }
+    </style>
+}
+@section scripts{
+    <script src="/files/js/morris.min.js"></script>
+    <script src="/files/js/raphael-2.1.0.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        function add(begintime, endtime, type) {
+            location.href = "/customerservice/orderindex?&timekinds=0&starttime=" + begintime + "&endtime=" + endtime + "&department=" + type;
+        }
+
+        function order(begintime, endtime, type) {
+            location.href = "/customerservice/orderindex?&timekinds=2&starttime=" + begintime + "" + "&endtime=" + endtime + "&arrivestate=" + 0 + "&department=" + type;
+        }
+
+        function arrive(begintime, endtime, type) {
+            location.href = "/customerservice/orderindex?&timekinds=1&starttime=" + begintime + "&endtime=" + endtime + "&arrivestate=" + 1 + "&department=" + type;
+        }
+        function callbackManager(id, state) {
+            $().pageUtility.pop("回访记录", "/customerservice/callback?id=" + id + "&state=" + state, 800, 600);
+        }
+        $("table tr").mouseover(function () {
+            $(this).css({ "background-color": "#FFFF99" });
+        }).mouseout(function (event) {
+            var $index = $(this).index();
+            if ($index % 2 == 0) {
+                $(this).css({ "background-color": "#F0F0F0" });
+            } else {
+                $(this).css({ "background-color": "#fff" });
+            }
+        });
+        $("table  tr:nth-child(odd)").css({ "background-color": "#F0F0F0" });
+    </script>
+
+}
+<div class="pageheader">
+    <h2><i class="fa fa-home"></i> 首页 <span>欢迎您使用预约挂号系统...</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">系统导航:</span>
+        <ol class="breadcrumb">
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="mainpanel2">
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="table-responsive">
+                    <table class="table table-primary mb30">
+                        <thead>
+                            <tr>
+                                <th>网络</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @Html.Raw("" + @ViewBag.Datanet + "")
+                        </tbody>
+                    </table>
+                </div><!-- table-responsive -->
+            </div>
+
+            <div class="col-md-3">
+                <div class="table-responsive">
+                    <table class="table table-success mb30">
+                        <thead>
+                            <tr>
+                                <th>电话</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @Html.Raw("" + @ViewBag.Datatel + "")
+                        </tbody>
+                    </table>
+                </div><!-- table-responsive -->
+            </div>
+
+            <div class="col-md-3">
+                <div class="table-responsive">
+                    <table class="table table-warning mb30">
+                        <thead>
+                            <tr>
+                                <th>其他</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @Html.Raw("" + @ViewBag.DataAnt + "")
+                        </tbody>
+                    </table>
+                </div><!-- table-responsive -->
+            </div>
+
+            <div class="col-md-3">
+                <div class="table-responsive">
+                    <table class="table table-danger mb30">
+                        <thead>
+                            <tr>
+                                <th>合计</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @Html.Raw("" + @ViewBag.DataASta + "")
+                        </tbody>
+                    </table>
+                </div><!-- table-responsive -->
+            </div>
+
+        </div>
+    </div><!-- contentpanel -->
+</div>

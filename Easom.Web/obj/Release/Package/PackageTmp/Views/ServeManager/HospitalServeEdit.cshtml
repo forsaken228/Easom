@@ -1,0 +1,240 @@
+﻿@model Easom.Core.HospitalToServe
+@{
+    ViewBag.Title = "添加区域";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+@section styles
+{
+    <link rel="stylesheet" href="/files/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" href="/files/css/jquery.tagsinput.css" />
+    <link rel="stylesheet" href="/files/css/dropzone.css" />
+}
+@section scripts
+{
+    <script src="/files/js/jquery.autogrow-textarea.js"></script>
+    <script src="/files/js/bootstrap-timepicker.min.js"></script>
+    <script src="/files/js/jquery.maskedinput.min.js"></script>
+    <script src="/files/js/jquery.tagsinput.min.js"></script>
+    <script src="/files/js/jquery.mousewheel.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/dropzone.min.js"></script>
+
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+
+        function initPage() {
+            $().formValidator.init("form");
+            setEcpirationDate();
+            $('#selecthours').timepicker({ showMeridian: false });
+            $('#ExpirationDate').datepicker({
+                format: 'yyyy-MM-dd'
+            });
+        }
+
+        $().pageUtility.addEvent(initPage);
+
+        $().formValidator.onPassCallBack = function () {
+            var formValues = [
+                    { id: 'hospital', value: $("input[name='hospitalName']:checked").val() },
+                    { id: 'serveName', value: $("input[name='serveName']:checked").val() },
+                    { id: 'RepertoryNum', value: $("#Num").val() },
+                    { id: 'ExpirationDate', value: $("#ExpirationDate").val() },
+                    { id: 'IsSetExpirationDate', value: $("input[name='IsExpirationDate']:checked").val() },
+                    { id: 'selecthours', value: $('#selecthours').val() }
+            ];
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: '/ServeManager/HospitalServeEdit/@Model.ID',
+                data: $().pageUtility.getFormData(formValues),
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.createNotify("growl-success", false, "成功提示：", "服务添加成功！正在跳转至列表页面..");
+                        setTimeout("parent.location.reload()", 1000);
+                    }
+                    else if (data.flag == "error") {
+                        $().pageUtility.alert("提示", "出错了，请稍后再试！");
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                    else {
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                }
+            });
+        }
+        $("input[name='IsExpirationDate']").change(function () {
+            setEcpirationDate();
+        });
+
+        function setEcpirationDate() {
+            var IsSetNextTime = checkvalue();
+            if (parseInt(IsSetNextTime) == 0) {
+                $("#ExpirationDateID").css("display", "block")
+            }
+            else {
+                $("#ExpirationDateID").css("display", "none")
+            }
+        }
+        $("input[name='hospitalName']").change(function () {
+            selectHospitalData();
+        });
+        $("input[name='serveName']").change(function () {
+            selectHospitalData();
+        });
+
+        function selectHospitalData() {
+            var hospitalID = $("input[name='hospitalName']:checked").val();
+            var serveID = $("input[name='serveName']:checked").val();
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: '/ServeManager/HospitalServeEdit?hospitalID=' + hospitalID + '&serveID=' + serveID,
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.createNotify("growl-success", false, "成功提示：", "操作成功！正在跳转至列表页面..");
+                        $("#Num").val(data.num);
+                    }
+                    else {
+                        $().formValidator.setSubmitButtonState(true);
+
+                    }
+                    if (data.flag == "error") {
+                        $().pageUtility.alert("提示", "出错了，请稍后再试！");
+                    }
+                }
+            });
+        }
+        function checkvalue() {
+            var str = "";
+            var abc = $("input[name=IsExpirationDate]:checked").each(function () {
+                str += $(this).val();
+            });
+            return str;
+        }
+    </script>
+}
+<div class="panel panel-default">
+    <div class="panel-body">
+        <form method="post" name="form1" id="form1" class="form-horizontal form-bordered">
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <strong>提示:</strong>加“*”号的是必填项
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label id="title" class="fldTitle">
+                            医院信息
+                        </label>
+                        <div>
+                            @{
+                                if (@ViewData["Hospital"] != null)
+                                {
+                                    foreach (var item in @ViewData["Hospital"] as IList<Hospital>)
+                                    {
+                                        <span class="rdio rdioPosition">
+                                            <input type="radio" name="hospitalName" id="hospitalName_@item.ID" @if (@ViewBag.HospitalID == item.ID) { @Html.Raw("checked='checked'")                              } value="@item.ID">
+                                            <label for="hospitalName_@item.ID">@item.Name</label>
+                                        </span>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label id="title" class="fldTitle">
+                            服务名称
+                        </label>
+                        <div>
+                            @{
+                                if (@ViewData["MyServe"] != null)
+                                {
+                                    foreach (var item in @ViewData["MyServe"] as IList<MyServe>)
+                                    {
+                                        <span class="rdio rdioPosition">
+                                            <input type="radio" name="serveName" id="serveName_@item.ID" @if (@ViewBag.ServeKey == item.ServeKey) { @Html.Raw("checked='checked'") } value="@item.ServeKey">
+                                            <label for="serveName_@item.ID">@item.ServeName</label>
+                                            <input id="@item.ID" value="@item.ServeKey" type="hidden" />
+                                        </span>
+                                    }
+                                }
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label id="title" class="fldTitle">
+                            数量<span class="asterisk">*</span>
+                        </label>
+                        <div>
+                            <input id="Num" name="Field1" class="form-control" value="@Model.Num" placeholder="数量必须填写" type="text" maxlength="255" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <span class="rdio">
+                            <input type="radio" name="IsExpirationDate" @{if (@Model.DateType == @Easom.Core.Support.ServeDateTypeEnum.have) { @Html.Raw("checked='checked'")    } } id="haveTime" value="0">
+                            <label for="haveTime">
+                                设置有效期
+                            </label>
+                        </span>
+                        <span class="rdio">
+                            <input type="radio" name="IsExpirationDate" @{if (@Model.DateType == @Easom.Core.Support.ServeDateTypeEnum.None) { @Html.Raw("checked='checked'")   } } id="noneTime" value="1">
+                            <label for="noneTime">
+                                永久有效
+                            </label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" id="ExpirationDateID" style="display: none">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="control-label">
+                            到期日期<span class="asterisk">*</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                            <input type="text" class="form-control" placeholder="请输入年月日 如：2015-05-31" name="ExpirationDate" id="ExpirationDate" value="@Model.ExpirationDate.ToString("yyyy-MM-dd")">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="control-label">
+                            时间<span class="asterisk">*</span>
+                        </label>
+                        <div class="input-group mb15">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                            <div class="bootstrap-timepicker">
+                                <input id="selecthours" value="@Model.ExpirationDate.ToString("HH:mm:ss")" type="text" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="buttons bottom-round noboder">
+                            <div class="panel-footer">
+                                <button class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>

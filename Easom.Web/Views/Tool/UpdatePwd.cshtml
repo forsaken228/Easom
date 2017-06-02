@@ -1,0 +1,117 @@
+﻿@model Easom.Core.UserInfo
+@{
+    Layout = "~/Views/Shared/_Pop.cshtml";
+    ViewBag.Title = "修改密码";
+}
+@section styles
+{
+    <link href="/files/css/jquery.gritter.css" rel="stylesheet">
+    <link rel="stylesheet" href="/files/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" href="/files/css/jquery.tagsinput.css" />
+    <link rel="stylesheet" href="/files/css/dropzone.css" />
+}
+@section scripts
+{
+    <script src="/files/js/jquery.gritter.min.js"></script>
+    <script src="/files/js/jquery.autogrow-textarea.js"></script>
+    <script src="/files/js/bootstrap-timepicker.min.js"></script>
+    <script src="/files/js/jquery.maskedinput.min.js"></script>
+    <script src="/files/js/jquery.tagsinput.min.js"></script>
+    <script src="/files/js/jquery.mousewheel.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/dropzone.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+
+        function initPage() {
+            $().formValidator.init("form");
+            $().formValidator.addValidator([
+                   { controlID: 'oldpassword', must: true, mustMsg: '请输入旧密码' },
+                   { controlID: 'password', must: true, mustMsg: '请输入新密码' },
+                   { controlID: 'surePassword', must: true, rule: 'compare', mustMsg: '请再次输入新密码', compareID: 'password', msg: '两次输入密码不一致，请重新输入' }
+            ]);
+        }
+        $().pageUtility.addEvent(initPage);
+        $().formValidator.onPassCallBack = function () {
+            var loadingTip = $().pageUtility.loading("您请稍等...");
+            var formValues = [
+                   { id: 'password', value: $("#password").val() },
+                   { id: 'oldpassword', value: $("#oldpassword").val() }
+            ];
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: '/tool/updatepwd/@Model.ID',
+                data: $().pageUtility.getFormData(formValues),
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.setLoading("用户密码修改成功！正在跳转至列表页面...");
+                        setTimeout("parent.location.reload()", 1000);
+                    }
+                    else {
+                        $().pageUtility.closeLoading();
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                    if (data.flag == "error") {
+                        alert("出错了，请稍后再试！");
+                    }
+                    if (data.flag == "oldpwderror") {
+                        alert("旧密码输入错误！");
+                    }
+                }
+            });
+        }
+    </script>
+}
+<div class="panel panel-default panel-min-hieght">
+    <div class="panel-body">
+        <form method="post" name="form1" id="form1" class="form-horizontal form-bordered">
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <strong>提示:</strong>加“*”号的是必填项
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label id="title1" class="fldTitle">
+                            旧密码<span class="asterisk">*</span>
+                        </label>
+                        <div class="fieldwrap">
+                            <input id="oldpassword" name="oldpassword" class="form-control" placeholder="请输入旧密码" type="password" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label id="title2" class="fldTitle">
+                            新密码<span class="asterisk">*</span>
+                        </label>
+                        <div class="fieldwrap">
+                            <input id="password" name="password" class="form-control" placeholder="请输入新密码" type="password" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label id="title3" class="fldTitle">
+                            确认新密码<span class="asterisk">*</span>
+                        </label>
+                        <div class="fieldwrap">
+                            <input id="surePassword" name="surePassword" class="form-control" placeholder="请输入确认新密码"
+                                   type="password" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="buttons bottom-round noboder">
+                            <div class="panel-footer">
+                                <input type="submit" class="btn btn-primary" value="提交" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

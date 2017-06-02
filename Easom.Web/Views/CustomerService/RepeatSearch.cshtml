@@ -1,0 +1,116 @@
+﻿@{
+    ViewBag.Title = "重复病人查询";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+@section styles
+{
+    <link rel="stylesheet" href="/files/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" href="/files/css/jquery.tagsinput.css" />
+    <link rel="stylesheet" href="/files/css/dropzone.css" />
+}
+@section scripts
+{
+    <script src="/files/js/jquery.autogrow-textarea.js"></script>
+    <script src="/files/js/bootstrap-timepicker.min.js"></script>
+    <script src="/files/js/jquery.maskedinput.min.js"></script>
+    <script src="/files/js/jquery.tagsinput.min.js"></script>
+    <script src="/files/js/jquery.mousewheel.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/dropzone.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+
+        function initPage() {
+            $().formValidator.init("form");
+            $("#starttime").datepicker({
+                showButtonPanel: true
+            });
+            $("#endtime").datepicker({
+                showButtonPanel: true
+            });
+            $().formValidator.addValidator([
+                    { controlID: 'selectsearch', must: true, mustMsg: '请选择排重项目' },
+                    { controlID: 'starttime', must: true, mustMsg: '请选择起始时间' },
+                    { controlID: 'endtime', must: true, mustMsg: '请选择结束时间' }
+            ]);
+        }
+        $().pageUtility.addEvent(initPage);
+
+        $("#search").change(function () {
+            jQuery('option:selected', this).each(function () {
+                var ids = this.value;
+                if (ids != -1) {
+                    $("#selectsearch").val(ids);
+                }
+            });;
+        });
+        $().formValidator.onPassCallBack = function () {
+            var id = [
+                    { id: 'repeatstarttime', value: $("#starttime").val() },
+                    { id: 'repeatendtime', value: $("#endtime").val() },
+                    { id: 'repeatsearchdata', value: $("#search").val() }
+            ];
+            var id = $().pageUtility.getFormData(id);
+            parent.location.href = "/customerservice/orderindex?" + id;
+        }
+    </script>
+}
+<div class="panel panel-default panel-min-hieght">
+    <div class="panel-body">
+        <form method="post" name="form1" id="form1" class="form-horizontal form-bordered">
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <strong>提示:</strong> 请选择要切换的医院名称，点击确定即可
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="control-label">
+                            排重项目<span class="asterisk">*</span>
+                        </label>
+                        <div class="fieldwrap">
+                            <select id="search" tabindex="10" class="form-control" style="width: 150px;">
+                                <option value="-1" selected="selected">请选择重复条件</option>
+                                <option value="0">电话</option>
+                                <option value="1">姓名</option>
+                            </select>
+                        </div>
+                        <input type="hidden" id="selectsearch" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+
+                    <div class="col-sm-6">
+                       
+                            <label class="fldLabel">
+                                起始时间<span class="asterisk">*</span>
+                            </label>
+                            <input name="starttime" id="starttime" value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly="readonly" type="text" class="form-control" />
+                        </div>
+                    <div class="col-sm-6">
+                        <label class="fldLabel">
+                            终止时间<span class="asterisk">*</span>
+                        </label>
+                        <input name="endtime" id="endtime" readonly="readonly" value="@DateTime.Now.ToString("yyyy-MM-dd")" type="text" class="form-control" />
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="buttons bottom-round noboder">
+                            <div class="panel-footer">
+                                <button class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

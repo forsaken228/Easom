@@ -1,0 +1,178 @@
+﻿@model Easom.Core.UserInfo
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "上传图片";
+}
+@section styles
+{
+    <link href="/files/css/jquery.gritter.css" rel="stylesheet">
+    <link href="/files/jcrop/jquery.Jcrop.min.css" rel="stylesheet">
+    <style>
+        .upload-btn {
+            width: 87px;
+            height: 41px;
+            overflow: hidden;
+            position: relative;
+            border-radius: 5px;
+            background: #0cf;
+        }
+
+            .upload-btn:hover {
+                background: #09f;
+            }
+
+        .upload-btn__txt {
+            z-index: 1;
+            position: relative;
+            color: #fff;
+            font-size: 18px;
+            font-family: "Helvetica Neue";
+            line-height: 24px;
+            text-align: center;
+            text-shadow: 0 1px 1px #000;
+        }
+
+        .upload-btn input {
+            top: -10px;
+            right: -40px;
+            z-index: 2;
+            position: absolute;
+            cursor: pointer;
+            opacity: 0;
+            filter: alpha(opacity=0);
+            font-size: 50px;
+        }
+    </style>
+}
+@section scripts
+{
+    <script src="/files/js/jquery.gritter.min.js"></script>
+    <script src="/files/jcrop/jquery.Jcrop.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script>window.FileAPI = { staticPath: '/files/fileapi/' };</script>
+    <script src="/files/fileapi/FileAPI.min.js"></script>
+    <script>
+
+        var el = $('input').get(0);
+
+
+        FileAPI.event.on(el, 'change', function (evt) {
+            var files = FileAPI.getFiles(evt); // Retrieve file list
+
+            FileAPI.filterFiles(files, function (file, info) {
+                if (!/^image/.test(file.type)) {
+                    alert('图片格式不正确');
+                    return false;
+                }
+                else if (file.size > 20 * FileAPI.MB) {
+                    alert('图片必须小于20M');
+                    return false;
+                }
+                else {
+
+                    if (info.width < 500 && info.height < 500) {
+                        return true;
+                    }
+                    else {
+                        alert('请上传小于500X500的图片');
+                        return false;
+                    }
+                }
+
+            }, function (files, rejected) {
+                if (files.length) {
+                    var file = files[0];
+                    var img0 = FileAPI.Image(file);
+                    var img1 = FileAPI.Image(file);
+                    var ratio = 0;
+                    FileAPI.getInfo(file, function (err, info) {  //get image ratio
+                        if (!err) {
+                            if (info.width > info.height) {
+                                ratio = info.width;
+                            }
+                            else {
+                                ratio = info.heigh;
+                            }
+                        }
+                    });
+
+                    img0.resize(500, 500, 'max')   //place image and register jcrop
+                        .get(function (err, img) {
+                            $('#img4').html($(img));
+                            $('#img4').children().Jcrop({
+                                aspectRatio: 1,
+                                bgColor: 'rgba(0,0,0,0.4)',
+                                onChange: updatePreview,
+                                onSelect: updatePreview
+                            });
+                        });
+                    function updatePreview(c) {
+                        img1.matrix.sx = c.x;
+                        img1.matrix.sy = c.y;
+                        img1.matrix.sw = c.w;
+                        img1.matrix.sh = c.h;
+                        img1.matrix.dw = 150;
+                        img1.matrix.dh = 150;
+                        img1.get(function (err, img) {
+                            $('#preview-pane .preview-container').html($(img));
+                        });
+                    }
+                    $('#upload').on('click', function () {
+                        FileAPI.upload({
+                            url: '/upload/PhotoUpLoad',
+                            files: { images: img1 },
+                            progress: function (evt) { /* ... */ },
+                            complete: function (err, xhr) { /* ... */
+                                if (xhr.responseText == '"success"') {
+                                    $().pageUtility.createNotify("growl-success", false, "头像更新成功...");
+                                    setTimeout("parent.location.reload()", 1000);
+                                }
+                                else if (xhr.responseText == '"error"') {
+                                    $().pageUtility.createNotify("growl-warning", false, "出错了，请稍后再试！");
+                                }
+                            }
+                        });
+                    });
+                }
+            });
+        });
+
+    </script>
+}
+<div class="pageheader">
+    <h2><i class="fa fa-smile-o"></i>上传头像<span>您可以在这里上传您的头像..</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">当前位置:</span>
+        <ol class="breadcrumb">
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+
+            <div class="btn-group mr10 upload-btn">
+                <input id="file" name="files" type="file" multiple />
+                <button id="btn" class="btn btn-primary" type="button">选择图片</button>
+            </div>
+            <div class="btn-group mr10 upload-btn">
+                <button id="upload" class="btn btn-primary" type="submit">上传图片</button>
+            </div>
+
+        </div>
+        <div class="panel-body">
+            <div id="images" class="row">
+                <div class="col-sm-6">
+                    <div style="width: 510px; height: 510px; border: 5px dashed gray; z-index: 10" id="img2">
+                        <div id="img4"></div>
+                    </div>
+                </div>
+                <div id="preview-pane" class="col-sm-6">
+                    <div class="preview-container" style="width: 160px; height: 160px; border: 5px dashed gray"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

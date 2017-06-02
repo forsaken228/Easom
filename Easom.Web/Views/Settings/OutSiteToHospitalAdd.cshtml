@@ -1,0 +1,82 @@
+﻿@model  IList<Easom.Core.HospitalWebsite>
+@{
+    ViewBag.Title = "添加医院";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+<div class="widget-panel">
+    <div class="widget-content module">
+        <div class="elem-grid">
+            <div class="notification-wrap information">
+                <span class="icon-information">提示:</span>请认真填写表单,带<abbr title="Required Field" class="require">*</abbr>号的为必填项
+            </div>
+        </div>
+        <div class="form-grid">
+            <form method="post" name="form1" id="form1" class="topLabel">
+            <ul>
+               <li>
+                    <label id="title50" class="fldTitle">
+                        URL<abbr title="Required Field" class="require">*</abbr></label>
+                    <div class="fieldwrap">
+                        <input id="URL" name="URL" class="large textips" title="URL必须填写" type="text" maxlength="255" tabindex="1" />
+                    </div>
+                </li>
+                <li>
+                    <label id="title3" class="fldTitle">
+                        关联IP<abbr title="Required Field" class="require">*</abbr></label>
+                    <div class="fieldwrap">
+                        <input id="IP" name="IP" class="large textips" title="IP必须填写" type="text" maxlength="255" tabindex="1" />
+                    </div>
+                </li>
+                <li class="buttons bottom-round noboder">
+                    <div class="fieldwrap">
+                        <input name="" type="submit" value="提 交" class="submit-button" />
+                    </div>
+                </li>
+            </ul>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    function initPage() {
+        $().formValidator.init("form");
+        $().formValidator.addValidator([
+                { controlID: 'URL', must: true, mustMsg: 'URL不能为空'},
+                 { controlID: 'IP', must: true, mustMsg: 'IP不能为空' }
+            ]);
+    }
+
+    $().pageUtility.addEvent(initPage);
+
+    $().formValidator.onPassCallBack = function () {
+        $().pageUtility.loading("您请稍等...");
+        var formValues = [
+                { id: 'URL', value: $("#URL").val() },
+                { id: 'IP', value: $("#IP").val() }
+            ];
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: '/Settings/outsitetohospitaladd',
+            data: $().pageUtility.getFormData(formValues),
+            success: function (data) {
+                if (data.flag == "success") {
+                    $().pageUtility.setLoading("操作成功！正在跳转至列表页面...");
+                    setTimeout("parent.location.reload()", 1000);
+                }
+                else { 
+                    $().pageUtility.closeLoading();
+                    $().formValidator.setSubmitButtonState(true);
+                   
+                }
+                if (data.flag == "error") {
+                    alert("出错了，请稍后再试！");
+                }
+                if (data.flag == "HasUrl") {
+                    alert("URL重复！");
+                }
+            }
+        });
+    }      
+</script>

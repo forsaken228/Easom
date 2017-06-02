@@ -1,0 +1,209 @@
+﻿<div class="leftpanelinner">
+    <!-- This is only visible to small devices -->
+    @Html.Partial("_Head")
+    <h5 class="sidebartitle">导航</h5>
+    <ul id="sidenav" class="nav nav-pills nav-stacked nav-bracket">
+        @if (LoginManager.HasAutority(AuthorityConst.H_HOME))
+        {
+            <li><a href="/home"><i class="fa fa-home"></i><span>首页</span></a></li>
+        }
+        @if (LoginManager.HasAutority(AuthorityConst.A_MENU))
+        {
+            <li class="nav-parent">
+                <a href="#"><i class="fa fa-calendar"></i><span>预约信息</span></a>
+                <ul class="children">
+                    @if (LoginManager.HasAutority(AuthorityConst.A_YYGL))
+                    {
+                        <li><a href="/customerservice/orderindex"><i class="fa fa-caret-right"></i>预约登记</a></li>
+                    }
+                    @if (LoginManager.HasAutority(AuthorityConst.A_PERSON))
+                    {
+                        <li><a href="/customerservice/MyselfOrderIndex"><i class="fa fa-caret-right"></i>患者资源</a></li>
+                    }
+                    @if (LoginManager.HasAutority(AuthorityConst.A_GUOHAO))
+                    {
+                        <li><a href="/OutReservation/OutOrderIndex"><i class="fa fa-caret-right"></i>在线挂号</a></li>
+                    }
+                </ul>
+            </li>
+        }
+        @if (LoginManager.HasAutority(AuthorityConst.B_TONGJI))
+        {
+            <li class="nav-parent">
+                <a href="#"><i class="fa fa-bar-chart-o"></i><span>数据统计</span></a>
+                <ul class="children">
+                    @if (LoginManager.HasAutority(AuthorityConst.B_MINGXI))
+                    {
+                        <li><a href="/StatisticalTable/TJDepartmentFormsData"><i class="fa fa-caret-right"></i>部门明细报表</a></li>
+
+                    }
+                    @if (LoginManager.HasAutority(AuthorityConst.B_ZHOUYUE))
+                    {
+                        <li><a href="/StatisticalTable/mothtrendforms?moth=0"><i class="fa fa-caret-right"></i>月统计信息报表</a></li>
+                    }
+                    @if (LoginManager.HasAutority(AuthorityConst.B_DAOYUAN))
+                    {
+                        <li><a href="/StatisticalTable/custommothtrendforms"><i class="fa fa-caret-right"></i>到院信息对比报表</a></li>
+                    }
+                    @if (LoginManager.HasAutority(AuthorityConst.B_DISEASE))
+                    {
+                        <li><a href="/StatisticalTable/diseasestatisticsfrom"><i class="fa fa-caret-right"></i>病种信息统计报表</a></li>
+                    }
+                    @if (LoginManager.HasAutority(AuthorityConst.B_AREA))
+                    {
+                        <li><a href="/StatisticalTable/areaforms"><i class="fa fa-caret-right"></i>地区来源统计报表</a></li>
+                    }
+                    @if (LoginManager.HasAutority(AuthorityConst.B_ALL))
+                    {
+                        <li><a href="/StatisticalTable/mediaforms"><i class="fa fa-caret-right"></i>媒体来源统计报表</a></li>
+
+                    }   @*<li><a href="/JJ_SwtChatManager/SwtChatManagerIndex"><i class="fa fa-caret-right"></i>对话统计报表</a></li>
+                            <li><a href="/JJ_SwtChat/SwtChatIndex"><i class="fa fa-caret-right"></i>对话分析报表</a></li>*@
+                    <li><a href="/JJ_BaiduHour/KeyWordStore"><i class="fa fa-caret-right"></i>百度后台词库</a></li>
+                    <li><a href="/JJ_BaiduHour/CurrentAccountData"><i class="fa fa-caret-right"></i>百度时段消费报表</a></li>
+                    <li><a href="/JJ_BaiduHour/DayReport"><i class="fa fa-caret-right"></i>百度日消费报表</a></li>
+                    @if (LoginManager.HasAutority(AuthorityConst.B_EXECL))
+                    {
+                        <li><a href="/CreateExcel/ReportForms"><i class="fa fa-caret-right"></i>导出报表</a></li>
+                    }
+                </ul>
+            </li>
+        }
+        @if (LoginManager.HasAutority(AuthorityConst.C_HOSIPITAL))
+        {
+            <li class="nav-parent">
+                <a href="#"><i class="fa fa-hospital-o"></i><span>医院信息</span></a>
+                <ul class="children">
+                    @if (LoginManager.HasAutority(AuthorityConst.C_DOCTOR))
+                    {
+                        <li><a href="/settings/doctorindex"><i class="fa fa-caret-right"></i>医生</a></li>
+                    }
+                    @if (LoginManager.HasAutority(AuthorityConst.C_DIEASE))
+                    {
+                        <li><a href="/settings/diseaseindex"><i class="fa fa-caret-right"></i>疾病</a></li>
+                    }
+                    @if (LoginManager.HasAutority(AuthorityConst.C_SITE))
+                    {
+                        <li><a href="/settings/hospitalWebsiteindex"><i class="fa fa-caret-right"></i>网站</a></li>
+                    }
+                    @if (LoginManager.HasAutority(AuthorityConst.C_SECTION))
+                    {
+                        <li><a href="/settings/sectionindex"><i class="fa fa-caret-right"></i>科室</a></li>
+                    }
+                    @if (LoginManager.HasAutority(AuthorityConst.D_MEDIA))
+                    {
+                        <li><a href="/settings/mediasourceindex/0"><i class="fa fa-caret-right"></i>媒体来源</a></li>
+                    }
+                    <li><a href="/settings/JJ_AccountIndex"><i class="fa fa-caret-right"></i>竞价账户</a></li>
+                </ul>
+            </li>
+        }
+        @if (LoginManager.HasAutority(AuthorityConst.D_GLOBAL))
+        {
+            <li class="nav-parent">
+                <a href="#"><i class="fa fa-cogs"></i><span>控制面板</span></a>
+                <ul class="children">
+                    @if (LoginManager.HasAutority(AuthorityConst.D_USER))
+                    {
+                        <li><a href="/administrator/user"><i class="fa fa-caret-right"></i>用户</a></li>
+                    }
+                    @if (LoginManager.HasAutority(AuthorityConst.D_ROLE))
+                    {
+                        <li><a href="/administrator/role"><i class="fa fa-caret-right"></i>角色</a></li>
+                    }
+                    @if (LoginManager.HasAutority(AuthorityConst.D_AUTHRITY))
+                    {
+                        <li><a href="/administrator/author"><i class="fa fa-caret-right"></i>权限</a></li>
+                    }
+                    @if (LoginManager.HasAutority(AuthorityConst.D_HOSIPITAL))
+                    {
+                        <li><a href="/settings/hospitalindex"><i class="fa fa-caret-right"></i>医院</a></li>
+                    }
+                    @if (LoginManager.HasAutority(AuthorityConst.D_NOTIF))
+                    {
+                        <li><a href="/administrator/NotifierIndex"><i class="fa fa-caret-right"></i>消息推送</a></li>
+                    }
+                    @if (LoginManager.HasAutority(AuthorityConst.D_SERVE))
+                    {
+                        <li><a href="/ServeManager/myserveindex"><i class="fa fa-caret-right"></i>系统服务</a></li>
+                    }
+                    @if (LoginManager.HasAutority(AuthorityConst.D_SERVE))
+                    {
+                        <li><a href="/ServeManager/HospitalServeIndex"><i class="fa fa-caret-right"></i>医院服务</a></li>
+                    }  @if (LoginManager.HasAutority(AuthorityConst.KEY_OPERATION_LOG))
+                    {
+                       <li><a href ="/administrator/OperationLogIndex" ><i class="fa fa-caret-right"></i>操作日志 </a ></li>
+                     }
+                </ul>
+            </li>
+        }
+        @if (LoginManager.HasAutority(AuthorityConst.E_MESSAGE) && LoginManager.GetHospitalServe("KEY_NOTE"))
+        {
+            <li class="nav-parent">
+                <a href="#"><span class="pull-right badge badge-success">@LoginManager.GetHospitalMessageYuE()</span><i class="fa fa-envelope-o"></i><span>短信中心</span></a>
+                <ul class="children">
+                    @*@if (LoginManager.HasAutority(AuthorityConst.E_ADDMESSAGE))
+                    {
+                        <li><a href="/message/OrderToday"><i class="fa fa-caret-right"></i>本日新增患者</a></li>
+                    }
+                    @if (LoginManager.HasAutority(AuthorityConst.E_TOMORRW))
+                    {
+                        <li><a href="/message/OrderTomarrow"><i class="fa fa-caret-right"></i>明日预到患者</a></li>
+                    }*@
+                    @if (LoginManager.HasAutority(AuthorityConst.E_TEMPLATE))
+                    {
+                        <li><a href="/message/TemplateIndex"><i class="fa fa-caret-right"></i>短信模板</a></li>
+                    }
+                    @if (LoginManager.HasAutority(AuthorityConst.E_MESSAGELOG))
+                    {
+                        <li><a href="/message/Messagelog"><i class="fa fa-caret-right"></i>短信日志</a></li>
+                    }
+                </ul>
+            </li>
+        }
+        @*<li><a href="/tool/user"><i class="fa fa-user"></i><span>我的资料</span></a></li>*@
+    </ul>
+
+    @*<div class="infosummary">
+            <h5 class="sidebartitle">信息汇总</h5>
+            <ul>
+                <li>
+                    <div class="datainfo">
+                        <span class="text-muted">共计预约</span>
+                        <h4>630, 201</h4>
+                    </div>
+                    <div id="sidebar-chart" class="chart"></div>
+                </li>
+                <li>
+                    <div class="datainfo">
+                        <span class="text-muted">共计到院</span>
+                        <h4>1, 332, 801</h4>
+                    </div>
+                    <div id="sidebar-chart2" class="chart"></div>
+                </li>
+                <li>
+                    <div class="datainfo">
+                        <span class="text-muted">导员率</span>
+                        <h4>82.2%</h4>
+                    </div>
+                    <div id="sidebar-chart3" class="chart"></div>
+                </li>
+                <li>
+                    <div class="datainfo">
+                        <span class="text-muted">CPU Usage</span>
+                        <h4>140.05 - 32</h4>
+                    </div>
+                    <div id="sidebar-chart4" class="chart"></div>
+                </li>
+                <li>
+                    <div class="datainfo">
+                        <span class="text-muted">Memory Usage</span>
+                        <h4>32.2%</h4>
+                    </div>
+                    <div id="sidebar-chart5" class="chart"></div>
+                </li>
+            </ul>
+        </div>*@
+    <!-- infosummary -->
+
+</div>

@@ -1,0 +1,149 @@
+﻿@model Easom.Core.Orders
+@{
+    ViewBag.Title = "回访记录";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+@section styles
+{
+    <link rel="stylesheet" href="/files/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" href="/files/css/jquery.tagsinput.css" />
+    <link rel="stylesheet" href="/files/css/dropzone.css" />
+}
+@section scripts
+{
+    <script src="/files/js/jquery.autogrow-textarea.js"></script>
+    <script src="/files/js/bootstrap-timepicker.min.js"></script>
+    <script src="/files/js/jquery.maskedinput.min.js"></script>
+    <script src="/files/js/jquery.tagsinput.min.js"></script>
+    <script src="/files/js/jquery.mousewheel.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/dropzone.min.js"></script>
+
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        function initPage() {
+            $().formValidator.init("form");
+            $().formValidator.addValidator([
+            { controlID: 'callback', must: true, mustMsg: '回访内容不能为空' }
+            ]);
+            $(".datepicker").datepicker({
+                showButtonPanel: true
+            });
+            $('#callOnTime').datepicker({
+                format: 'yyyy-MM-dd'
+            });
+            $('#callOnTimeSelecthours').timepicker({ showMeridian: false });
+            $('#ordertime').datepicker({
+                format: 'yyyy-MM-dd'
+            });
+            $('#selecthours').timepicker({ showMeridian: false });
+        }
+        $().pageUtility.addEvent(initPage);
+        $().formValidator.onPassCallBack = function () {
+            var formValues = [
+                { id: 'orderID', value: @Model.ID },
+                { id: 'isSetCallBackTime', value: $("input[name='nextCallBackTime']:checked").val() },
+                { id: 'callback', value: $("#callback").val() },
+                { id: 'nextCallBackTime', value: $("#callOnTime").val() },
+                { id: 'callOnTimeSelecthours', value: $("#callOnTimeSelecthours").val() }
+            ];
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: '/customerservice/callback',
+                data: $().pageUtility.getFormData(formValues),
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.createNotify("growl-success", false, "提示", "操作成功！正在跳转至列表页面...");
+                        setTimeout("parent.location.reload()", 1000);
+                    }
+                    else if (data.flag == "error1") {
+                        $().formValidator.setSubmitButtonState(true);
+                        $().pageUtility.alert("抱歉！每个用户最多只能设置20条预约提醒");
+                    }
+                    else {
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                }
+            });
+        }
+        function getcallontime(obj) {//预约时间小时
+            $("#callOnTimeSelecthours_chzn a span").text(obj);
+        }
+        $("input[name='nextCallBackTime']").change(function () {
+            var IsSetNextTime = $("input[name='nextCallBackTime']:checked").val();
+            if (parseInt(IsSetNextTime) == 1) {
+                $("#nextCallBackTimeID").css("display", "block")
+            }
+            else {
+                $("#nextCallBackTimeID").css("display", "none")
+            }
+        });
+    </script>
+}
+<div class="panel panel-default">
+    <div class="panel-body">
+        <form method="post" name="form1" id="form1" class="form-horizontal form-bordered">
+            <input type="hidden" id="orderID" value="@Model.ID" />
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <strong>提示:</strong>加“*”号的是必填项
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6">
+
+                        <label id="title6" class="fldTitle">
+                            本次回访<abbr title="必须填写" class="require">*</abbr>
+                        </label>
+                        <div class="fieldwrap">
+                            <textarea id="callback" name="callback" class="large" rows="10" cols="50" title="请输入回访内容"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="fieldwrap input-uniform">
+                            <input name="nextCallBackTime" id="nextCallBackTime" class="checkbox" type="checkbox" value="1" />
+                            <label class="choice">
+                                是否设置下次回访时间
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="nextCallBackTimeID" style="display: none">
+                        <div class="col-sm-6">
+                            <label class="control-label">
+                                预约日期<span class="asterisk">*</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                <input type="text" class="form-control" placeholder="请输入年月日 如：2015-05-31" id="callOnTime" value="@DateTime.Now.ToString("yyyy/MM/dd")">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="control-label">
+                                时间<span class="asterisk">*</span>
+                            </label>
+                            <div class="input-group mb15">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                                <div class="bootstrap-timepicker">
+                                    <input id="callOnTimeSelecthours" type="text" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="buttons bottom-round noboder">
+                            <div class="panel-footer">
+                                <button class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

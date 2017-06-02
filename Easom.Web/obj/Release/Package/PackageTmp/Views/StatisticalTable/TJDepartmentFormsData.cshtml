@@ -1,0 +1,213 @@
+﻿@{
+    ViewBag.Title = "角色明细报表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <link href="/files/css/jquery.datatables.css" rel="stylesheet">
+    <style type="text/css">
+        table tbody tr td, table thead tr th {
+            border-right: 1px solid #ccc;
+        }
+    </style>
+
+}
+@section scripts{
+    <script src="/files/js/jquery.datatables.min.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            GetRoleDate();
+        });
+        $("table tbody tr").mouseover(function () {
+            $(this).css({ "background-color": "#1CAF9A" });
+        }).mouseout(function (event) {
+            var $index = $(this).index();
+            if ($index % 2 == 0) {
+                $(this).css({ "background-color": "#F0F0F0" });
+            } else {
+                $(this).css({ "background-color": "#fff" });
+            }
+        });
+
+        $("input[name=roleName]").change(function () {//科室切换
+            GetRoleDate();
+        });
+        function checkvalue() {
+            var str = "";
+            var abc = $("input[name=roleName]:checked").each(function () {
+                str += $(this).val() + ",";
+            });
+            return str;
+        }
+        function GetRoleDate() {
+            var loadingTip = $().pageUtility.loading("您请稍等...");
+            var sectionID = checkvalue();
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: '/StatisticalTable/GetTJDepartmentFormsData?roleStr=' + sectionID + '&r=' + Math.random(),
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $("#net").empty();
+                        $("#tel").empty();
+                        $("#oth").empty();
+                        var head = "<tr><td><b>姓名</b></td><td>预约</td><td>到院</td><td>到院率</td><td>预约</td><td>到院</td><td>到院率</td><td>预约</td><td>到院</td><td>到院率</td><td>预约</td><td>到院</td><td>到院率</td><td>预约</td><td>到院</td></tr>";
+                        $("#net").append(head + data.net);
+                        $("#tel").append(head + data.tel);
+                        $("#oth").append(head + data.oth);
+                        $("table tbody tr:nth-child(odd)").css({ "background-color": "#F0F0F0" });
+                        //$().pageUtility.closeLoading();
+                    }
+                    if (data.flag == "error") {
+                        $().pageUtility.alert("出错了，请稍后再试！");
+                    }
+                }
+            });
+        }
+
+    </script>
+
+}
+<div class="pageheader">
+    <h2><i class="fa fa-bar-chart-o"></i>角色统计报表<span>您可以在这里查看角色明细报表...</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">您的位置:</span>
+        <ol class="breadcrumb">
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="control-label">角色</label>
+                        <div>
+                            @if (ViewData["role"] != null)
+                            {
+                                foreach (var item in ViewData["role"] as IEnumerable<Role>)
+                                {
+                                    if (item != null)
+                                    {
+                                        <span style="width: 140px; float: left; display: block" class="ckbox ckbox-primary">
+                                            <input name="roleName" type="checkbox" id="roleName_@item.ID" value="@item.ID" />
+                                            <label title="@item.Name" for="roleName_@item.ID">@CHCMS.Utility.StringUtility.CutString(@item.Name,7,true)</label>
+                                        </span>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table table-primary" id="table2">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            网络
+                                        </th>
+                                        <th colspan="3">
+                                            今天
+                                        </th>
+                                        <th colspan="3">
+                                            本月
+                                        </th>
+                                        <th colspan="3">
+                                            上月
+                                        </th>
+                                        <th colspan="3">
+                                            上上月
+                                        </th>
+                                        <th colspan="2">
+                                            月差比
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="net"></tbody>
+                            </table>
+                        </div>
+                        <!-- table-responsive -->
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table table-success" id="table2">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            电话
+                                        </th>
+                                        <th colspan="3">
+                                            今天
+                                        </th>
+                                        <th colspan="3">
+                                            本月
+                                        </th>
+                                        <th colspan="3">
+                                            上月
+                                        </th>
+                                        <th colspan="3">
+                                            上上月
+                                        </th>
+                                        <th colspan="2">
+                                            月差比
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tel"></tbody>
+
+                            </table>
+                        </div>
+                        <!-- table-responsive -->
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table table-warning" id="table2">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            其他
+                                        </th>
+                                        <th colspan="3">
+                                            今天
+                                        </th>
+                                        <th colspan="3">
+                                            本月
+                                        </th>
+                                        <th colspan="3">
+                                            上月
+                                        </th>
+                                        <th colspan="3">
+                                            上上月
+                                        </th>
+                                        <th colspan="2">
+                                            月差比
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="oth"></tbody>
+
+                            </table>
+                        </div>
+                        <!-- table-responsive -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

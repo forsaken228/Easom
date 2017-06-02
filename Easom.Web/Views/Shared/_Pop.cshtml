@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="images/favicon.png" type="image/png">
+    <title>华云医讯-预约系统</title>
+    @*    <link href="/files/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/files/css/bootstrap-override.css" rel="stylesheet">
+        <link href="/files/css/weather-icons.min.css" rel="stylesheet">
+        <link href="/files/css/jquery-ui-1.10.3.css" rel="stylesheet">
+        <link href="/files/css/font-awesome.min.css" rel="stylesheet">
+        <link href="/files/css/animate.min.css" rel="stylesheet">
+        <link href="/files/css/animate.delay.css" rel="stylesheet">
+        <link href="/files/css/toggles.css" rel="stylesheet">
+        <link href="/files/css/select2.css" rel="stylesheet">
+        <link href="/files/css/lato.css" rel="stylesheet">
+        <link href="/files/css/roboto.css" rel="stylesheet">*@
+    <link href="/files/css/style.default.css" rel="stylesheet">
+    <link href="/files/css/jquery.gritter.css" rel="stylesheet">
+    @RenderSection("styles", required: false)
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="/files/js/html5shiv.js"></script>
+    <script src="/files/js/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .mainpanel2 {
+            background: #e4e7ea;
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div id="status"><i class="fa fa-spinner fa-spin"></i></div>
+    </div>
+    <div class="mainpanel2">
+        @RenderBody()
+    </div>
+    <script src="/files/js/jquery-1.11.1.min.js"></script>
+    <script src="/files/js/jquery.pageUtility.js"></script>
+    <script src="/files/js/jquery.formValidator.js"></script>
+    <script src="/files/js/jquery.menu.js"></script>
+    <script src="/files/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="/files/js/jquery-ui-1.10.3.min.js"></script>
+    <script src="/files/js/bootstrap.min.js"></script>
+    <script src="/files/js/modernizr.min.js"></script>
+    <script src="/files/js/jquery.sparkline.min.js"></script>
+    <script src="/files/js/toggles.min.js"></script>
+    <script src="/files/js/retina.min.js"></script>
+    <script src="/files/js/jquery.cookies.js"></script>
+    <script src="/files/js/jquery.gritter.min.js"></script>
+    @RenderSection("scripts", required: false)
+    <div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static" aria-hidden="true"></div>
+</body>
+</html>

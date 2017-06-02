@@ -1,0 +1,18 @@
+2015-05-29 21:52:35,554 [9] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-29 21:55:58,504 [8] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-29 22:14:52,457 [42] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-29 22:24:54,385 [32] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-29 22:32:21,668 [59] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-29 23:09:31,840 [37] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+

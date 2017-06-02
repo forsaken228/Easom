@@ -1,0 +1,127 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "区域数据报表";
+}
+@section scripts{
+    <script src="/files/js/jquery.datatables.min.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+
+
+        function importFilter(TimeState) {
+            $().pageUtility.pop("导入过滤规则", '/JJ_BaiduHour/import?TimeState=' + TimeState);
+        }
+
+
+        function search() {
+            $().pageUtility.pop("条件过滤", "/JJ_BaiduHour/search", 480, 300);
+        }
+
+        $("table tr").mouseover(function () {
+            $(this).css({ "background-color": "#FFFF99" });
+        }).mouseout(function (event) {
+            var $index = $(this).index();
+            if ($index % 2 == 0) {
+                $(this).css({ "background-color": "#F0F0F0" });
+            } else {
+                $(this).css({ "background-color": "#fff" });
+            }
+        });
+        $("table  tr:nth-child(odd)").css({ "background-color": "#F0F0F0" });
+    </script>
+}
+<div class="container_12">
+    <div class="widget-panel grid_12">
+        <div class="widget-content module">
+            <div style="width: 100%; margin: 0 auto; text-align: center;">
+                <ul class="icons-labeled">
+                    <li>月份：</li>
+                    @{
+                        for (int i = 0; i < 7; i++)
+                        {
+                            <li>
+                                <a title="" href='/JJ_BaiduHour/BaiduDayIndex?day=@i'>
+                                    <span class="icon-block-black clock-b">
+                                    </span>@DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd")
+                                </a>
+                            </li>
+                        }
+                    }
+                    @if (LoginManager.HasAutority(AuthorityConst.KEY_TONGJI_JJ_BAIDU_DAY_UPLOAD))
+                    {
+                        <li>
+                            <a title="导入" href="javascript:importFilter()">
+                                <span class="icon-block-color door-in-c">
+                                </span>
+                            </a>
+                        </li>
+                    }
+                    <li>
+                        <a title="查找" href="javascript:search();">
+                            <span class="icon-block-color find-c">
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container_12">
+    <div class="widget-panel grid_12" style="width:98%;">
+        <div class="widget-top">
+            <h4>
+                病种统计报表
+            </h4>
+        </div>
+        <div class="content-block tbl-default">
+            <table style="width:100%;">
+                <thead>
+                    <tr>
+                        @Html.Raw("" + ViewData["HeandTwo"] + "")
+                    </tr>
+
+
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style='text-align: center; border-right: 1px solid #ccc;'></td>
+                        <td style='text-align: center; border-right: 1px solid #ccc;'>
+                            展现量
+                        </td>
+                        <td style='text-align: center; border-right: 1px solid #ccc;'>
+                            点击量
+                        </td>
+                        <td style='text-align: center; border-right: 1px solid #ccc;'>
+                            消费
+                        </td>
+                        <td style='text-align: center; border-right: 1px solid #ccc;'>
+                            展现量
+                        </td>
+                        <td style='text-align: center; border-right: 1px solid #ccc;'>
+                            点击量
+                        </td>
+                        <td style='text-align: center; border-right: 1px solid #ccc;'>
+                            消费
+                        </td>
+                        <td style='text-align: center; border-right: 1px solid #ccc;'>
+                            展现量
+                        </td>
+                        <td style='text-align: center; border-right: 1px solid #ccc;'>
+                            点击量
+                        </td>
+                        <td style='text-align: center; border-right: 1px solid #ccc;'>
+                            消费
+                        </td>
+
+
+                    </tr>
+                    @Html.Raw("" + ViewData["Heand"] + "")
+                    @Html.Raw("" + ViewData["Foot"] + "")
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

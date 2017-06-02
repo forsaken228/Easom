@@ -1,0 +1,232 @@
+﻿@{
+    ViewBag.Title = "月趋势报表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <link href="/files/css/jquery.datatables.css" rel="stylesheet">
+    <style type="text/css">
+        #MonthWebData tr td, #MonthTelData tr td, #MonthAntData tr td, #SumCount tr td {
+            border-right: 1px solid #ccc;
+            text-align: center;
+        }
+    </style>
+}
+@section scripts{
+    <script src="/files/js/jquery.datatables.min.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        function initPage() {
+            Websumtd();
+            Telsumtd();
+            Antsumtd();
+            Allsumtd();
+        }
+        $("#MonthWebData tr,#MonthTelData tr,#MonthAntData tr,#SumCount tr").mouseover(function () {
+            $(this).css({ "background-color": "#FFFF99" });
+        }).mouseout(function (event) {
+            var $index = $(this).index();
+            if ($index % 2 == 0) {
+                $(this).css({ "background-color": "#fff" });
+            } else {
+                $(this).css({ "background-color": "#F0F0F0" });
+            }
+        });
+        $("#MonthWebData tr:nth-child(even),#MonthTelData tr:nth-child(even),#MonthAntData tr:nth-child(even),#SumCount tr:nth-child(even)").css({ "background-color": "#F0F0F0" });
+        function Websumtd() {
+            var str = "<tr style='text-align: center;'><td>合计</td>";
+            var v = 0;
+            $("#MonthWebData tbody tr td:nth-child(2)").each(function () {
+                v = parseFloat($(this).text()) + parseFloat(v);
+            });
+            var c = 0;
+            $("#MonthWebData tbody tr td:nth-child(3)").each(function () {
+                c = parseFloat($(this).text()) + parseFloat(c);
+            });
+            str += "<td>" + v + "</td><td>" + c + "</td></tr>";
+            $("#MonthWebData tbody tr:last").after(str);
+        }
+        function Telsumtd() {
+            var str = "<tr style='text-align: center;'><td>合计</td>";
+            var v = 0;
+            $("#MonthTelData tbody tr td:nth-child(2)").each(function () {
+                v = parseFloat($(this).text()) + parseFloat(v);
+            });
+            var c = 0;
+            $("#MonthTelData tbody tr td:nth-child(3)").each(function () {
+                c = parseFloat($(this).text()) + parseFloat(c);
+            });
+            str += "<td>" + v + "</td><td>" + c + "</td></tr>";
+            $("#MonthTelData tbody tr:last").after(str);
+        }
+        function Antsumtd() {
+            var str = "<tr style='text-align: center;'><td>合计</td>";
+            var v = 0;
+            $("#MonthAntData tbody tr td:nth-child(2)").each(function () {
+                v = parseFloat($(this).text()) + parseFloat(v);
+            });
+            var c = 0;
+            $("#MonthAntData tbody tr td:nth-child(3)").each(function () {
+                c = parseFloat($(this).text()) + parseFloat(c);
+            });
+            str += "<td>" + v + "</td><td>" + c + "</td></tr>";
+            $("#MonthAntData tbody tr:last").after(str);
+        }
+        function Allsumtd() {
+            var str = "<tr style='text-align: center;'><td>合计</td>";
+            var v = 0;
+            $("#SumCount tbody tr td:nth-child(2)").each(function () {
+                v = parseFloat($(this).text()) + parseFloat(v);
+            });
+            var c = 0;
+            $("#SumCount tbody tr td:nth-child(3)").each(function () {
+                c = parseFloat($(this).text()) + parseFloat(c);
+            });
+            str += "<td>" + v + "</td><td>" + c + "</td></tr>";
+            $("#SumCount tbody tr:last").after(str);
+        }
+        $().pageUtility.addEvent(initPage);
+
+    </script>
+}
+
+<div class="pageheader">
+    <h2><i class="fa fa-calendar"></i>月统计信息报表 <span>您可以在这里查看月统计信息...</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">您的位置:</span>
+        <ol class="breadcrumb">
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="btn-group">
+                <button data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button">
+                    <i class="glyphicon glyphicon-calendar"></i> 月份
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    @{
+                        for (int i = 0; i < 7; i++)
+                        {
+                            <li><a title="@DateTime.Now.AddMonths(-i).ToString("yyyy-MM")" href="/StatisticalTable/MothTrendForms?month=@i">@DateTime.Now.AddMonths(-i).ToString("yyyy-MM")</a></li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6">
+                        @ViewData["MothTitle"]月网络预约信息
+                    </div>
+                    <div class="col-sm-6">
+                        @ViewData["MothTitle"]月电话预约信息
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="table-responsive">
+                            <table class="table table-primary table-bordered" id="MonthWebData">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            日期
+                                        </th>
+                                        <th>
+                                            预约
+                                        </th>
+                                        <th>
+                                            到院
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @Html.Raw("" + @ViewData["MonthWebData"] + "")
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="table-responsive">
+                            <table class="table table-success table-bordered" id="MonthTelData">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            日期
+                                        </th>
+                                        <th>
+                                            预约
+                                        </th>
+                                        <th>
+                                            到院
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @Html.Raw("" + @ViewData["MonthTelData"] + "")
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        @ViewData["MothTitle"]月其他预约信息
+                    </div>
+                    <div class="col-sm-6">
+                        @ViewData["MothTitle"]月预约信息汇总
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="table-responsive">
+                            <table class="table table-warning table-bordered" id="MonthAntData">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            日期
+                                        </th>
+                                        <th>
+                                            预约
+                                        </th>
+                                        <th>
+                                            到院
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @Html.Raw("" + @ViewData["MonthAntData"] + "")
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="table-responsive">
+                            <table class="table table-danger table-bordered" id="SumCount">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            日期
+                                        </th>
+                                        <th>
+                                            预约
+                                        </th>
+                                        <th>
+                                            到院
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @Html.Raw("" + @ViewData["MonthCountData"] + "")
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

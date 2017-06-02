@@ -1,0 +1,105 @@
+﻿@{
+    ViewBag.Title = "到院对比报表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <link href="/files/css/jquery.datatables.css" rel="stylesheet">
+}
+@section scripts{
+    <script src="/files/js/jquery.datatables.min.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        function addForm() {
+            var loadingTip = $().pageUtility.loading("您请稍等...");
+            var begintime = $("#starttime").val();
+            var endtime = $("#endtime").val();
+
+            $.ajax({
+                dataType: "json",
+                type: "GET",
+                url: "/StatisticalTable/Addforms?starttime=" + begintime + " 00:00:00.000&endtime=" + endtime + " 23:59:59.999&r=" + Math.random(),
+                success: function (data) {
+                    $("#duibi").append(data.Data);
+                    //  $().pageUtility.closeLoading();
+                }
+            });
+        }
+        function initPage() {
+            $('#starttime').datepicker({
+                format: 'yyyy-MM-dd'
+            });
+            $('#endtime').datepicker({
+                format: 'yyyy-MM-dd'
+            });
+        }
+
+        function add(begintime, endtime, type) {
+            location.href = "/customerservice/orderindex?&timekinds=0&starttime=" + begintime + " 00:00:00.000&endtime=" + endtime + " 23:59:59.999" + "&department=" + type;
+        }
+
+        function order(begintime, endtime, type) {
+            location.href = "/customerservice/orderindex?&timekinds=2&starttime=" + begintime + " 00:00:00.000" + "&endtime=" + endtime + " 23:59:59.999" + "&arrivestate=" + 0 + "&department=" + type;
+        }
+
+        function arrive(begintime, endtime, type) {
+            location.href = "/customerservice/orderindex?&timekinds=1&starttime=" + begintime + " 00:00:00.000" + "&endtime=" + endtime + " 23:59:59.999" + "&arrivestate=" + 1 + "&department=" + type;
+        }
+
+        $().pageUtility.addEvent(initPage);
+    </script>
+}
+<div class="pageheader">
+    <h2><i class="fa fa-bar-chart-o"></i>到院信息对比报表<span>您可以在这里对比到院信息...</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">您的位置:</span>
+        <ol class="breadcrumb">
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input name="starttime" readonly=readonly value="@DateTime.Now.ToString("yyyy-MM-01")" type="text" title="起始时间" class="form-control" id="starttime" />
+                        <label for="starttime">
+                            起始时间
+                        </label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" readonly=readonly value="@System.DateTime.Now.AddMonths(1).AddDays(-(System.DateTime.Now.Day)).ToString("yyyy-MM-dd")" title="终止时间" class="form-control" name="endtime" id="endtime" />
+                        <label for="endtime">
+                            终止时间
+                        </label>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="btn-group mr10">
+                            <button class="btn btn-primary" onclick="javascript: addForm();" type="button"><i class="fa fa-plus mr5"></i>增加对比</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <div class="row" id="duibi">
+                    <div class="col-sm-6">
+                        <table class="table table-primary">
+                            <thead>
+                                <tr>
+                                    <th colspan="4">本月</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @Html.Raw("" + ViewData["today"] + "")
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

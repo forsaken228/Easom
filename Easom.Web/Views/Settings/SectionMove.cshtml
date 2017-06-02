@@ -1,0 +1,94 @@
+﻿@{
+    Layout = "~/Views/Shared/_Pop.cshtml";
+    ViewBag.Title = "移动科室";
+}
+@section styles
+{
+    <link rel="stylesheet" href="/files/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" href="/files/css/jquery.tagsinput.css" />
+    <link rel="stylesheet" href="/files/css/dropzone.css" />
+}
+@section scripts
+{
+    <script src="/files/js/jquery.autogrow-textarea.js"></script>
+    <script src="/files/js/bootstrap-timepicker.min.js"></script>
+    <script src="/files/js/jquery.maskedinput.min.js"></script>
+    <script src="/files/js/jquery.tagsinput.min.js"></script>
+    <script src="/files/js/jquery.mousewheel.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/dropzone.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+
+    <script type="text/javascript">
+        function initPage() {
+            $().formValidator.init("form");
+            $().formValidator.addValidator([
+            ]);
+        }
+        $().pageUtility.addEvent(initPage);
+
+        $().formValidator.onPassCallBack = function () {
+            var formValues = [
+                { id: 'sectionID', value: $("#sectionName").val() }
+            ];
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: '/settings/SectionMove/?ids=@ViewBag.IDS&type=@ViewBag.TYPE',
+                data: $().pageUtility.getFormData(formValues),
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.setLoading("操作成功，正在更新页面显示...");
+                        setTimeout("parent.location.reload()", 1000);
+                    }
+                    if (data.flag == "error") {
+                        $().pageUtility.alert("提示", "服务器暂时不能处理您的请求，请稍候再试！");
+                    }
+                }
+            });
+        }
+    </script>
+}
+<div class="panel panel-default">
+    <form method="post" name="form1" id="form1" class="form-horizontal form-bordered">
+        <div class="panel-body">
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <strong>提示:</strong> 加“*”号的是必填项
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="fldTitle">
+                            所属科室<abbr title="Required Field" class="require">*</abbr>
+                        </label>
+                        <span class="left">
+                            <select id="sectionName" name="sectionName">
+
+                                @if (ViewData["allsection"] != null)
+                                {
+                                    foreach (var item in ViewData["allsection"] as IEnumerable<Section>)
+                                    {
+
+                                        <option value="@item.ID">@item.Name </option>
+
+                                    }
+                                }
+                            </select>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-12">
+
+                    <div class="fieldwrap">
+                        <input name="" type="submit" value="提交" class="submit-button" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

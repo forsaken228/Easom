@@ -1,0 +1,98 @@
+﻿@model Easom.Core.UserInfo
+@{
+    ViewBag.Title = "编辑用户";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+@section styles{
+    <link href="/files/css/jquery.datatables.css" rel="stylesheet">
+}
+@section scripts{
+    <script src="/files/js/custom.js"></script>
+}
+<div class="panel panel-default panel-min-hieght">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row  editable-list-item">
+                <div class="col-sm-2">
+                    用户名称
+                </div>
+                <div class="col-sm-10">
+                    @Model.Name
+                </div>
+            </div>
+
+            <div class="row  editable-list-item">
+                <div class="col-sm-2">
+                    真实姓名
+                </div>
+                <div class="col-sm-10">
+                    @Model.TrueName
+                </div>
+            </div>
+            <div class="row  editable-list-item">
+                <div class="col-sm-2">
+                    角色名称
+                </div>
+                <div class="col-sm-10">
+                    @Model.RoleTypeName
+                </div>
+            </div>
+            <div class="row  editable-list-item">
+                <div class="col-sm-2">
+                    所属医院
+                </div>
+                <div class="col-sm-10">
+                    @ViewData["hospitalName"]
+                </div>
+            </div>
+            <div class="row  editable-list-item">
+                <div class="col-sm-2">
+                    E-mail
+                </div>
+                <div class="col-sm-10">
+                    @Model.Email
+                </div>
+            </div>
+            <div class="row  editable-list-item">
+                <div class="col-sm-2">
+                    电话
+                </div>
+                <div class="col-sm-10">
+                    @Model.Telephone
+                </div>
+            </div>
+            <div class="row  editable-list-item">
+                <div class="col-sm-2">
+                    创建时间
+                </div>
+                <div class="col-sm-10">
+                    @Model.CreateTime
+                </div>
+            </div>
+            <div class="row  editable-list-item">
+                <div class="col-sm-2">
+                    最近登陆时间
+                </div>
+                <div class="col-sm-10">
+                    @Model.LastLoginTime
+                </div>
+            </div>
+            <div class="row  editable-list-item">
+                <div class="col-sm-2">
+                    最近登陆IP
+                </div>
+                <div class="col-sm-10">
+                    @Model.LastLoginIP
+                </div>
+            </div>
+            <div class="row  editable-list-item">
+                <div class="col-sm-2">
+                    最近登陆次数
+                </div>
+                <div class="col-sm-10">
+                    @Model.LoginCount
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "媒体数据图";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <link href="/files/css/jquery.datatables.css" rel="stylesheet">
+}
+@section scripts{
+    <script src="/files/js/jquery.datatables.min.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        $("table tr").mouseover(function () {
+            $(this).css({ "background-color": "#FFFF99" });
+        }).mouseout(function (event) {
+            var $index = $(this).index();
+            if ($index % 2 == 0) {
+                $(this).css({ "background-color": "#F0F0F0" });
+            } else {
+                $(this).css({ "background-color": "#fff" });
+            }
+        });
+        $("table  tr:nth-child(odd)").css({ "background-color": "#F0F0F0" });
+    </script>
+}
+<div class="pageheader">
+    <h2><i class="fa fa-bar-chart-o"></i>媒体来源统计报表<span>您可以在这里查看媒体来源统计报表...</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">您的位置:</span>
+        <ol class="breadcrumb">
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="btn-group">
+                <button data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button">
+                    <i class="glyphicon glyphicon-calendar"></i> 月份
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    @{
+                        for (int i = 0; i < 7; i++)
+                        {
+                            <li><a title="@DateTime.Now.AddMonths(-i).ToString("yyyy-MM")" href="/StatisticalTable/mediaforms?month=@i">@DateTime.Now.AddMonths(-i).ToString("yyyy-MM")</a></li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="panel-body">
+            @Html.Raw("" + ViewData["Heand"] + "")
+        </div>
+    </div>
+</div>
+

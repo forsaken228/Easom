@@ -1,0 +1,197 @@
+﻿@{
+    ViewBag.Title = "添加角色";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+@section styles
+{
+    <link rel="stylesheet" href="/files/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" href="/files/css/jquery.tagsinput.css" />
+    <link rel="stylesheet" href="/files/css/dropzone.css" />
+}
+@section scripts
+{
+    <script src="/files/js/jquery.autogrow-textarea.js"></script>
+    <script src="/files/js/bootstrap-timepicker.min.js"></script>
+    <script src="/files/js/jquery.maskedinput.min.js"></script>
+    <script src="/files/js/jquery.tagsinput.min.js"></script>
+    <script src="/files/js/jquery.mousewheel.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/dropzone.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        function initPage() {
+            $().formValidator.init("form");
+            $().formValidator.addValidator([
+                  { controlID: 'name', must: true, mustMsg: '用户名不能为空', rule: 'userName', msg: '用户名必须字母开头，由数字和字母组成，4-20位' },
+                  { controlID: 'pwd', must: true, mustMsg: '密码不能为空' },
+                  { controlID: 'newpwd', must: true, rule: 'compare', mustMsg: '请再次输入密码', compareID: 'pwd', msg: '两次输入密码不一致，请重新输入' },
+                  { controlID: 'email', must: true, mustMsg: 'Email不能为空', rule: 'email', msg: '你输入的邮箱格式有误', mutiCheck: "change" },
+                  { controlID: 'mobile', must: true, mustMsg: '电话号码不能为空' },
+                  { controlID: 'truename', must: true, mustMsg: '真实姓名不能为空' }
+
+            ]);
+            $("input[name='rolename']:eq(0)").attr("checked", "checked");
+        }
+        $().pageUtility.addEvent(initPage);
+        $().formValidator.onPassCallBack = function () {
+            // var loadingTip = $().pageUtility.loading("您请稍等...");
+            var formValues = [
+                   { id: 'username', value: $("#name").val() },
+                   { id: 'Password', value: $("#pwd").val() },
+                   { id: 'usertruename', value: $("#truename").val() },
+                   { id: 'mobile', value: $("#mobile").val() },
+                   { id: 'state', value: check() },
+                   { id: 'email', value: $("#email").val() },
+                   { id: 'roleid', value: $("input[name='rolename']:checked").val() }
+            ];
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: '/administrator/user/add',
+                data: $().pageUtility.getFormData(formValues),
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.createNotify("growl-success", false, "提示", "用户添加成功！正在跳转至列表页面...");
+                        setTimeout("parent.location.reload()", 1000);
+                    }
+                    else if (data.flag == "error") {
+                        $().pageUtility.createNotify("growl-warning", false, "错误提示：", "错误提示", "出错了，请稍后再试！");
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                    else if (data.flag == "HaveEmile") {
+                        $().pageUtility.createNotify("growl-warning", false, "错误提示：", "错误提示", "邮箱地址重复！");
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                    else if (data.flag == "HaveName") {
+                        $().pageUtility.createNotify("growl-warning", false, "错误提示：", "错误提示", "用户名称重复！");
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                    else if (data.flag == "HaveMobile") {
+                        $().pageUtility.createNotify("growl-warning", false, "错误提示：", "错误提示", "电话号码重复！");
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                }
+            });
+        }
+        function check() {
+            if ($("#checkboxInput").attr("checked") == "checked") {
+                return true;
+            }
+            return false;
+        }
+    </script>
+}
+<div class="panel panel-default">
+    <div class="panel-body">
+        <form method="post" name="form1" id="form1" class="form-horizontal form-bordered">
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <strong>提示:</strong>加“*”号的是必填项
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="control-label">
+                            用户名称<span class="asterisk">*</span>
+                        </label>
+                        <input id="name" name="name" class="form-control" placeholder="请输入用户名称" type="text" />
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="control-label">
+                            真实姓名<span class="asterisk">*</span>
+                        </label>
+                        <input id="truename" name="truename" class="form-control" placeholder="请输入真实姓名" type="text" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="control-label">
+                            密码<span class="asterisk">*</span>
+                        </label>
+                        <input id="pwd" name="pwd" class="form-control" placeholder="请输入密码" type="password" />
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="control-label">
+                            确认密码<span class="asterisk">*</span>
+                        </label>
+                        <input id="newpwd" name="newpwd" class="form-control" placeholder="请输入确认密码" type="password" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="control-label">
+                            E-mail<span class="asterisk">*</span>
+                        </label>
+                        <input id="email" name="email" class="form-control" placeholder="请输入邮箱地址" type="text" />
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="control-label">
+                            电话<span class="asterisk">*</span>
+                        </label>
+                        <input id="mobile" name="mobile" class="form-control" placeholder="请输入电话号码" type="text" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="control-label">请选择用户角色<span class="asterisk">*</span></label>
+                        <div>
+                            @{
+                                int i = 1;
+                                if (ViewData["allrole"] != null)
+                                {
+                                    foreach (var item in ViewData["allrole"] as IList<Easom.Core.Role>)
+                                    {
+                                        if (i == 1)
+                                        {
+                                            <span class="rdio rdioPosition">
+                                                <input type="radio" name="rolename" id="radiosection_@item.ID" value="@item.ID">
+                                                <label title="@item.Name" for="radiosection_@item.ID">@CHCMS.Utility.StringUtility.CutString(@item.Name, 7, true)</label>
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="rdio rdioPosition">
+                                                <input type="radio" name="rolename" id="radiosection_@item.ID" value="@item.ID">
+                                                <label title="@item.Name" for="radiosection_@item.ID">@CHCMS.Utility.StringUtility.CutString(@item.Name, 7, true)</label>
+                                            </span>
+                                        }
+                                        i++;
+                                    }
+                                }
+
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="control-label">用户状态</label>
+                        <div>
+                            <span class="ckbox ckbox-primary">
+                                <input id="checkboxInput" type="checkbox" checked="checked" />
+                                <label class="choice">
+                                    启用
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="buttons bottom-round noboder">
+                        <div class="panel-footer">
+                            <button class="btn btn-primary">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

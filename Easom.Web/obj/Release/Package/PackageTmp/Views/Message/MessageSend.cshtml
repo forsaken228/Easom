@@ -1,0 +1,89 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "个人资料";
+}
+<div class="container_12">
+    <div class="widget-panel grid_12">
+        <div class="widget-top">
+            <h4>
+                短信发送</h4>
+        </div>
+        <div class="widget-content module">
+            <div class="form-grid">
+                <form method="post" name="form1" id="form1" class="TopLabel">
+                <ul>
+                  
+                    <li>
+                        <label id="title6" class="fldTitle">
+                            手机号码（多个手机号用逗号分开）</label>
+                        <div class="fieldwrap">
+                            <input id="mobile" name="mobile" class="large textips" title="请输入手机号" type="text"
+                            />
+                        </div>
+                    </li>
+
+                      <li>
+                                    
+                         <label id="title3" class="fldTitle">
+                                            短信内容</label>
+                                   
+                                    <div class="fieldwrap">
+                                        <textarea class="large" rows="10" cols="50" id="intro"></textarea>
+                                    </div>
+                                </li>
+                    <li class="buttons bottom-round noboder">
+                        <div class="fieldwrap">
+                            <input name="" type="submit" value="提交" class="submit-button" />
+                        </div>
+                    </li>
+                </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    function initPage() {
+        $().formValidator.init("form");
+        $().formValidator.addValidator([
+              { controlID: 'mobile', must: true, mustMsg: '请输入手机号' },
+              { controlID: 'intro', must: true, mustMsg: '发送内容不能为空' }
+            ]);
+    }
+
+    $().pageUtility.addEvent(initPage);
+
+    $().formValidator.onPassCallBack = function () {
+        var loadingTip = $().pageUtility.loading("您请稍等...");
+        var formValues = [
+                 { id: 'mobile', value: $("#mobile").val() },
+                 { id: 'content', value: $("#intro").val() }
+            ];
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: '/message/MessageSend/',
+            data: $().pageUtility.getFormData(formValues),
+            success: function (data) {
+                if (data.flag == "success") {
+                    $().pageUtility.closeLoading();
+                    alert("用户发送成功!");
+                    $().formValidator.setSubmitButtonState(true);
+                }
+                else {
+                    $().pageUtility.closeLoading();
+                    $().formValidator.setSubmitButtonState(true);
+                }
+                if (data.flag == "error") {
+                    $().pageUtility.closeLoading();
+                   alert("出错了，请检查手机号是否正确！");
+               }
+              
+            }
+        });
+    }
+
+
+
+</script>

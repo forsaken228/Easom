@@ -1,0 +1,495 @@
+﻿@{
+    ViewBag.Title = "高级搜索";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+@section styles
+{
+<link rel="stylesheet" href="/files/css/bootstrap-timepicker.min.css" />
+<link rel="stylesheet" href="/files/css/jquery.tagsinput.css" />
+<link rel="stylesheet" href="/files/css/dropzone.css" />
+}
+@section scripts
+{
+    <script src="/files/js/jquery.autogrow-textarea.js"></script>
+    <script src="/files/js/bootstrap-timepicker.min.js"></script>
+    <script src="/files/js/jquery.maskedinput.min.js"></script>
+    <script src="/files/js/jquery.tagsinput.min.js"></script>
+    <script src="/files/js/jquery.mousewheel.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/dropzone.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        function initPage() {
+            $().formValidator.init("form");
+            $("#starttime").datepicker({
+                showButtonPanel: true
+            });
+            $("#endtime").datepicker({
+                showButtonPanel: true
+            });
+            $("#diseaseli").css("display", "none");
+            $("#doctorli").css("display", "none");
+            getDoctorBySectionID();
+            getDiseaseBySectionID();
+            mediaSourceSelect();
+        }
+        $().pageUtility.addEvent(initPage);
+
+        $().formValidator.onPassCallBack = function () {
+            if (checkvalue().length <= 0) {
+                if (!$().pageUtility.alert("提示", "请至少选择一个科室！")) {
+                    $().formValidator.setSubmitButtonState(true);
+                    return;
+                }
+            }
+            var formValues = [
+                    { id: 'globalKeyword', value: $("#globalKeyword").val() },
+                    { id: 'timekinds', value: $("#timekinds").val() },
+                    { id: 'starttime', value: $("#starttime").val() },
+                    { id: 'endtime', value: $("#endtime").val() },
+                    { id: 'section', value: checkvalue() },
+                    { id: 'doctor', value: $("input[name='doctorName']:checked").val() },
+                    { id: 'diseasekind', value: $("input[name='diseaseName']:checked").val() },
+                    { id: 'arrivestate', value: $("input[name='arriveradioboxs']:checked").val() },
+                    { id: 'mediasource', value: $("#mediasource").val() },
+                    { id: 'mediasourceextend', value: $("#mediasourceextend").val() }, //具体来源
+                    { id: 'hospitalwebsite', value: $("#hospitalwebsite").val() },
+                    { id: 'keys', value: $("#keywords").val() },
+                    { id: 'role', value: $("#role").val() },
+                    { id: 'userInfo', value: $("#userInfo").val() },
+                    { id: 'department', value: $("input[name='departmentradioboxs']:checked").val() }//部门
+            ];
+            var id = $().pageUtility.getFormData(formValues);
+            parent.location.href = "/customerservice/orderindex?" + id;
+        }
+
+        function selecttime(obj) {
+            var mediaextendsource = document.getElementById("mediaextendsource");
+            var data = "";
+            if (mediaextendsource != null) {
+                data = $("#mediaextendsource").val();
+            }
+            return data;
+        }
+
+        function checkvalue() {//获取当前选择的科室信息
+            var str = "";
+            var abc = $("input[name='checkboxInput']:checked").each(function () {
+                str += $(this).val() + ",";
+            });
+            return str += "-100";
+        }
+
+        function setDate(startDate, endDate) {
+            $("#starttime").val(startDate);
+            $("#endtime").val(endDate);
+        }
+
+
+        $("#timekinds").change(
+        function () {
+            var id = $("#timekinds").val();
+            if (id == 1) {
+                $("input[name='arriveradioboxs']:eq(2)").attr("checked", 'checked');
+                $("input[name='arriveradioboxs']").attr("disabled", true);
+                $.uniform.update();
+            }
+            else {
+                $("input[name='arriveradioboxs']").attr('disabled', false);
+                $.uniform.update();
+            }
+        }
+        );
+        $("input[name='checkboxInput']").change(function () {
+            $("#diseaseli").css("display", "none");
+            $("#doctorli").css("display", "none");
+            getDoctorBySectionID();
+            getDiseaseBySectionID();
+        })
+
+        $("#role").change(function () {
+            getUserInfoSectionID();
+        })
+
+
+        function getDoctorBySectionID() {//获取科室下面所有医生
+            if (checkvalue().length > 0) {
+                $("#doctorli").css("display", "block");
+                $.ajax({
+                    dataType: "json",
+                    type: "POST",
+                    url: '/customerservice/GetDoctorDataBySection?sectionStr=' + checkvalue() + '&r=' + Math.random(),
+                    success: function (data) {
+                        if (data.flag == "success") {
+                            $("#doctorlist").empty();
+                            var docData = "<span class=\"rdio rdioPosition\"><input name=\"doctorName\" id=\"noSelectDoctor\" type=\"radio\"  checked=\"checked\"  /><label for=\"noSelectDoctor\">未选择</label></span>"
+                            docData += data.doctorData;
+                            $("#doctorlist").append(docData);
+                           
+                            if (docData.indexOf("checked") < 0) {
+                                $("input[name='doctorName']:eq(0)").attr("checked", "checked");
+                            }
+                        }
+                        if (data.flag == "error") {
+                            $().pageUtility.alert("提示","出错了，请稍后再试！");
+                        }
+                    }
+                });
+            }
+        }
+
+        function getDiseaseBySectionID() {//获取科室下面所有疾病
+
+            if (checkvalue().length > 0) {
+                $("#diseaseli").css("display", "block");
+                $.ajax({
+                    dataType: "json",
+                    type: "POST",
+                    url: '/customerservice/GetDiseaseDataBySection?sectionStr=' + checkvalue() + '&r=' + Math.random(),
+                    success: function (data) {
+                        if (data.flag == "success") {
+                            $("#diseaselist").empty();
+                            var disData = "<span class=\"rdio rdioPosition\"><input name=\"diseaseName\" id=\"noSelectDiseaseName\" type=\"radio\"  checked=\"checked\"  /><label for=\"noSelectDiseaseName\">未选择</label></span>"
+                            disData += data.diseaseData;
+                            $("#diseaselist").append(disData);
+                            if (disData.indexOf("checked") < 0) {
+                                $("input[name='diseaseName']:eq(0)").attr("checked", "checked");
+                            }
+                        }
+                        if (data.flag == "error") {
+                            $().pageUtility.alert("提示","出错了，请稍后再试！");
+                        }
+                    }
+                });
+            }
+        }
+        function getUserInfoSectionID() {
+            if (checkvalue().length > 0) {
+                $.ajax({
+                    dataType: "json",
+                    type: "POST",
+                    url: "/customerservice/GetUserInfoBySectionAndRole?sectionStr=" + checkvalue() + "&r=" + Math.random() + "&roleID=" + $("#role").val(),
+                    success: function (msg) {
+                        if (msg.flag == "success") {
+                            $("#userInfo").empty();
+                            $("#userInfo").append(msg.data);
+                        }
+                        if (msg.flag == "error") {
+                            $().pageUtility.alert("出错了，请稍后再试！");
+                        }
+                    }
+                });
+            }
+        }
+
+        $("#mediasource").change(function () {//媒体来源
+            mediaSourceSelect();
+        });
+        function mediaSourceSelect() {
+            if (checkvalue().length > 0) {
+                var text = $("#mediasource").find("option:selected").text();
+                var id = $("#mediasource").val();
+                $("#mediasourceextend").empty();
+                $("#jutiID").css('display', 'none');
+                $("#websiteID").css('display', 'none');
+                $("#selectkeys").css('display', 'none');
+                text = $.trim(text.toString())
+                $.ajax({
+                    dataType: "json",
+                    type: "POST",
+                    url: "/settings/GetAllMediaSourceDataByParentid?id=" + id + "&r=" + Math.random(),
+                    success: function (msg) {
+                        if (msg.length > 0) {
+                            if (msg.length > 0) {
+                                var select = document.getElementById("mediasourceextend");
+                                if (select != null) {
+                                    $("#jutiID").css('display', 'block');
+                                    for (var i = 0; i <= msg.length - 1; i++) {
+                                        select.options[i] = new Option(msg[i].Name, msg[i].ID);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                if (text == "网络") {
+                    $("#hospitalwebsite").empty();
+                    $.ajax({
+                        dataType: "json",
+                        type: "POST",
+                        url: "/settings/GetAllHospitalWebsiteData?sectionID=" + checkvalue() + "&r=" + Math.random(),
+                        success: function (msg) {
+                            if (msg.length > 0) {
+                                if (msg.length > 0) {
+                                    var select = document.getElementById("hospitalwebsite");
+                                    if (select != null) {
+                                        $("#websiteID").css('display', 'block');
+                                        select.options[0] = new Option("没有来源网站", -1);
+                                        for (var i = 0; i <= msg.length - 1; i++) {
+                                            select.options[i + 1] = new Option(msg[i].Title, msg[i].ID);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    $("#selectkeys").css('display', 'block');
+                }
+            }
+        }
+    </script>
+}
+<div class="panel panel-default">
+    <div class="panel-body">
+        <form method="post" name="form1" id="form1" class="form-horizontal form-bordered">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="control-label">
+                            多条件查询
+                        </label>
+                        <div class="fieldwrap">
+                            <input id="globalKeyword" name="globalKeyword" class="form-control" placeholder="支持输入专家号、患者姓名、手机号码进行查询"
+                                   type="text" maxlength="255" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="control-label">
+                            科室名称
+                        </label>
+                        <div>
+                            @if (ViewData["sectionList"] != null)
+                            {
+                                foreach (var item in ViewData["sectionList"] as IList<Section>)
+                                {
+                                    <span class="ckbox ckbox-primary">
+                                        <input checked="checked" name="checkboxInput" type="checkbox" id="int_section_@item.ID" value="@item.ID" required="">
+                                        <label for="int_section_@item.ID">@item.Name</label>
+                                    </span>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="control-label">
+                            医生姓名
+                        </label>
+                        <div id="doctorlist">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="control-label">
+                            疾病类型
+                        </label>
+                        <div id="diseaselist">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="control-label">
+                            时间类型
+                        </label>
+                        <select id="timekinds" class="form-control">
+                            <option value="-1" selected="selected">请选择时间类型</option>
+                            <option value="0">添加时间</option>
+                            <option value="1">到院时间</option>
+                            <option value="2">预约时间</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="control-label">
+                            起始时间
+                        </label>
+                        <input name="starttime" type="text" title="起始时间" class="form-control"
+                               id="starttime" />
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="control-label">
+                            终止时间
+                        </label>
+                        <input type="text" title="终止时间" class="form-control" name="endtime"
+                               id="endtime" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-8">
+                        <label class="control-label">
+                            速填
+                        </label><a href='javascript:setDate("@System.DateTime.Now.ToString("yyy-MM-dd")","@System.DateTime.Now.ToString("yyy-MM-dd")")'>[今天]</a>&nbsp;<a href='javascript:setDate("@System.DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")","@System.DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")")'>[昨天]</a>&nbsp;<a href='javascript:setDate("@System.DateTime.Now.AddDays(-(System.DateTime.Now.Day) + 1).ToString("yyyy-MM-dd")","@System.DateTime.Now.AddMonths(1).AddDays(-(System.DateTime.Now.Day)).ToString("yyyy-MM-dd")")'>[本月]</a>&nbsp;<a href='javascript:setDate("@System.DateTime.Now.AddMonths(-1).AddDays(-(System.DateTime.Now.Day) + 1).ToString("yyyy-MM-dd")","@System.DateTime.Now.AddDays(-(System.DateTime.Now.Day)).ToString("yyyy-MM-dd")")'>[上月]</a>&nbsp;<a href='javascript:setDate("@System.DateTime.Now.AddMonths(-System.DateTime.Now.Month + 1).AddDays(-System.DateTime.Now.Day + 1).ToString("yyyy-MM-dd")","@System.DateTime.Now.AddYears(1).AddMonths(-System.DateTime.Now.Month + 1).AddDays(-System.DateTime.Now.Day).ToString("yyyy-MM-dd")")'>[今年]</a>&nbsp;<a href='javascript:setDate("@System.DateTime.Now.AddMonths(-1).ToString("yyyy-MM-dd")","@System.DateTime.Now.ToString("yyyy-MM-dd")")'>[近一个月]</a>&nbsp;<a href='javascript:setDate("@System.DateTime.Now.AddMonths(-2).ToString("yyyy-MM-dd")","@System.DateTime.Now.ToString("yyyy-MM-dd")")'>[近三个月]</a>&nbsp;<a href='javascript:setDate("@System.DateTime.Now.AddYears(-1).ToString("yyyy-MM-dd")","@System.DateTime.Now.ToString("yyyy-MM-dd")")'>[近一年]</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="fldTitle">赴约状态</label>
+                        <span class="rdio">
+                            <input name="arriveradioboxs" id="arriveradioboxs" type="radio" checked="checked" value="-1" />
+                            <label for="arriveradioboxs">
+                                全部
+                            </label>
+                        </span>
+                        <span class="rdio">
+                            <input name="arriveradioboxs" id="arriveradioboxs0" type="radio" value="0" />
+                            <label for="arriveradioboxs0">
+                                等待
+                            </label>
+                        </span>
+                        <span class="rdio">
+                            <input name="arriveradioboxs" id="arriveradioboxs1" type="radio" value="1" />
+                            <label for="arriveradioboxs1">
+                                已到
+                            </label>
+                        </span>
+                        <span class="rdio">
+                            <input name="arriveradioboxs" id="arriveradioboxs2" type="radio" value="2" />
+                            <label for="arriveradioboxs2">
+                                未到
+                            </label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label class="control-label">
+                            媒体来源
+                        </label>
+                        <select id="mediasource" class="form-control mb15">
+                            <option value="-1">未选择来源</option>
+                            @if (ViewData["mediaList"] != null)
+                            {
+                                foreach (var item in ViewData["mediaList"] as IEnumerable<MediaSource>)
+                                {
+                                    <option value="@item.ID">@item.Name </option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <label id="jutiLaiyuan" class="control-label">
+                            具体来源
+                        </label>
+                        <select id="mediasourceextend" class="form-control mb15"></select>
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label">
+                            医院网站
+                        </label>
+                        <select id="hospitalwebsite" class="form-control mb15"></select>
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label">
+                            关键字
+                        </label>
+                        <input id="keywords" name="keywords" class="form-control" type="text" placeholder="请输入关键字"
+                               style="float: right" />
+                        <input id="areasouceid" name="areasouceid" type="hidden" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label class="fldTitle">
+                            地区来源
+                        </label>
+                        <div>
+                            <span class="rdio">
+                                <input type="radio" id="areaBen" name="areasourcetype" value="0" checked>
+                                <label for="areaBen">
+                                    本地
+                                </label>
+                            </span><span class="rdio">
+                                <input type="radio" id="areaWai" name="areasourcetype" value="1" />
+                                <label for="areaWai">
+                                    外地
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="selectarea" style="display: none;" class="col-sm-3">
+                        <label class="fldTitle">
+                            地区名称:
+                        </label>
+                        <input id="area" class="form-control" type="text" placeholder="请输入地区名称" />
+                        <input id="areatype" name="areatype" type="hidden" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label id="title50" class="control-label">
+                            创建人
+                        </label>
+                        <select id="role" class="form-control mb15">
+                            <option value="-1" selected="selected">请选择角色</option>
+                            @if (ViewData["role"] != null)
+                            {
+                                foreach (var item in ViewData["role"] as IEnumerable<Role>)
+                                {
+                                    if (@item != null)
+                                    {
+                                        <option value="@item.ID">@item.Name</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="control-label">
+                            用户
+                        </label>
+                        <select id="userInfo" class="form-control mb15">
+                            <option value="-1" selected="selected">请选择用户</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="control-label">
+                            统计部门
+                        </label>
+                        <span class="rdio">
+                            <input type="radio" name="sectionName" value="-1" id="radiosection1">
+                            <label for="radiosection1">未选择</label>
+                        </span>
+                        <span class="rdio">
+                            <input type="radio" name="sectionName" value="0" id="radiosection2">
+                            <label for="radiosection2">网络</label>
+                        </span>
+                        <span class="rdio">
+                            <input type="radio" name="sectionName" value="1" id="radiosection3">
+                            <label for="radiosection3">电话</label>
+                        </span>
+                        <span class="rdio">
+                            <input type="radio" name="sectionName" value="2" id="radiosection4">
+                            <label for="radiosection4">其他</label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="buttons bottom-round noboder">
+                            <div class="panel-footer">
+                                <button class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

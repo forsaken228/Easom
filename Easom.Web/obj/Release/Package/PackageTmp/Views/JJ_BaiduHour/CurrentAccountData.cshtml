@@ -1,0 +1,143 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "百度时段消费报表";
+}
+<div class="container_12">
+    <div class="widget-panel grid_12">
+        <div class="widget-content module">
+            <div style="width: 100%; margin: 0 auto; text-align: center;">
+                <ul class="icons-labeled">
+                    <li>竞价账号：</li>
+                    @{
+                        foreach (var item in ViewBag.Account as IList<JJ_Account>)
+                        {
+                        <li><a title="" href='/JJ_BaiduHour/CurrentAccountData?accountID=@item.ID&begintime=@ViewBag.startDate'><span class="icon-block-black clock-b">
+                        </span>@item.AccountName</a></li>
+                        }
+                    }
+
+                   
+                 
+                </ul>
+              
+            </div>
+            <div class="form-grid">
+             <ul class="icons-labeled">
+                    <li>
+                        <div class="fieldwrap">
+                            <span class="left">
+                                <input name="starttime" readonly="readonly" value="@ViewBag.startDate" type="text" title="报表日期" class="datepicker" id="starttime" />
+                                <label class="fldLabel">
+                                    报表日期</label>
+                            </span>
+                        </div>
+                    </li>
+                    <li><a title="确定" href="javascript:newForm()">
+                    <span class="icon-block-color find-c"></span>确定</a></li>
+
+               
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container_12">
+    <div class="widget-panel grid_12" style="width:98%;">
+        <div class="widget-top">
+            <h4>
+                @ViewBag.accountName</h4>
+        </div>
+        <div class="content-block tbl-default">
+            <table style="width:100%;">
+                <thead>
+                    <tr>
+                        @Html.Raw("" + ViewData["HeandTwo"] + "")
+                    </tr>
+
+
+                </thead>
+                <tbody id="datashow">
+                 
+                    @Html.Raw("" + ViewData["Heand"] + "")
+             
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+   
+    function newForm() {
+        var begintime = $("#starttime").val();
+        window.location.href = "/JJ_BaiduHour/CurrentAccountData?begintime=" + begintime + "&accountID=@ViewBag.accountID"
+    }
+
+    function initPage() {
+        $(".datepicker").datepicker({
+            showButtonPanel: true
+        });
+    }
+    $().pageUtility.addEvent(initPage);
+
+    function importFilter(TimeState) {
+        if ("@Html.Raw(@ViewBag.accountName)"!= "") {
+            $().pageUtility.pop("@Html.Raw(@ViewBag.accountName)导入关键词报告", '/JJ_BaiduHour/import?accountID=@ViewBag.accountID');
+        }else
+        {
+           alert("请添加竞价账户");
+        }
+
+   }
+
+   function delHourData(timestate) {
+           if (confirm("您确定要删除吗?")) {
+               delCheck(timestate);
+           };
+   }
+
+
+   function delCheck(timestate) {
+        $().pageUtility.loading("正在删除...");
+        $.ajax({
+            dataType: "json",
+            type: "Post",
+            url: "/JJ_BaiduHour/DeleteHourData?TimeState=" + timestate + "&accountID=@ViewBag.accountID",
+            success: function (data) {
+                if (data.flag == "success") {
+                    $().pageUtility.setLoading("操作成功，正在更新页面...");
+                    setTimeout("parent.location.reload()", 1000);
+                }
+                else {
+                    $().pageUtility.closeLoading();
+                    $().formValidator.setSubmitButtonState(true);
+                }
+                if (data.flag == "error") {
+                    $().pageUtility.closeLoading();
+                    alert("只能删除当前小时内上传的数据！");
+                }
+            }
+        });
+    }
+
+
+    function showimportdata(TimeState) {
+        window.location.href = '/JJ_BaiduHour/BaiduHourIndex?TimeState=' + TimeState + "&datetime=@ViewBag.startDate&accountID=@ViewBag.accountID";
+    }
+  
+
+    function search() {
+        $().pageUtility.pop("条件过滤", "/JJ_BaiduHour/search", 480, 300);
+    }
+
+    $("table tr").mouseover(function () {
+        $(this).css({ "background-color": "#FFFF99" });
+    }).mouseout(function (event) {
+        var $index = $(this).index();
+        if ($index % 2 == 0) {
+            $(this).css({ "background-color": "#F0F0F0" });
+        } else {
+            $(this).css({ "background-color": "#fff" });
+        }
+    });
+    $("table  tr:nth-child(odd)").css({ "background-color": "#F0F0F0" }); 
+</script>

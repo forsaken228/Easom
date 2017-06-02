@@ -1,0 +1,84 @@
+2016-03-13 21:48:11,082 [29] ERROR DefaultLogger  - System.FormatException: 输入的不是有效的 Base-64 字符串，因为它包含非 Base-64 字符、两个以上的填充字符，或者填充字符间包含非法字符。
+   在 System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   在 System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   在 System.Convert.FromBase64String(String s)
+   在 CHCMS.Utility.SecurityUtility.DESDecrypt(String text, String key)
+   在 Easom.Core.Orders.get_DECTelephone() 位置 F:\Object\My_C#_Object\Easom\Easom.Core\Orders.cs:行号 413
+
+2016-03-13 21:48:19,607 [29] ERROR DefaultLogger  - System.FormatException: 输入的不是有效的 Base-64 字符串，因为它包含非 Base-64 字符、两个以上的填充字符，或者填充字符间包含非法字符。
+   在 System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   在 System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   在 System.Convert.FromBase64String(String s)
+   在 CHCMS.Utility.SecurityUtility.DESDecrypt(String text, String key)
+   在 Easom.Core.Orders.get_DECTelephone() 位置 F:\Object\My_C#_Object\Easom\Easom.Core\Orders.cs:行号 413
+
+2016-03-13 21:48:49,281 [29] ERROR DefaultLogger  - System.FormatException: 输入的不是有效的 Base-64 字符串，因为它包含非 Base-64 字符、两个以上的填充字符，或者填充字符间包含非法字符。
+   在 System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   在 System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   在 System.Convert.FromBase64String(String s)
+   在 CHCMS.Utility.SecurityUtility.DESDecrypt(String text, String key)
+   在 Easom.Core.Orders.get_DECTelephone() 位置 F:\Object\My_C#_Object\Easom\Easom.Core\Orders.cs:行号 413
+
+2016-03-13 21:50:08,913 [41] ERROR DefaultLogger  - System.FormatException: Base-64 字符数组或字符串的长度无效。
+   在 System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   在 System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   在 System.Convert.FromBase64String(String s)
+   在 CHCMS.Utility.SecurityUtility.DESDecrypt(String text, String key)
+   在 Easom.Core.Orders.get_DECTelephone() 位置 F:\Object\My_C#_Object\Easom\Easom.Core\Orders.cs:行号 413
+
+2016-03-13 21:51:30,560 [41] ERROR DefaultLogger  - System.FormatException: Base-64 字符数组或字符串的长度无效。
+   在 System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   在 System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   在 System.Convert.FromBase64String(String s)
+   在 CHCMS.Utility.SecurityUtility.DESDecrypt(String text, String key)
+   在 Easom.Core.Orders.get_DECTelephone() 位置 F:\Object\My_C#_Object\Easom\Easom.Core\Orders.cs:行号 413
+
+2016-03-13 21:54:41,701 [32] ERROR DefaultLogger  - System.FormatException: Base-64 字符数组或字符串的长度无效。
+   在 System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   在 System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   在 System.Convert.FromBase64String(String s)
+   在 CHCMS.Utility.SecurityUtility.DESDecrypt(String text, String key)
+   在 Easom.Core.Orders.get_DECTelephone() 位置 F:\Object\My_C#_Object\Easom\Easom.Core\Orders.cs:行号 413
+
+2016-03-13 21:54:54,644 [15] ERROR DefaultLogger  - System.FormatException: 输入的不是有效的 Base-64 字符串，因为它包含非 Base-64 字符、两个以上的填充字符，或者填充字符间包含非法字符。
+   在 System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   在 System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   在 System.Convert.FromBase64String(String s)
+   在 CHCMS.Utility.SecurityUtility.DESDecrypt(String text, String key)
+   在 Easom.Core.Orders.get_DECTelephone() 位置 F:\Object\My_C#_Object\Easom\Easom.Core\Orders.cs:行号 413
+
+2016-03-13 21:59:02,950 [15] ERROR DefaultLogger  - System.FormatException: Base-64 字符数组或字符串的长度无效。
+   在 System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   在 System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   在 System.Convert.FromBase64String(String s)
+   在 CHCMS.Utility.SecurityUtility.DESDecrypt(String text, String key)
+   在 Easom.Core.Orders.get_DECTelephone() 位置 F:\Object\My_C#_Object\Easom\Easom.Core\Orders.cs:行号 413
+
+2016-03-13 22:02:29,912 [18] ERROR DefaultLogger  - System.FormatException: 输入的不是有效的 Base-64 字符串，因为它包含非 Base-64 字符、两个以上的填充字符，或者填充字符间包含非法字符。
+   在 System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   在 System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   在 System.Convert.FromBase64String(String s)
+   在 CHCMS.Utility.SecurityUtility.DESDecrypt(String text, String key)
+   在 Easom.Core.Orders.get_DECTelephone() 位置 F:\Object\My_C#_Object\Easom\Easom.Core\Orders.cs:行号 413
+
+2016-03-13 22:07:13,368 [20] ERROR DefaultLogger  - System.FormatException: 输入的不是有效的 Base-64 字符串，因为它包含非 Base-64 字符、两个以上的填充字符，或者填充字符间包含非法字符。
+   在 System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   在 System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   在 System.Convert.FromBase64String(String s)
+   在 CHCMS.Utility.SecurityUtility.DESDecrypt(String text, String key)
+   在 Easom.Core.Orders.get_DECTelephone() 位置 F:\Object\My_C#_Object\Easom\Easom.Core\Orders.cs:行号 413
+
+2016-03-13 22:11:57,914 [32] ERROR DefaultLogger  - System.FormatException: 输入的不是有效的 Base-64 字符串，因为它包含非 Base-64 字符、两个以上的填充字符，或者填充字符间包含非法字符。
+   在 System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   在 System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   在 System.Convert.FromBase64String(String s)
+   在 CHCMS.Utility.SecurityUtility.DESDecrypt(String text, String key)
+   在 Easom.Core.Orders.get_DECTelephone() 位置 F:\Object\My_C#_Object\Easom\Easom.Core\Orders.cs:行号 413
+
+2016-03-13 22:16:16,635 [18] ERROR DefaultLogger  - System.FormatException: 输入的不是有效的 Base-64 字符串，因为它包含非 Base-64 字符、两个以上的填充字符，或者填充字符间包含非法字符。
+   在 System.Convert.FromBase64_Decode(Char* startInputPtr, Int32 inputLength, Byte* startDestPtr, Int32 destLength)
+   在 System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   在 System.Convert.FromBase64String(String s)
+   在 CHCMS.Utility.SecurityUtility.DESDecrypt(String text, String key)
+   在 Easom.Core.Orders.get_DECTelephone() 位置 F:\Object\My_C#_Object\Easom\Easom.Core\Orders.cs:行号 413
+

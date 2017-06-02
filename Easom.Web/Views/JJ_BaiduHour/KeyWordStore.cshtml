@@ -1,0 +1,175 @@
+﻿@{
+    ViewBag.Title = "百度后台词库";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts{
+    <script src="/files/js/jquery.datatables.min.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        function checkedALL() {
+            $().pageUtility.checkedAll("lstTable");
+        }
+
+        function setDataTable(searchData) {
+            $('lstTable').dataTable({
+                "sPaginationType": "full_numbers",
+                "bProcessing": true,
+                "bDestroy": true,
+                "bServerSide": true,
+                "aLengthMenu": [[20, 30, 50, 100], [20, 30, 50, "100"]],
+                "iDisplayLength": 20,
+                "aaSorting": [[1, "desc"]],
+                "sAjaxSource": "/JJ_BaiduHour/GetKeyWordStoreData?accountID=@ViewBag.accountID",
+                "fnServerParams": function (aoData) {
+                    if (searchData) {
+                        $.each(searchData, function (index, obj) {
+                            aoData.push({ "name": obj.name, "value": obj.value });
+                        });
+                    }
+                },
+                "oLanguage": {
+                    "sUrl": "/files/admin/js/jquery.dataTables.lang.zhcn.txt?4"
+                },
+                "aoColumns": [
+                    {
+                        "sName": "CheckedALL",
+                        "sTitle": "&nbsp;&nbsp;<a href='javascript:checkedALL();'>全选</a>",
+                        "sClass": "td_wid_checkbox",
+                        "bSearchable": false,
+                        "bSortable": false,
+                        "fnRender": function (obj) {
+                            var sReturn = obj.aData[obj.iDataColumn];
+                            var html = '<input type="checkbox" value="' + sReturn + '"/></a>';
+                            return html;
+                        }
+                    },
+                    {
+                        "sName": "JJ_Plan",
+                        "sTitle": "推广计划",
+                        "bSortable": false
+                    },
+                    {
+                        "sName": "JJ_Cell",
+                        "sTitle": "推广单元",
+                        "sClass": "td_wid_datetime",
+                        "sClass": "center"
+                    },
+                    {
+                        "sName": "JJ_KeyWordsName",
+                        "sTitle": "关键词",
+                        "bSortable": false
+                    },
+                   {
+                       "sName": "PCUrl",
+                       "sTitle": "访问URL",
+                       "bSortable": false
+                   },
+                   {
+                       "sName": "WAPUrl",
+                       "sTitle": "手机URL",
+                       "bSortable": false
+                   }
+                ]
+
+            });
+        }
+        $().pageUtility.addEvent(setDataTable);
+        function callback() {
+            history.go(-1);
+        }
+        function delCheck() {
+            if (!$().pageUtility.hasChecked("lstTable")) {
+                alert("您当前没有选中任何过滤器!");
+                return;
+            } else {
+                if (confirm("您确定要删除该过滤器吗?")) {
+                    del();
+                }
+            }
+        }
+        function del() {
+            var ids = $().pageUtility.getChecked("lstTable");
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: "/JJ_BaiduHour/KeyWordStoredelete/",
+                data: "ids=" + ids,
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.setLoading("操作成功，正在更新页面...");
+                        setTimeout("parent.location.reload()", 1000);
+                    }
+                    else {
+                        $().pageUtility.closeLoading();
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                    if (data.flag == "error") {
+                        alert("出错了，请稍后再试！");
+                    }
+                }
+            });
+        }
+        function importFilter() {
+            if ("@Html.Raw(@ViewBag.accountName)" != "") {
+                $().pageUtility.pop("@Html.Raw(@ViewBag.accountName)导入关键词库", '/JJ_BaiduHour/KeyWordStoreImport?accountID=@ViewBag.accountID');
+            } else {
+                alert("请添加竞价账户");
+            }
+        }
+    </script>
+}
+<div class="pageheader">
+    <h2><i class="glyphicon glyphicon-user"></i>数据统计 <span>这里是百度后台词库...</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">您的位置:</span>
+        <ol class="breadcrumb">
+            <li>数据统计</li>
+            <li class="active">百度后台词库</li>
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="btn-group mr10">
+                @if (LoginManager.HasAutority(AuthorityConst.KEY_TONGJI_JJ_KEYWORDS_UPLOAD))
+                {
+                    <button class="btn btn-success" title="导入" href='javascript:importFilter()'><i class="fa fa-file-excel-o"></i> 导入</button>
+                }
+            </div>
+            <div class="btn-group mr10">
+                @if (LoginManager.HasAutority(AuthorityConst.KEY_TONGJI_JJ_KEYWORDS_DELETE))
+                {
+                    <button class="btn btn-danger" title="删除" href='javascript:delCheck()'><i class="fa fa-trash-o mr5"></i>删除</button>
+                }
+
+            </div>
+        </div>
+        <div class="panel-body">
+            @{
+                if (@ViewBag.Account.Count>0)
+                {
+                    <div class="alert alert-success">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <strong>竞价账号:</strong>
+
+                        @foreach (var item in ViewBag.Account as IList<JJ_Account>)
+                        {
+                            <a title="" href='/JJ_BaiduHour/KeyWordStore?accountID=@item.ID'>
+                                <span class="icon-block-black clock-b">
+                                </span>@item.AccountName
+                            </a>
+                        }
+
+                    </div>
+                }
+            }
+            <div class="table-responsive">
+                <table class="table" id="lstTable"></table>
+            </div>
+            <!-- table-responsive -->
+        </div>
+    </div>
+</div>
+

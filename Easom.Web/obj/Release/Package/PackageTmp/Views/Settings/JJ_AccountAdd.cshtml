@@ -1,0 +1,110 @@
+﻿@model IList<Easom.Core.Section>
+@{
+    ViewBag.Title = "添加账户";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+@section scripts
+{
+    <script src="/files/js/jquery.autogrow-textarea.js"></script>
+    <script src="/files/js/jquery.maskedinput.min.js"></script>
+    <script src="/files/js/jquery.mousewheel.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        function initPage() {
+            $("input[name='rad']:eq(0)").attr("checked", "checked");
+            $().formValidator.init("form");
+            $().formValidator.addValidator([
+                    { controlID: 'AccountName', must: true, mustMsg: '请输入“账户姓名”' },
+                    { controlID: 'rad', mustMsg: '你必须选择一个科室！', rule: 'radioboxs' }
+            ]);
+        }
+
+        $().pageUtility.addEvent(initPage);
+
+        $().formValidator.onPassCallBack = function () {
+            $().pageUtility.loading("您请稍等...");
+            var formValues = [
+                    { id: 'AccountName', value: $("#AccountName").val() },
+                    { id: 'sectionid', value: $("input[name='rad']:checked").val() }
+            ];
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: '/Settings/JJ_AccountAdd',
+                data: $().pageUtility.getFormData(formValues),
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.setLoading("账户添加成功！正在跳转至列表页面...");
+                        setTimeout("parent.location.reload()", 1000);
+                    }
+                    else {
+                        $().pageUtility.closeLoading();
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                    if (data.flag == "error") {
+                        alert("出错了，请稍后再试！");
+                    }
+                    if (data.flag == "error2") {
+                        alert("账户名称重复！请重新输入");
+                    }
+                }
+            });
+        }
+    </script>
+}
+<div class="panel panel-default panel-min-hieght">
+    <div class="panel-body">
+        <div class="form-grid">
+            <form method="post" name="form1" id="form1" class="form-horizontal form-bordered">
+                <div class="alert alert-info">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <strong>提示:</strong>加“*”号的是必填项
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="control-label">
+                                科室名称<span class="asterisk">*</span>
+                            </label>
+                            <div>
+                                @{
+                                    if (Model != null)
+                                    {
+                                        foreach (var item in Model)
+                                        {
+                                            <span class="rdio rdioPosition">
+                                                <input name="rad" id="sectionid_@item.ID" type="radio" value="@item.ID" tabindex="7" />
+                                                <label for="sectionid_@item.ID">
+                                                    @item.Name
+                                                </label>
+                                            </span>
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="control-label">
+                                账户姓名<span class="asterisk">*</span>
+                            </label>
+                            <input id="AccountName" name="AccountName" class="form-control" placeholder="账户姓名必须填写" type="text" maxlength="255" tabindex="1" />
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="buttons bottom-round noboder">
+                                <div class="panel-footer">
+                                    <button class="btn btn-primary">提交</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

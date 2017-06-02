@@ -1,0 +1,107 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "短信发送日志";
+}
+@section styles{
+    <link href="/files/css/jquery.datatables.css" rel="stylesheet">
+    <style>
+        .mediaImg {
+            text-align: center;
+        }
+
+            .mediaImg img {
+                vertical-align: middle;
+                width: 45px;
+                -moz-border-radius: 50px;
+                -webkit-border-radius: 50px;
+                border-radius: 50px;
+            }
+    </style>
+}
+@section scripts{
+    <script src="/files/js/jquery.datatables.min.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+
+        function setDataTable(searchData) {
+            $('#table2').dataTable({
+                "sPaginationType": "full_numbers",
+                "bProcessing": true,
+                "bDestroy": true,
+                "bServerSide": true,
+                "aLengthMenu": [[20, 30, 50, 100], [20, 30, 50, "100"]],
+                "iDisplayLength": 20,
+                "aaSorting": [[1, "desc"]],
+                "sAjaxSource": "/message/GetMessageLoglListData",
+                "fnServerParams": function (aoData) {
+                    if (searchData) {
+                        $.each(searchData, function (index, obj) {
+                            aoData.push({ "name": obj.name, "value": obj.value });
+                        });
+                    }
+                },
+                "oLanguage": {
+                    "sUrl": "/files/js/jquery.dataTables.lang.zhcn.txt?4"
+                },
+                "aoColumns": [
+                     {
+                         "sName": "User",
+                         "sTitle": "操作用户",
+                         "sClass": "td_wid_action_92",
+                         "bSortable": false
+                     },
+                    {
+                        "sName": "ToNumber",
+                        "sTitle": "手机号",
+                        "sClass": "td_wid_action_92",
+                        "bSortable": false
+                    },
+                    {
+                        "sName": "SendContent",
+                        "sTitle": "发送内容",
+                        "bSortable": false
+                    },
+                    {
+                        "sName": "SendDate",
+                        "sTitle": "发送时间",
+                        "sClass": "td_wid_datetime",
+                        "sClass": "center"
+                    },
+                    {
+                        "sName": "SendState",
+                        "sTitle": "状态",
+                        "sClass": "td_wid_left_92",
+                        "bSortable": false
+                    }
+                ]
+
+            });
+        }
+        $().pageUtility.addEvent(setDataTable);
+    </script>
+}
+<div class="pageheader">
+    <h2><i class="fa fa-file-o"></i>短信日志 <span>这里显示短信的发送日志...</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">所在位置:</span>
+        <ol class="breadcrumb">
+            <li>短信中心</li>
+            <li class="active">短信日志</li>
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="panel panel-default">
+        @*<div class="panel-heading">
+                <div class="btn-group mr10">
+                    <button class="btn btn-primary" onclick="javascript:add();" type="button"><i class="fa fa-plus mr5"></i>添加</button>
+                    <button class="btn btn-primary" onclick="javascript:delCheck();" type="button"><i class="fa fa-trash-o mr5"></i>删除</button>
+                    <button class="btn btn-primary" onclick="javascript:search();" type="button"><i class="fa fa-search mr5"></i>查找</button>
+                </div>
+            </div>*@
+        <div class="panel-body">
+            <table id="table2" class="table"></table>
+        </div>
+    </div>
+</div>

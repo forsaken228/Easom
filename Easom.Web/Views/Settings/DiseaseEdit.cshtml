@@ -1,0 +1,163 @@
+﻿@model Easom.Core.Disease
+@{
+    ViewBag.Title = "编辑疾病";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+@section styles
+{
+    <link rel="stylesheet" href="/files/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" href="/files/css/jquery.tagsinput.css" />
+    <link rel="stylesheet" href="/files/css/dropzone.css" />
+}
+@section scripts
+{
+    <script src="/files/js/jquery.autogrow-textarea.js"></script>
+    <script src="/files/js/bootstrap-timepicker.min.js"></script>
+    <script src="/files/js/jquery.maskedinput.min.js"></script>
+    <script src="/files/js/jquery.tagsinput.min.js"></script>
+    <script src="/files/js/jquery.mousewheel.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/dropzone.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        function initPage() {
+            $().formValidator.init("form");
+            $().formValidator.addValidator([
+                    { controlID: 'name', must: true, mustMsg: '请输入疾病的名称' },
+                     { controlID: 'priority', rule: 'range', min: 0, max: 100, msg: '输入格式有误，请重新输入' },
+                     { controlID: 'rad', mustMsg: '你必须选择一个科室！', rule: 'radioboxs' }
+            ]);
+            $("input[name='rad']:eq(0)").attr("checked", "checked");
+        }
+
+        $().pageUtility.addEvent(initPage);
+
+        $().formValidator.onPassCallBack = function () {
+            var formValues = [
+                    { id: 'ismain', value: $("input[name='ismain']:checked").val() },
+                    { id: 'name', value: $("#name").val() },
+                    { id: 'cure', value: $("#cure").val() },
+                    { id: 'priority', value: $("#priority").val() },
+                    { id: 'intro', value: $("#intro").val() },
+                    { id: 'sectionid', value: $("input[name='rad']:checked").val() }
+            ];
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: '/settings/diseaseedit?id=@Model.ID',
+                data: $().pageUtility.getFormData(formValues),
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.createSuccessNotify("提示：", "疾病编辑成功！正在跳转至列表页面...");
+                        $().formValidator.setSubmitButtonState(true);
+                        setTimeout("parent.location.reload()", 1000);
+                    }
+                    else if (data.flag == "error") {
+                        $().formValidator.setSubmitButtonState(true);
+                        $().pageUtility.alert("提示","出错了，请稍后再试！");
+                    }
+                }
+            });
+        }
+    </script>
+}
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="form-grid">
+            <form method="post" name="form1" id="form1" class="form-horizontal form-bordered">
+                <div class="alert alert-info">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <strong>提示:</strong> 加“*”号的是必填项
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="control-label">
+                                科室名称<span class="asterisk">*</span>
+                            </label>
+                            <div>
+                                @{
+                                    if (@ViewData["allsection"] != null)
+                                    {
+                                        foreach (var item in @ViewData["allsection"] as IList<Section>)
+                                        {
+                                            <span class="rdio rdioPosition">
+                                                <input name="rad" id="sectionid_@item.ID" @if (@item.ID == Model.SectionID) { @Html.Raw("checked='checked'")  } type="radio" value="@item.ID" tabindex="1" />
+                                                <label for="sectionid_@item.ID">
+                                                    @item.Name
+                                                </label>
+                                            </span>
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="control-label">
+                            是否为大病种<span class="asterisk">*</span>
+                        </label>
+                        <div>
+                            <span class="rdio rdioPosition">
+                                <input type="radio" name="ismain" value="1" id="yes" @if (Model.IsMain.ToString() == "True")
+                                                                                                            { @Html.Raw("checked='checked'")  }>
+                                <label for="yes">是</label>
+                            </span>
+
+                            <span class="rdio rdioPosition">
+                                <input type="radio" name="ismain" value="0" id="no" @if (Model.IsMain.ToString() == "False")
+                                                                                                           { @Html.Raw("checked='checked'")  }>
+                                <label for="no">否</label>
+                            </span>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="control-label">
+                            疾病名称<span class="asterisk">*</span>
+                        </label>
+                        <input id="name" name="Field1" class="form-control" placeholder="疾病名称必须填写" value="@Model.Name" type="text" maxlength="255" tabindex="1" />
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="control-label">
+                            优先度
+                        </label>
+                        <div class="fieldwrap">
+                            <input id="priority" name="Field1" class="form-control" placeholder="越大越优先，负值在最后" value="@Model.Priority" type="text" maxlength="255" tabindex="1" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="control-label">
+                            治疗项目
+                        </label>
+                        <textarea id="cure" name="Field201" class="form-control" rows="10" cols="50" placeholder="多个空格隔开">@Model.Cure</textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="control-label">
+                            疾病简介
+                        </label>
+                        <textarea id="Intro" name="Field201" class="form-control" rows="10" cols="50" placeholder="选填">@Model.Intro</textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="buttons bottom-round noboder">
+                            <div class="panel-footer">
+                                <button class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

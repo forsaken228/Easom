@@ -1,0 +1,130 @@
+﻿@model  IList<Easom.Core.Authority>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "权限管理";
+}
+@section scripts
+{
+    <script src="/files/js/jquery.treeview.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#tree").treeview({
+                collapsed: false,
+                animated: "fast",
+                control: "#sidetreecontrol",
+                prerendered: true,
+                persist: "location"
+            });
+        })
+    </script>
+    <script type="text/javascript">
+        function add(ids) {
+            $().pageUtility.pop("添加新项", "/administrator/author/add?ids=" + ids, 800, 530);
+        }
+        function view(id) {
+            $().pageUtility.pop("编辑项", "/administrator/author/edit/" + id, 800, 500);
+        }
+        var id = null;
+        function delCheck(id) {
+            del(id);
+        }
+
+        function del(ids) {
+            //$().pageUtility.loading("正在删除...");
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: "/administrator/author/delete",
+                data: "ids=" + ids,
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.createSuccessNotify("系统提示", "权限删除成功，正在重置页面...");
+                        setTimeout('parent.location.reload()', 1000);
+                    }
+                    else {
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                    if (data.flag == "error") {
+                        $().pageUtility.alert("提示","出错了，请稍后再试！");
+                    }
+                }
+            });
+        }
+        function addparent(ids) {
+            location.href = "/sysadmin/Channel/add/" + ids;
+        }
+    </script>
+}
+<div class="pageheader">
+    <h2><i class="fa fa-shield"></i>权限设置 <span>您可以在这里管理权限...</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">您的位置:</span>
+        <ol class="breadcrumb">
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="btn-group mr10">
+                <button class="btn btn-primary" onclick="javascript:add(0);" type="button"><i class="fa fa-plus mr5"></i>增加</button>
+            </div>
+        </div>
+        <div id="sidetree" class="panel-body">
+            <ul class="treeview" id="tree">
+                <li>权限列表&nbsp;</li>
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        var children = item.ChannelList;
+                        <li @Html.Raw(children != null && children.Count > 0 ? "class='expandable'" : "")>
+                            @if (children != null && children.Count > 0)
+                            {
+                                <div class="hitarea expandable-hitarea">
+                                </div>
+                            }
+                            <a href="javascript:view(@item.ID)" title="点击即可编辑">@item.Name</a>&nbsp; <a style="color:#008000" href="javascript:add(@item.ID)">
+                                添加
+                            </a>&nbsp;
+                            @if (children != null && children.Count > 0)
+                            {
+                                <ul style="display: none;">
+                                    @foreach (var chilitem in children)
+                                    {
+                                        var children2 = chilitem.ChannelList;
+                                        <li @Html.Raw(children2 != null && children2.Count > 0 ? "class='expandable'" : "")>
+                                            @if (children2 != null && children2.Count > 0)
+                                            {
+                                                <div class="hitarea expandable-hitarea">
+                                                </div>
+                                            }
+                                            <a href="javascript:view(@chilitem.ID)" title="点击即可编辑">@chilitem.Name</a>&nbsp;
+                                            <a style="color:#008000" href="javascript:add(@chilitem.ID)">添加</a>&nbsp;
+                                            <ul style="display: none;">
+                                                @foreach (var chilitem2 in children2)
+                                                {
+                                                    <li>
+                                                        <a href="javascript:view(@chilitem2.ID)" title="点击即可编辑">@chilitem2.Name</a>&nbsp;
+                                                    </li>
+
+                                                }
+                                                <li class="last">共有(&nbsp;<span style="color: red">@chilitem.ChannelList.Count</span>&nbsp;)项</li>
+                                            </ul>
+                                        </li>
+                                    }
+                                    <li class="last">共有(&nbsp;<span style="color: red">@item.ChannelList.Count</span>&nbsp;)项</li>
+                                </ul>
+                            }
+                        </li>
+
+                    }
+
+                    <li class="last">共有(&nbsp;<span style="color: red">@Model.Count</span>&nbsp;)项</li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+

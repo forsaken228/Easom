@@ -1,0 +1,162 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container_12">
+    <div class="widget-panel grid_12">
+        <div class="widget-top">
+            <h4>
+                @ViewBag.startDate ｜时段消费管理</h4>
+        </div>
+        <div class="widget-content module">
+            <ul class="icons-b">
+                <li><a title="导入" href="javascript:importFilter()"><span class="icon-block-color door-in-c">
+                    导入</span></a></li>
+                  <li><a title="查找" href="javascript:search();"><span class="icon-block-color find-c">
+                        </span></a></li>
+                <li><a title="返回" href="javascript:callback();"><span class="icon-block-color doc-page-previous-c">
+                    返回</span></a></li>
+            </ul>
+            <table id="lstTable" class="display data-table-theme">
+                <tfoot>
+                    <tr>
+                        <th>
+                            时段
+                        </th>
+                        <th>
+                            展现量
+                        </th>
+                        <th>
+                           点击量
+                        </th>
+                        <th>
+                            消费量
+                        </th>
+                        <th>
+                            操作
+                        </th>
+                       
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function checkedALL() {
+        $().pageUtility.checkedAll("lstTable");
+    }
+
+    function setDataTable(searchData) {
+        $('.data-table-theme').dataTable({
+            "sPaginationType": "full_numbers",
+            "bProcessing": true,
+            "bDestroy": true,
+            "bServerSide": true,
+            "aLengthMenu": [[20, 30, 50, 100], [20, 30, 50, "100"]],
+            "iDisplayLength": 20,
+            "aaSorting": [[1, "desc"]],
+            "sAjaxSource": "/JJ_BaiduHour/GetbaiduDayData?startDate=@ViewBag.startDate",
+            "fnServerParams": function (aoData) {
+                if (searchData) {
+                    $.each(searchData, function (index, obj) {
+                        aoData.push({ "name": obj.name, "value": obj.value });
+                    });
+                }
+            },
+            "oLanguage": {
+                "sUrl": "/files/admin/js/jquery.dataTables.lang.zhcn.txt?4"
+            },
+            "aoColumns": [
+                  {
+                      "sName": "TimeState",
+                      "sTitle": "时段",
+                      "sClass": "td_wid_left_92",
+                      "bSortable": false
+                  },
+                {
+                    "sName": "ShowNum",
+                    "sTitle": "展现量",
+                    "sClass": "td_wid_left_92",
+                    "bSortable": false
+                },
+                {
+                    "sName": "JJ_Plan",
+                    "sTitle": "点击量",
+                    "sClass": "td_wid_left_92",
+                    "bSortable": false
+                },
+                 {
+                     "sName": "clickNum",
+                     "sTitle": "消费",
+                     "sClass": "td_wid_left_92",
+                     "bSortable": false
+                 },
+                    {
+                        "sName": "TimeState",
+                        "sTitle": "操作",
+                        "bSearchable": false,
+                        "bSortable": false,
+                        "sClass": "center",
+                        "fnRender": function (obj) {
+                            var sReturn = obj.aData[obj.iDataColumn];
+                            var html = '';
+                            // html += "<span><a title='导入'  class='action-icons c-edit' href='javascript:importFilter(" + sReturn + ")'>导入</a></span>";
+
+                            html += "<span><a class='action-icons c-Delete' href='javascript:delHourData(" + sReturn + ")' title='清空'></a></span>";
+                            html += "<span><a title=\'管理\'  class=\'application-edit-c\' href=\'javascript:showimportdata(" + sReturn + ")\'>管理</a></span>";
+                            return html;
+                        }
+                    }
+
+            ]
+
+        });
+    }
+
+    $().pageUtility.addEvent(setDataTable);
+
+
+    function search() {
+        $().pageUtility.pop("条件过滤", "/JJ_BaiduHour/search", 480, 300);
+    }
+  
+    function callback() {
+        history.go(-1);
+    }
+
+    function delHourData(timestate) {
+        $().pageUtility.loading("正在删除...");
+        $.ajax({
+            dataType: "json",
+            type: "Post",
+            url: "/JJ_BaiduHour/DeleteHourData?TimeState=" + timestate,
+            success: function (data) {
+                if (data.flag == "success") {
+                    $().pageUtility.setLoading("操作成功，正在更新页面...");
+                    setTimeout("parent.location.reload()", 1000);
+                }
+                else {
+                    $().pageUtility.closeLoading();
+                    $().formValidator.setSubmitButtonState(true);
+                }
+                if (data.flag == "error") {
+                    $().pageUtility.closeLoading();
+                    alert("只能删除当前小时内上传的数据！");
+                }
+            }
+        });
+    }
+
+  
+
+    function importFilter(TimeState) {
+        $().pageUtility.pop("导入过滤规则", '/JJ_BaiduHour/import?TimeState=' + TimeState);
+    }
+    function showimportdata(TimeState,datetime) {
+        window.location.href = '/JJ_BaiduHour/BaiduHourIndex?TimeState=' + TimeState + "&datetime=@ViewBag.startDate";
+    }
+  
+</script>
+

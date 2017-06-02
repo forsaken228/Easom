@@ -1,0 +1,135 @@
+﻿@model Easom.Core.Doctor
+@{
+    ViewBag.Title = "医生编辑";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+@section styles 
+{
+    <link rel="stylesheet" href="/files/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" href="/files/css/jquery.tagsinput.css" />
+    <link rel="stylesheet" href="/files/css/dropzone.css" />
+}
+@section scripts
+{
+    <script src="/files/js/jquery.autogrow-textarea.js"></script>
+    <script src="/files/js/bootstrap-timepicker.min.js"></script>
+    <script src="/files/js/jquery.maskedinput.min.js"></script>
+    <script src="/files/js/jquery.tagsinput.min.js"></script>
+    <script src="/files/js/jquery.mousewheel.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/dropzone.min.js"></script>
+
+    <script src="/files/js/custom.js"></script>
+<script type="text/javascript">
+
+    function initPage() {
+        $().formValidator.init("form");
+        $().formValidator.addValidator([
+                { controlID: 'Identifier', must: true, mustMsg: '请输入医生编号' },
+                { controlID: 'Name', must: true, mustMsg: '请输入医生姓名' },
+                { controlID: 'rad', mustMsg: '你必须选择一个科室！', rule: 'radioboxs' }
+        ]);
+    }
+    $().pageUtility.addEvent(initPage);
+    $().formValidator.onPassCallBack = function () {
+        var formValues = [
+                { id: 'name', value: $("#Name").val() },
+                { id: 'identifier', value: $("#Identifier").val() },
+                { id: 'intro', value: $("#Intro").val() },
+                { id: 'sectionid', value: $("input[name='rad']:checked").val() }
+        ];
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: '/settings/doctoredit?id=@Model.ID',
+            data: $().pageUtility.getFormData(formValues),
+            success: function (data) {
+                if (data.flag == "success") {
+                    $().pageUtility.createNotify("growl-success", false, "提示：", "医生编辑成功！正在跳转至列表页面...");
+                    $().formValidator.setSubmitButtonState(true);
+                    setTimeout("parent.location.reload()", 1000);
+                }
+                else if (data.flag == "error") {
+                    $().formValidator.setSubmitButtonState(true);
+                    $().pageUtility.createNotify("growl-warning", false, "错误提示：", "出错了，请稍后再试！");
+                }
+                else if (data.flag == "error2") {
+                    $().formValidator.setSubmitButtonState(true);
+                    $().pageUtility.createNotify("growl-warning", false, "错误提示：", "编号已经存在，请重新填写");
+                }
+            }
+        });
+    }
+    function goBack() {
+        parent.location.reload();
+    }
+</script>
+        }
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="form-grid">
+            <form method="post" name="form1" id="form1" class="form-horizontal form-bordered">
+                <div class="alert alert-info">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <strong>提示:</strong>加“*”号的是必填项
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="control-label">
+                                科室名称<span class="asterisk">*</span>
+                            </label>
+                            <div>
+                                @{
+                                    if (@ViewData["allsection"] != null)
+                                   {
+                                    foreach (var item in @ViewData["allsection"] as IList<Section>)
+                                    {
+                                    <span class="rdio rdioPosition">
+                                        <input name="rad" id="sectionid_@item.ID"  @if (@item.ID ==Model.SectionID)
+                                                                          {@Html.Raw("checked='checked'")}   type="radio" value="@item.ID" tabindex="7" />
+                                        <label for="sectionid_@item.ID">
+                                            @item.Name</label>
+                                    </span>
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="control-label">
+                                医生编号<span class="asterisk">*</span></label>
+                            <input id="Identifier" style="width: 362px;" value="@Model.Identifier" name="Identifier" class="form-control" placeholder="请输入医生编号 如 '110' " type="text" maxlength="255" tabindex="1" />
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="control-label">
+                                医生姓名<span class="asterisk">*</span></label>
+                            <input id="Name" style="width: 362px;" name="Field1"  value="@Model.Name" class="form-control" placeholder="请输入医生姓名 如 '张三' " type="text" maxlength="255" tabindex="1" />
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="control-label">
+                                医生简介</label>
+                            <textarea id="Intro" name="Field201" class="form-control" rows="10" cols="50" placeholder="请输入医生简介，非必填">@Model.Intro</textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="buttons bottom-round noboder">
+                                <div class="panel-footer">
+                                    <button class="btn btn-primary">提交</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

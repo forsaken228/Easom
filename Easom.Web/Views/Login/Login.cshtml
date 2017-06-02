@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/files/images/favicon.png" type="image/png">
+
+    <title>在线预约系统</title>
+
+    <link href="/files/css/style.default.css" rel="stylesheet">
+    <link href="/files/css/jquery.gritter.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="/files/js/html5shiv.js"></script>
+    <script src="/files/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="signin">
+    <section>
+        <div class="signinpanel">
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="signin-info">
+                        <div class="logopanel">
+                            <h1><span>[</span> 在线预约系统 <span>]</span></h1>
+                        </div>
+                        <!-- logopanel -->
+                        <div class="mb20"></div>
+                        <h5><strong>欢迎使用在线预约系统</strong></h5>
+                        <ul>
+                            <li><i class="fa fa-arrow-circle-o-right mr5"></i>最专业的用户体验</li>
+                            <li><i class="fa fa-arrow-circle-o-right mr5"></i>最安全的客户信息加密技术</li>
+                            <li><i class="fa fa-arrow-circle-o-right mr5"></i>专业的团队，为你24小时保驾护航</li>
+                        </ul>
+                        <div class="mb20"></div>
+                      @*  <strong>没有账号? <a href="/files/signup.html">立即注册</a></strong>*@
+                    </div>
+                    <!-- signin0-info -->
+                </div>
+                <!-- col-sm-7 -->
+                <div class="col-md-5">
+                    <form id="form" method="post" action="">
+                        <h4 class="nomargin">登陆</h4>
+                        <p class="mt5 mb20">登陆进入您的账户.</p>
+                        <input type="text" class="form-control uname" id="userName" name="userName" placeholder="账户名" />
+                        <input type="password" class="form-control pword" id="password" name="password" placeholder="密码" />
+                        <a style="display:none" href="/files/"><small>忘记密码?</small></a>
+                        <button id="submit" type="submit" class="btn btn-primary btn-block" data-loading-text="Loading...">登陆</button>
+                    </form>
+                </div>
+                <!-- col-sm-5 -->
+            </div>
+            <!-- row -->
+            <div class="signup-footer">
+            </div>
+        </div>
+        <!-- signin -->
+    </section>
+    <script src="/files/js/jquery-1.11.1.min.js"></script>
+    <script src="/files/js/jquery.pageUtility.js"></script>
+    <script src="/files/js/jquery.formValidator.js"></script>
+    <script src="/files/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="/files/js/bootstrap.min.js"></script>
+    <script src="/files/js/modernizr.min.js"></script>
+    <script src="/files/js/jquery.sparkline.min.js"></script>
+    <script src="/files/js/jquery.cookies.js"></script>
+    <script src="/files/js/jquery.gritter.min.js"></script>
+
+    <script src="/files/js/toggles.min.js"></script>
+    <script src="/files/js/retina.min.js"></script>
+
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        //$().ready(function () {
+        //    var c = jQuery.cookie('change-skin');
+        //    if (c && c == 'greyjoy') {
+        //        jQuery('.btn-success').addClass('btn-orange').removeClass('btn-success');
+        //    } else if (c && c == 'dodgerblue') {
+        //        jQuery('.btn-success').addClass('btn-primary').removeClass('btn-success');
+        //    } else if (c && c == 'katniss') {
+        //        jQuery('.btn-success').addClass('btn-primary').removeClass('btn-success');
+        //    }
+        //});
+        $().formValidator.defaults.isShowErrrorMsg = true;
+        $().formValidator.addValidator([
+            { controlID: 'userName', must: true, mustMsg: '请输入用户名' },
+            { controlID: 'password', must: true, mustMsg: '请输入密码' }//,
+           // { controlID: 'validateCode', must: true, mustMsg: '请输入验证码' }
+        ]
+        );
+        $().formValidator.init("form");
+        $().formValidator.onPassCallBack = function () {
+            $().formValidator.setSubmitButtonState(false);
+            var userName = $("#userName").val();
+            var password = $("#password").val();
+            // var validateCode = $("#validateCode").val();
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: "/login",
+                data: "userName=" + userName + "&password=" + password,
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.createNotify("growl-success", false, "提示：", "验证成功！正在跳转至系统主页...");
+                        setTimeout("location.href = '/home'", 1000);
+                    }
+                    else if (data.flag == "failed") {
+                        $().pageUtility.createNotify("growl-warning", false, "错误提示：", "对不起，登录失败，请稍后再试！");
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                    else if (data.flag == "passworderror") {
+                        $("#password").focus();
+                        $().pageUtility.createNotify("growl-warning", false, "错误提示：", "对不起，您输入的密码错误，请重新输入！");
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                    else if (data.flag == "usernameerror") {
+                        $("#userName").focus();
+                        $().pageUtility.createNotify("growl-warning", false, "错误提示：", "对不起，您输入的用户名错误，请重新输入！");
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                    else if (data.flag == "errorvalidatecode") {
+                        //$("#validateCode").focus();
+                        $().pageUtility.createNotify("growl-warning", false, "错误提示：", "对不起，您输入的验证码错误，请重新输入！");
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                }
+            });
+        }
+
+        function chanageValidate() {
+            $("#imgValidateCode").attr("src", "/Ashx/ValidateCode.ashx?r" + Math.random());
+        }
+    </script>
+</body>
+</html>

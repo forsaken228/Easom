@@ -1,0 +1,163 @@
+﻿@{
+    ViewBag.Title = @ViewData["ChatStateName"] + "-商务通对话分析";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container_12">
+        <div class="widget-panel grid_12">
+            <div class="widget-content module">
+                <div style="width: 100%; margin: 0 auto; text-align: center;">
+                    <ul class="icons-labeled">
+                     @if (@ViewData["TableStateName"].ToString() == "百度计划消费分析" || @ViewData["TableStateName"].ToString() == "百度关键词消费分析")
+                     {
+                        <li>竞价账户：</li>
+                       <div class="fieldwrap input-uniform">
+                        @if (ViewData["JJ_Account"] != null)
+                        {
+                            foreach (var item in ViewData["JJ_Account"] as IEnumerable<JJ_Account>)
+                            {
+                            <li>
+                                <input name="roleName" class="checkbox" type="checkbox" checked=checked value="@item.ID" />@item.AccountName (@item.SectionName)</li>
+                            }
+                        }
+                    </div>
+                    <li>
+                     <a title="" href="javascript:GetRoleDate()"><span class="icon-block-black clock-b">
+                        </span>查询</a>
+                        
+                    </li>
+                     }
+                     <li><a title="返回" href="javascript:callback();"><span class="icon-block-black clock-b">
+                    </span>返回</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="container_12">
+    <div class="widget-panel grid_12" style="width: 98%;">
+        <div class="widget-top">
+            <h4>
+                @ViewData["ChatStateName"]-@ViewData["TableStateName"] (@ViewData["BeginTimeString"] -
+                @ViewData["EndTimeString"])</h4>
+        </div>
+        <div class="content-block tbl-default">
+            <table id="swtTableSort">
+            </table>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+    table tbody tr td, table thead tr th
+    {
+        border-right: 1px solid #ccc;
+    }
+</style>
+<script type="text/javascript">
+    function initPage() {
+    GetRoleDate();
+
+      }
+   function loading(){
+     
+     $("#swtTableSort tbody tr").mouseover(function () {
+        $(this).css({ "background-color": "#FFFF99" });
+    }).mouseout(function (event) {
+        var $index = $(this).index();
+        if ($index % 2 == 0) {
+            $(this).css({ "background-color": "#fff" });
+        } else {
+            $(this).css({ "background-color": "#F0F0F0" });
+        }
+    });
+     $("#swtTableSort tbody tr:nth-child(even)").css({ "background-color": "#F0F0F0" });
+  
+   }
+   
+    function sumtd() {
+    var Count=0;
+    var str="";
+    if("@ViewData["TableStateName"]"=="百度计划消费分析" ||"@ViewData["TableStateName"]"=="百度关键词消费分析")
+    {
+       str = "<tr><td>合计</td>";
+        var arrayObj = new Array();
+
+        for (var i = 2; i < 8; i++) {
+            arrayObj[i - 2] = 0;
+            $("#swtTableSort tbody tr td:nth-child(" + i + ")").each(function () {
+                arrayObj[i - 2] = parseFloat($(this).text()) + parseFloat(arrayObj[i - 2]);
+            });
+            if (i == 4) {
+                str += "<td>" + arrayObj[i - 2].toFixed(2) + "</td>";
+            }
+            else {
+                str += "<td>" + arrayObj[i - 2] + "</td>";
+            }
+        }
+
+        if (arrayObj[1]!= 0) {
+            arrayObj[6] = arrayObj[3] / arrayObj[1];
+        }
+        if (arrayObj[3] != 0) {
+            arrayObj[7] = arrayObj[4] / arrayObj[3];
+        }
+        if (arrayObj[4] != 0) {
+            arrayObj[8] = arrayObj[5] / arrayObj[4];
+        }
+        if (arrayObj[0] != 0) {
+            arrayObj[9] = arrayObj[1] / arrayObj[0];
+        }
+        str += "<td>" + (arrayObj[6] * 100).toFixed(2) + "%</td>";
+        str += "<td>" + (arrayObj[7]*100).toFixed(2) + "%</td>";
+        str += "<td>" + (arrayObj[8]*100).toFixed(2) + "%</td>";
+        str += "<td>" + (arrayObj[9]*100).toFixed(2) + "%</td>";
+        str += "</tr>";
+    }
+    else
+    {
+        str = "<tr><td>合计</td>";
+         $("#swtTableSort tbody tr td:nth-child(2)").each(function () {
+                Count = parseFloat($(this).text()) + parseFloat(Count);
+            });
+
+             str += "<td>"+Count+"</td></tr>";
+    }
+
+        
+        $("#swtTableSort tbody tr:last").after(str);
+    }
+
+    function checkvalue() {
+        var str = "";
+        var abc = $("input[name=roleName]:checked").each(function () {
+            str += $(this).val() + ",";
+        });
+        return str;
+    }
+    function GetRoleDate() {
+        $().pageUtility.loading("您请稍等...");
+        var accountStr = checkvalue();
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: '/JJ_SwtChat/SwtReport?begintime=@ViewData["beginTime"]&endtime=@ViewData["endTime"]&chatState=@ViewData["chatState"]&tableState=@ViewData["tableState"]&account='+accountStr+'&r=' + Math.random(),
+            success: function (data) {
+                if (data.flag == "success") {
+                    $("#swtTableSort").empty();
+                    alert(data.tabledata);
+                    $("#swtTableSort").append(data.tabledata);
+                    $().pageUtility.closeLoading();
+                    sumtd();
+                    loading();
+                }
+                if (data.flag == "error") {
+                    $().pageUtility.alert("出错了，请稍后再试！");
+                }
+            }
+        });
+    }
+    $().pageUtility.addEvent(initPage);
+        function callback() {
+        history.go(-1);
+    }
+</script>

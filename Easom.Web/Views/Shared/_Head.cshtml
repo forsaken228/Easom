@@ -1,0 +1,17 @@
+﻿<div class="visible-xs hidden-sm hidden-md hidden-lg">
+    <div class="media userlogged">
+        <img src="/files/upload/photo/@LoginManager.GetUser().PictureURL.ToString()" class="media-object" />
+        <div class="media-body">
+            <h4>@LoginManager.GetUser().TrueName</h4>
+            <span><a href="/tool/uploadPhoto">修改头像</a></span>
+        </div>
+    </div>
+
+    <h5 class="sidebartitle actitle">Account</h5>
+    <ul class="nav nav-pills nav-stacked nav-bracket mb30">
+        <li><a href="/tool/user"><i class="glyphicon glyphicon-user"></i>我的资料</a></li>
+        <li><a href="javascript:changPwd()"><i class="glyphicon glyphicon-question-sign"></i>修改密码</a></li>
+        <li><a href="javascript:set()"><i class="glyphicon glyphicon-cog"></i>设置</a></li>
+        <li><a href="/login/Logout"><i class="glyphicon glyphicon-log-out"></i>退出</a></li>
+    </ul>
+</div>

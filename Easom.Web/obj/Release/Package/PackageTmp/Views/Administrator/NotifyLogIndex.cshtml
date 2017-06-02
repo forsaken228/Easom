@@ -1,0 +1,69 @@
+﻿@model IList<Easom.Core.NotifyLog>
+@{
+    ViewBag.Title = "NotifyLogIndex";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+<style type="text/css">
+    #style1
+    {
+        font-size: 14px;
+    }
+    h1
+    {
+        font-size: 14px;
+        font: red;
+    }
+</style>
+<div class="widget-content module">
+    <div class="widget-panel">
+        <div class="content-block tbl-default">
+            <table style="width: 100%">
+                <thead>
+                    <tr>
+                        <th colspan="2" style="text-align: center;">
+                            发送日志
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int index = 1;
+                        foreach (var item in Model)
+                        {
+                        <tr>
+                            <td>
+                                <b style=" font-weight:normal;">@index &nbsp;&nbsp;系统在&nbsp;&nbsp; <b style=" color:blue;">@item.SendDate.ToString("yyyy-MM-dd hh:mm")</b>&nbsp;&nbsp;向&nbsp;&nbsp; <b style=" color:blue;">@item.UserInfo.TrueName</b>(@item.UserInfo.Name)</b>&nbsp;&nbsp;&nbsp;&nbsp;<b>
+                                @if (@item.SendState ==(int)Easom.Core.Support.SendState.MobileSuccess)
+                                 {
+                                    <b style=" color:blue;">&nbsp;&nbsp;手机发送成功&nbsp;&nbsp;</b>
+                                 } 
+                                @if (@item.SendState == (int)Easom.Core.Support.SendState.EmailSuccess)
+                                {
+                                    <b style=" color:blue;">&nbsp;&nbsp;邮件发送成功&nbsp;&nbsp;</b>
+                                }
+                                @if (@item.SendState == (int)Easom.Core.Support.SendState.BothSuccess)
+                                {
+                                    <b style=" color:blue;">&nbsp;&nbsp;邮件手机成功&nbsp;&nbsp;</b>
+                                }
+                                @if (@item.SendState == (int)Easom.Core.Support.SendState.MobileFail)
+                                {
+                                    <b style=" color:red;">&nbsp;&nbsp;手机发送失败&nbsp;&nbsp;</b>
+                                }
+                                @if (@item.SendState == (int)Easom.Core.Support.SendState.EmailFail)
+                                {
+                                    <b style=" color:red;">&nbsp;&nbsp;邮件发送失败&nbsp;&nbsp;</b>
+                                }
+                                @if (@item.SendState == (int)Easom.Core.Support.SendState.BothFail)
+                                {
+                                    <b style=" color:red;">&nbsp;&nbsp;邮件手机失败&nbsp;&nbsp;</b>
+                                }
+                                </b>
+                            </td>
+                        </tr>index++;
+                        }          
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

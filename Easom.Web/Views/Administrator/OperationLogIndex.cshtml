@@ -1,0 +1,124 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "操作日志";
+}
+@section styles{
+    <link href="/files/css/jquery.datatables.css" rel="stylesheet">
+}
+@section scripts{
+    <script src="/files/js/jquery.datatables.min.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        var nowWindows_height = $(window).height() - 160;
+        var nowWindows_width = $(window).width() - 160;
+        function setDataTable(searchData) {
+            var tables = $('#table2').DataTable({
+                "paginationType": "full_numbers",
+                "stateSave": true,
+                "processing": true,
+                "destroy": true,
+                "serverSide": true,
+                "lengthMenu": [[20, 30, 50, 100], [20, 30, 50, "100"]],
+                "displayLength": 20,
+                "sorting": [[3, "desc"]],
+                "ajaxSource": "/administrator/operationLog/getlistdata?"+$().pageUtility.getFormData(searchData),
+                "language": {
+                    "sUrl": "/files/js/jquery.dataTables.lang.zhcn.txt?4"
+                },
+                "columns": [
+                      {
+                          "class": 'details-control',
+                          "sortable": false,
+                          "data": null,
+                          "defaultContent": ''
+                      },
+                    {
+                        "name": "TableName",
+                        "title": "操作项目"
+                    },
+                    {
+                        "name": "OperationType",
+                        "title": "操作类型"
+                    },
+                     {
+                         "name": "CreateTime",
+                         "title": "操作时间"
+                     },
+                       {
+                           "name": "UserID",
+                           "title": "操作人"
+                       }
+                ]
+
+            });
+            $('#table2 tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row = tables.row(tr);
+                if (row.child.isShown()) {
+                    row.child.hide(1000);
+                    tr.removeClass('shown');
+                }
+                else {
+                    row.child(format(row.data())).show(1000);
+                    tr.addClass('shown');
+                }
+            });
+        }
+        function chatcontent(id) {
+            $().pageUtility.pop("详细信息", "/customerservice/chatcontent?id=" +id, nowWindows_width, nowWindows_height);
+        }
+        function format(obj) {
+            // `d` is the original data object for the row
+            var tablehtml = "";
+            var html = "";
+            debugger;
+            var object = eval(obj[5]);
+            tablehtml = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
+            if (object.length > 0) {
+                for (var i = 0; i < object.length; i++) {
+                    html += '<tr><td>【' + object[i].Name + '】：' + object[i].Value + '</td></tr>';
+                }
+            }
+            if (html == "") {
+                html += '<tr><td>没有附加信息</td></tr>';
+            } else {
+                tablehtml += html;
+            }
+            tablehtml += '</table>';
+            return html;
+        }
+        function checkedALL() {
+            $().pageUtility.checkedAll("table2");
+        }
+
+        $().pageUtility.addEvent(setSearchDataForDataTable);
+        function setSearchDataForDataTable() {
+            var searchData =@Html.Raw(ViewBag.searchDatas);
+            setDataTable(searchData);
+        }
+    </script>
+}
+<div class="pageheader">
+    <h2><i class="fa fa-clipboard"></i>操作日志 <span>您可以在这里查看操作日志</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">当前位置</span>
+        <ol class="breadcrumb"></ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="panel panel-default">
+        @*<div class="panel-heading">
+                <div class="btn-group mr10">
+                    <button class="btn btn-danger" onclick="javascript:delCheck();" type="button"><i class="fa fa-trash-o mr5"></i>删除</button>
+                </div>
+            </div>*@
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table" id="table2"></table>
+            </div>
+            <!-- table-responsive -->
+        </div>
+    </div>
+</div>
+

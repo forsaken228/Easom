@@ -1,0 +1,279 @@
+2015-05-30 08:45:36,126 [7] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 08:58:21,665 [18] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:05:48,895 [30] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:06:34,729 [21] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:06:41,608 [17] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:07:12,626 [32] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:09:14,489 [35] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:09:38,007 [35] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:19:14,109 [21] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:19:57,264 [46] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:20:01,269 [47] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:21:39,095 [48] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:22:03,768 [25] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:26:22,805 [21] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:26:31,795 [25] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:26:47,791 [53] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:28:07,071 [53] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:29:59,213 [48] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:30:03,231 [53] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:31:31,998 [50] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:33:39,647 [25] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:34:03,699 [48] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:34:37,666 [49] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:36:17,203 [47] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:36:35,141 [25] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:38:25,631 [25] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:39:49,144 [52] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:39:59,941 [25] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:40:26,858 [43] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:42:29,149 [43] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:42:35,155 [51] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:43:15,439 [44] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:44:04,272 [44] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:44:09,401 [25] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:44:21,581 [25] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:44:32,005 [25] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:44:41,417 [51] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:46:11,541 [44] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:46:17,272 [39] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:49:50,471 [38] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:50:02,340 [38] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:50:08,039 [40] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:50:12,679 [38] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:50:20,978 [41] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:50:26,949 [41] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:51:34,710 [40] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 09:57:32,011 [47] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 10:00:47,720 [49] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 10:01:36,503 [50] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 10:01:54,921 [49] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 10:02:26,020 [50] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 10:02:49,239 [38] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 10:10:18,887 [43] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 10:13:53,072 [45] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 10:22:30,772 [21] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 10:24:28,034 [44] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 10:48:49,629 [45] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 11:06:43,758 [18] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 11:07:28,951 [23] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 11:07:40,109 [29] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 11:21:14,382 [50] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 11:26:13,443 [24] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 11:27:39,317 [17] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 11:30:55,417 [27] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 11:40:28,889 [5] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 11:53:51,854 [13] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 11:54:22,012 [13] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 11:55:48,695 [5] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 11:56:57,956 [25] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 11:57:02,522 [25] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 11:57:41,815 [13] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 11:57:45,374 [29] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 11:58:05,622 [36] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 11:59:05,523 [30] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 12:00:13,033 [13] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 12:00:46,053 [42] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 12:02:36,689 [42] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 12:04:24,020 [36] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 12:06:14,996 [30] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 12:06:18,764 [29] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 12:08:54,950 [36] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 12:14:57,776 [30] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 12:15:14,615 [13] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 12:21:58,946 [29] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 12:22:46,154 [29] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 12:24:49,210 [5] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 21:43:42,370 [9] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 21:45:05,523 [9] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 21:45:22,901 [5] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 21:45:34,065 [10] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 22:07:53,883 [7] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 22:44:36,022 [11] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+
+2015-05-30 23:47:26,688 [20] ERROR DefaultLogger  -  IsDelete=0  AND HospitalID=3 AND OrderState=0  AND SectionID in (1,-100 )System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Easom.Web.Support.Controllers.CustomerServiceController.GetlistOrderData() 位置 e:\MyObjects\Easom\Easom.Support\Controllers\CustomerServiceController.cs:行号 322
+

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <role Name="医院管理员">
+    <Authority></Authority>
+    <ToRole></ToRole>
+  </role>
+  <role Name="网络客服">
+    <Authority></Authority>
+    <ToRole></ToRole>
+  </role>
+  <role Name="电话客服" Remark="">
+    <Authority></Authority>
+    <ToRole></ToRole>
+  </role>
+  <role Name="其他客服" Remark="">
+    <Authority></Authority>
+    <ToRole></ToRole>
+  </role>
+  <role Name="导医" Remark="患者到院后，导医负责替患者签到">
+    <Authority></Authority>
+    <ToRole></ToRole>
+  </role>
+  <role Name="回访人员" Remark="对未到院的患者、或者对已经就诊的患者进行回访">
+    <Authority></Authority>
+    <ToRole></ToRole>
+  </role>
+</Project>

@@ -1,0 +1,105 @@
+﻿@model  IList<Easom.Core.Role>
+@{
+    ViewBag.Title = "ChangeHospital";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+@section styles
+{
+    <link rel="stylesheet" href="/files/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" href="/files/css/jquery.tagsinput.css" />
+    <link rel="stylesheet" href="/files/css/dropzone.css" />
+}
+@section scripts
+{
+    <script src="/files/js/jquery.autogrow-textarea.js"></script>
+    <script src="/files/js/bootstrap-timepicker.min.js"></script>
+    <script src="/files/js/jquery.maskedinput.min.js"></script>
+    <script src="/files/js/jquery.tagsinput.min.js"></script>
+    <script src="/files/js/jquery.mousewheel.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/dropzone.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        function initPage() {
+            $().formValidator.init("form");
+            $().formValidator.addValidator([
+            ]);
+        }
+        $().pageUtility.addEvent(initPage);
+        $().formValidator.onPassCallBack = function () {
+           // $().pageUtility.loading("您请稍等...");
+            var formValues = checkvalue();
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: '/administrator/role/RoleManger/@ViewData["roleid"]',
+                data: "ids=" + formValues,
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.createNotify("growl-success", false, "提示", "设置成功！正在跳转至列表页面...");
+                        setTimeout("parent.location.reload()", 1000);
+                    }
+                    else {
+                        $().pageUtility.closeLoading();
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                    if (data.flag == "error") {
+                        $().pageUtility.closeLoading();
+                        $().pageUtility.alert("出错了，请稍后再试！");
+                    }
+                }
+            });
+        }
+        function checkvalue() {
+            var str = "";
+            var abc = $(":checkbox:checked").each(function () {
+                str += $(this).val() + ",";
+            });
+            return str;
+        }
+    </script>
+}
+<div class="panel panel-default panel-min-hieght">
+    <div class="panel-body">
+        <form method="post" name="form1" id="form1" class="form-horizontal form-bordered">
+            @if (Model != null && Model.Count > 0)
+            {
+                <div class="alert alert-info">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <strong>角色名称:</strong>@ViewBag.roleName,你可以设置【@ViewBag.roleName】可以管理的角色。
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            @if (Model != null)
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <span class="ckbox ckbox-primary" style="width: 140px; float: left; display: block">
+                                        <input name="rad" id="roleid_@item.ID" @if (Role.IsChecked(@ViewBag.roleList, item.ID)) { @Html.Raw("checked='checked'")                  } type="checkbox" value="@item.ID" tabindex="@item.ID" />
+                                        <label title="@item.Name" for="roleid_@item.ID">@CHCMS.Utility.StringUtility.CutString(@item.Name, 7, true)</label>
+                                    </span>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="buttons bottom-round noboder">
+                        <div class="panel-footer">
+                            <button class="btn btn-primary">提交</button>
+                        </div>
+                    </div>
+                </div>
+
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <strong>提示:</strong>您还没有添加任何角色，请先添加角色后，再进行其它操作！
+                </div>
+            }
+        </form>
+    </div>
+</div>

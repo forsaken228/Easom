@@ -1,0 +1,17 @@
+E:\Easom\Easom.Service.Task\bin\Release\Easom.Service.Task.exe.config
+E:\Easom\Easom.Service.Task\bin\Release\Easom.Service.Task.exe
+E:\Easom\Easom.Service.Task\bin\Release\Easom.Service.Task.pdb
+E:\Easom\Easom.Service.Task\obj\Release\Easom.Service.Task.csprojResolveAssemblyReference.cache
+E:\Easom\Easom.Service.Task\obj\Release\Easom.Service.Task.exe
+E:\Easom\Easom.Service.Task\obj\Release\Easom.Service.Task.pdb
+E:\MyObjects\Easom\Easom.Service.Task\bin\Release\Easom.Service.Task.exe.config
+E:\MyObjects\Easom\Easom.Service.Task\bin\Release\Easom.Service.Task.exe
+E:\MyObjects\Easom\Easom.Service.Task\bin\Release\Easom.Service.Task.pdb
+E:\MyObjects\Easom\Easom.Service.Task\obj\Release\Easom.Service.Task.csprojResolveAssemblyReference.cache
+E:\MyObjects\Easom\Easom.Service.Task\obj\Release\Easom.Service.Task.exe
+E:\MyObjects\Easom\Easom.Service.Task\obj\Release\Easom.Service.Task.pdb
+F:\Object\My_C#_Object\Easom\Easom.Service.Task\bin\Release\Easom.Service.Task.exe.config
+F:\Object\My_C#_Object\Easom\Easom.Service.Task\bin\Release\Easom.Service.Task.exe
+F:\Object\My_C#_Object\Easom\Easom.Service.Task\bin\Release\Easom.Service.Task.pdb
+F:\Object\My_C#_Object\Easom\Easom.Service.Task\obj\Release\Easom.Service.Task.exe
+F:\Object\My_C#_Object\Easom\Easom.Service.Task\obj\Release\Easom.Service.Task.pdb

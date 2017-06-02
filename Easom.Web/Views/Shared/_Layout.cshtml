@@ -1,0 +1,211 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/files/images/favicon.png" type="image/png">
+    <title>在线预约系统</title>
+    <link href="/files/css/style.default.css" rel="stylesheet">
+    <link href="/files/css/jquery.gritter.css" rel="stylesheet">
+    @RenderSection("styles", required: false)
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="/files/js/html5shiv.js"></script>
+    <script src="/files/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div id="status"><i class="fa fa-spinner fa-spin"></i></div>
+
+    </div>
+    <section>
+        <div class="leftpanel">
+            <div class="logopanel">
+                <h1><span>[</span> 在线预约系统 <span>]</span></h1>
+            </div>
+            <!-- logopanel -->
+            @Html.Partial("_Menu")
+            <!-- leftpanelinner -->
+        </div>
+        <!-- leftpanel -->
+        <div class="mainpanel">
+            <div class="headerbar">
+                <div class="header-left">
+                    <div class="topnav">
+                        <a class="menutoggle"><i class="fa fa-bars"></i></a>
+
+                        <ul class="nav nav-horizontal">
+                            <li class="nav-parent">
+                                <a class="dropdown-toggle" style="font-size: 24px;" data-toggle="dropdown" href="#" onclick="javascript:changeCurrentHospital();"><i class="fa fa-hospital-o"></i>@(LoginManager.GetCurrentHospital() == null ? "请选择当前医院" : LoginManager.GetCurrentHospital().Name)</a>
+                            </li>
+                            <li class="nav-parent">
+                                <a class="dropdown-toggle" style="font-size: 18px;" data-toggle="dropdown" href="#" onclick="javascript:changeCurrentSection();">[科室]</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- header-left -->
+                <!-- header-left -->
+                <div class="header-right">
+                    <ul class="headermenu">
+                        @{
+                            int ordNum = LoginManager.UnreadData();
+                            int ordCallNum = Easom.Support.App_Start.SysAdminBaseController.UnreadCallonData(0);
+                            int geCallNum = Easom.Support.App_Start.SysAdminBaseController.UnreadCallonData(1);
+                            if (ordNum > 0)
+                            {
+                                <li>
+                                    <div class="btn-group">
+                                        <button class="btn btn-default dropdown-toggle tp-icon" onclick="javascript: location.href = '/OutReservation/OutOrderIndex'">
+                                            <i class="glyphicon glyphicon-globe"></i>
+                                            <span class="badge">@ordNum</span>
+                                        </button>
+                                    </div>
+                                </li>
+                            }
+                        }
+
+                        <li>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                    @* @(LoginManager.GetUser() != null ? LoginManager.GetUser().TrueName : "")*@
+                                    @{if (LoginManager.GetUser() != null)
+                                        {
+                                            <img src="/files/upload/photo/@LoginManager.GetUser().PictureURL.ToString()" alt="" /><span>@LoginManager.GetUser().TrueName</span>
+                                        }
+                                    }
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
+                                    <li><a href="/tool/user"><i class="glyphicon glyphicon-user"></i>我的资料</a></li>
+                                    <li><a href="javascript:changPwd()"><i class="glyphicon glyphicon-question-sign"></i>修改密码</a></li>
+                                    @{if (LoginManager.HasAutority(AuthorityConst.MiMaBaoHu))
+                                        {
+                                            <li><a href="javascript:set()"><i class="glyphicon glyphicon-cog"></i>设置</a></li>
+                                        }
+                                    }
+                                    <li><a href="/login/Logout"><i class="glyphicon glyphicon-log-out"></i>退出</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            @*  <button id="chatview" class="btn btn-default tp-icon chat-icon">
+                                    <i class="glyphicon glyphicon-comment"></i>
+                                </button>*@
+                        </li>
+                    </ul>
+                </div>
+                <!-- header-right -->
+
+            </div>
+            @RenderBody()
+        </div>
+        <!-- mainpanel -->
+
+        <div class="rightpanel">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs nav-justified">
+                <li class="active"><a href="#rp-alluser" data-toggle="tab"><i class="fa fa-users"></i></a></li>
+                <li><a href="#rp-favorites" data-toggle="tab"><i class="fa fa-heart"></i></a></li>
+                <li><a href="#rp-history" data-toggle="tab"><i class="fa fa-clock-o"></i></a></li>
+                <li><a href="#rp-settings" data-toggle="tab"><i class="fa fa-gear"></i></a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <!-- tab-content -->
+        </div>
+        <!-- rightpanel -->
+
+    </section>
+    <div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static" aria-hidden="true"></div>
+    <script src="/files/js/jquery-1.11.1.min.js"></script>
+    <script src="/files/js/jquery.pageUtility.js"></script>
+    <script src="/files/js/jquery.formValidator.js"></script>
+    <script src="/files/js/jquery.menu.js"></script>
+    <script src="/files/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="/files/js/jquery-ui-1.10.3.min.js"></script>
+    <script src="/files/js/bootstrap.min.js"></script>
+    <script src="/files/js/modernizr.min.js"></script>
+    <script src="/files/js/jquery.sparkline.min.js"></script>
+    <script src="/files/js/toggles.min.js"></script>
+    <script src="/files/js/retina.min.js"></script>
+    <script src="/files/js/jquery.cookies.js"></script>
+    <script src="/files/js/jquery.gritter.min.js"></script>
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript">
+        function changeCurrentHospital() {
+            $().pageUtility.pop("切换医院", "/settings/changehospital", 800, 500);
+        }
+        function changeCurrentSection() {
+            $().pageUtility.pop("切换科室", "/settings/changehospitalSection", 800, 500);
+        }
+        function changPwd() {
+            $().pageUtility.pop("修改密码", "/tool/updatepwd/", 800, 500);
+        }
+        function set() {
+            $().pageUtility.pop("设置", "/settings/SetHospitalPassWord/", 800, 500);
+        }
+        function NowOrder(obj) {
+            location.href = "/customerservice/orderindex?starttime=" + obj + " 00:00:00.000" + "&endtime=" + obj + " 23:59:59.999&timekinds=0";
+        }
+
+        function NowOrdered(obj) {
+            location.href = "/customerservice/orderindex?starttime=" + obj + " 00:00:00.000" + "&endtime=" + obj + " 23:59:59.999" + "&arrivestate=1&timekinds=1";
+        }
+
+        function todayWatting(obj) {
+            location.href = "/customerservice/orderindex?starttime=" + obj + " 00:00:00.000" + "&endtime=" + obj + " 23:59:59.999" + "&arrivestate=0&timekinds=2";
+        }
+
+        function OldDayOrder(obj) {
+            location.href = "/customerservice/orderindex?starttime=" + obj + " 00:00:00.000" + "&endtime=" + obj + " 23:59:59.999&timekinds=0";
+        }
+
+        function OldDayOrdered(obj) {
+            location.href = "/customerservice/orderindex?starttime=" + obj + " 00:00:00.000" + "&endtime=" + obj + " 23:59:59.999" + "&arrivestate=1&timekinds=1";
+        }
+
+        function OldDayOrdering(obj) {
+            location.href = "/customerservice/orderindex?starttime=" + obj + " 00:00:00.000" + "&endtime=" + obj + " 23:59:59.999" + "&arrivestate=2&timekinds=2";
+        }
+
+        function viewWaitting(obj) {
+            location.href = "/customerservice/orderindex?&arrivestate=0";
+        }
+
+        function yestodayWatting(obj) {
+            location.href = "/customerservice/orderindex?starttime=" + obj + " 00:00:00.000" + "&endtime=" + obj + " 23:59:59.999" + "&arrivestate=0&timekinds=2";
+        }
+        function tomorrowOrdering(obj) {
+            location.href = "/customerservice/orderindex?starttime=" + obj + " 00:00:00.000" + "&endtime=" + obj + " 23:59:59.999" + "&arrivestate=0&timekinds=2";
+        }
+    </script>
+    @if (LoginManager.GetUser() != null)
+    {
+        if (LoginManager.GetUser().Hospital == null)
+        {
+            <script type="text/javascript">
+                $().pageUtility.addEvent(changeCurrentHospital);
+            </script>
+        }
+        else
+        {
+            if (LoginManager.GetUser().Hospital.GetSelectSectionNames != null)
+            {
+                <script type="text/javascript">
+                    $().ready(function () {
+                        var mianbaoxie = "<li><a href=\"javascript:changeCurrentHospital()\">@LoginManager.GetCurrentHospital().Name</a></li>";
+                        mianbaoxie += "<li><a href=\"javascript:changeCurrentSection()\">@LoginManager.GetUser().SectionStr</a></li>";
+                        $(".breadcrumb").prepend(mianbaoxie);
+                    });
+
+                </script>
+            }
+        }
+    }
+</body>
+</html>

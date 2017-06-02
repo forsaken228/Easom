@@ -1,0 +1,129 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "科室设置";
+}
+@section styles{
+    <link href="/files/css/jquery.datatables.css" rel="stylesheet">
+}
+@section scripts{
+    <script src="/files/js/jquery.datatables.min.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+
+        function setDataTable(searchData) {
+            $('#lstTable').dataTable({
+                "sPaginationType": "full_numbers",
+                "bProcessing": true,
+                "bDestroy": true,
+                "bServerSide": true,
+                "aLengthMenu": [[20, 30, 50, 100], [20, 30, 50, "100"]],
+                "iDisplayLength": 20,
+                "aaSorting": [[1, "desc"]],
+                "sAjaxSource": "/settings/getsectionlistdata",
+                "fnServerParams": function (aoData) {
+                    if (searchData) {
+                        $.each(searchData, function (index, obj) {
+                            aoData.push({ "name": obj.name, "value": obj.value });
+                        });
+                    }
+                },
+                "oLanguage": {
+                    "sUrl": "/files/js/jquery.dataTables.lang.zhcn.txt?4"
+                },
+                "aoColumns": [
+                    {
+                        "sName": "CheckedALL",
+                        "sTitle": "&nbsp;&nbsp;<a href='javascript:checkedALL();'>全选</a>",
+                        "sClass": "td_wid_action",
+                        "bSearchable": false,
+                        "bSortable": false
+                    },
+                    {
+                        "sName": "Name",
+                        "sTitle": "科室名称"
+                    },
+                    {
+                        "sName": "Intro",
+                        "sTitle": "科室简介"
+                    },
+                    {
+                        "sName": "ID",
+                        "sTitle": "操作",
+                        "bSearchable": false,
+                        "bSortable": false,
+                        "sClass": "center"
+                    }
+                ]
+
+            });
+        }
+        function checkedALL() {
+            $().pageUtility.checkedAll("lstTable");
+        }
+        function delCheck() {
+            if (!$().pageUtility.hasChecked("lstTable")) {
+                $().pageUtility.alert("提示", "您当前没有选中任何选项!");
+                return;
+            } else {
+                if (confirm("您确定要删除该科室吗?")) {
+                    del();
+                };
+            }
+        }
+        function add() {
+            $().pageUtility.pop("添加新项", "/settings/Sectionadd", 800, 500);
+        }
+        function search() {
+            $().pageUtility.pop("条件过滤", "/settings/search", 480, 480);
+        }
+        function view(id) {
+            $().pageUtility.pop("查看信息", "/settings/Sectionedit?id=" + id, 800, 500);
+        }
+
+        $().pageUtility.addEvent(setDataTable);
+    </script>
+}
+<div class="pageheader">
+    <h2><i class="fa fa-th-large"></i>科室管理 <span>您可以在这里管理科室信息...</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">您的位置:</span>
+        <ol class="breadcrumb">
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="btn-group mr10">
+               @if (ViewBag.SectionNum > 0 && 4 > ViewBag.SectionNum)
+                {
+                   <button class="btn btn-primary" onclick="javascript:add();" type="button"><i class="fa fa-plus mr5"></i>增加</button>
+                }
+                <button class="btn btn-danger" onclick="javascript:delCheck();" type="button"><i class="fa fa-trash-o mr5"></i>删除</button>
+            </div>
+        </div>
+        <div class="panel-body">
+            @if (ViewBag.SectionNum > 0)
+            { 
+                <div class="alert alert-info">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <strong>提示</strong>您还可以添加 @ViewBag.SectionNum 个科室
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <strong>提示:</strong> 如果需要添加更多的科室，请联系我们
+                </div>
+            }
+            <div class="table-responsive">
+                <table class="table" id="lstTable">
+                </table>
+            </div>
+            <!-- table-responsive -->
+        </div>
+    </div>
+</div>
+

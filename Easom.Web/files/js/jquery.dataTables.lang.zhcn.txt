@@ -1,0 +1,18 @@
+﻿{
+"processing": "加载中...",
+"emptyTable":"没有可用的数据",
+"lengthMenu": "显示 _MENU_ 条 ",
+"zeroRecords": "没有您要搜索的内容",
+"info": "当前 _START_ 到 _END_ 条记录，总 _TOTAL_ 条",
+"infoEmpty": "记录数为0",
+"infoFiltered": "(全部记录数 _MAX_  条)",
+"infoPostFix": "",
+"search": "搜索 ",
+"url": "",
+"paginate": {
+	"first":    " 首页 ",
+	"previous": " 上一页 ",
+	"next":     " 下一页 ",
+	"last":     " 末页 "
+	}
+}

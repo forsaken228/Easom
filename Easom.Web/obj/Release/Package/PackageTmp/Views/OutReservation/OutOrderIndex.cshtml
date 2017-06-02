@@ -1,0 +1,209 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "跨站预约列表";
+}
+@section styles{
+    <link href="/files/css/jquery.datatables.css" rel="stylesheet">
+}
+@section scripts{
+    <script src="/files/js/jquery.datatables.min.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        function checkedALL() {
+            $().pageUtility.checkedAll("table2");
+        }
+        function setDataTable(searchData) {
+            $('#table2').dataTable({
+                "sPaginationType": "full_numbers",
+                "bStateSave": true,
+                "bProcessing": true,
+                "bDestroy": true,
+                "bServerSide": true,
+                "aLengthMenu": [[20, 30, 50, 100], [20, 30, 50, "100"]],
+                "iDisplayLength": 20,
+                "aaSorting": [[6, "desc"]],
+                "sAjaxSource": "/OutReservation/GetOutOrderDataList",
+                "fnServerParams": function (aoData) {
+                    if (searchData) {
+                        $.each(searchData, function (index, obj) {
+                            aoData.push({ "name": obj.name, "value": obj.value });
+                        });
+                    }
+                },
+                "oLanguage": {
+                    "sUrl": "/files/js/jquery.dataTables.lang.zhcn.txt?4"
+                },
+                "aoColumns": [
+                    {
+                        "sName": "CheckedALL",
+                        "sTitle": "&nbsp;&nbsp;<a href='javascript:checkedALL();'>全选</a>",
+                        "sClass": "td_wid_action",
+                        "bSearchable": false,
+                        "bSortable": false
+                    },
+                    {
+                        "sName": "UserName",
+                        "sTitle": "姓名",
+                        "bSearchable": true,
+                        "bSortable": false
+                    },
+                    {
+                        "sName": "Sex",
+                        "bSortable": false,
+                        "sClass": "td_wid_action",
+                        "sTitle": "性别"
+                    },
+                    {
+                        "sName": "Age",
+                        "bSearchable": true,
+                        "bSortable": false,
+                        "sClass": "td_wid_action",
+                        "sTitle": "年龄"
+                    },
+                    {
+                        "sName": "Tel",
+                        "bSortable": false,
+                        "sClass": "td_wid_action_92",
+                        "sTitle": "电话"
+                    },
+                    {
+                        "sName": "OrderTime",
+                        "bSortable": true,
+                        "sClass": "td_wid_datetime",
+                        "sTitle": "预约时间"
+                    },
+                    {
+                        "sName": "CreateTime",
+                        "bSortable": true,
+                        "sClass": "td_wid_datetime",
+                        "sTitle": "添加时间"
+                    },
+                    {
+                        "sName": "ArriveStateType",
+                        "bSortable": false,
+                        "sTitle": "来源"
+                    },
+                    {
+                        "sName": "CreateUserID",
+                        "bSortable": false,
+                        "sTitle": "症状描述"
+                    },
+
+                    {
+                        "sName": "State,ID",
+                        "sTitle": "状态",
+                        "bSearchable": false
+                    },
+                    {
+                        "sName": "CreateUserID",
+                        "bSortable": false,
+                        "sTitle": "预约信息状态"
+                    }
+                ],
+                "aoColumnDefs": [
+                    { "bVisible": false, "aTargets": [10] }
+                ]
+            });
+        }
+
+
+        $().pageUtility.addEvent(setDataTable);
+
+        var ids = "";
+        function viewCheck() {
+            if (!$().pageUtility.hasChecked("table2")) {
+                alert("您当前没有选中任何预约信息!");
+                return;
+            } else {
+                if (confirm("您确定要将该信息状态设为已读吗?")) {
+                    ids = $().pageUtility.getChecked("lstTable");
+                    view();
+                };
+            }
+        }
+
+        function sigleCheck(id) {
+            if (confirm("您确定要将该信息状态设为已读吗?")) {
+                ids = id;
+                view();
+            }
+        }
+
+        function view() {
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: "/customerservice/SetAttribute",
+                data: "ids=" + ids,
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.setLoading("操作成功，正在重置页面...");
+                        setTimeout("parent.location.reload()", 1000);
+                    }
+                    if (data.flag == "error") {
+                        $().pageUtility.closeLoading();
+                        alert("操作失败，请稍后再试!");
+                    }
+                }
+            });
+        }
+
+
+        function delCheck() {
+            if (!$().pageUtility.hasChecked("table2")) {
+                alert("您当前没有选中任何预约信息!");
+                return;
+            } else {
+                if (confirm("您确定要删除该预约信息吗?")) {
+                    del();
+                };
+            }
+        }
+
+        function del() {
+            var ids = $().pageUtility.getChecked("table2");
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: "/customerservice/OutOrderDelete",
+                data: "ids=" + ids,
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.setLoading("删除成功，正在重置页面...");
+                        setTimeout("parent.location.reload()", 1000);
+                    }
+                    if (data.flag == "error") {
+                        $().pageUtility.closeLoading();
+                        alert("删除失败，请稍后再试!");
+                    }
+                }
+            });
+        }
+    </script>
+}
+<div class="pageheader">
+    <h2><i class="fa fa-link"></i>在线挂号<span>第三方网站挂号信息...</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">您的位置:</span>
+        <ol class="breadcrumb">
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="btn-group mr10">
+                <button class="btn btn-danger" onclick="javascript:delCheck();" type="button"><i class="fa fa-trash-o mr5"></i>删除</button>
+                <button class="btn btn-primary" onclick="javascript:viewCheck();" type="button"><i class="fa fa-check-square-o"></i>&nbsp;标为已读</button>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table" id="table2"></table>
+            </div>
+            <!-- table-responsive -->
+        </div>
+    </div>
+</div>
+

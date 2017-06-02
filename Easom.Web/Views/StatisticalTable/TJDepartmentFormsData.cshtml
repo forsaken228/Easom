@@ -1,0 +1,325 @@
+﻿@{
+    ViewBag.Title = "角色明细报表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <link href="/files/css/jquery.datatables.css" rel="stylesheet">
+    <style type="text/css">
+        table tbody tr td, table thead tr th {
+            border-right: 1px solid #ccc;
+        }
+    </style>
+
+}
+@section scripts{
+    <script src="/files/js/jquery.datatables.min.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            GetRoleDate();
+        });
+        $("table tbody tr").mouseover(function() {
+            $(this).css({ "background-color": "#1CAF9A" });
+        }).mouseout(function(event) {
+            var $index = $(this).index();
+            if ($index % 2 == 0) {
+                $(this).css({ "background-color": "#F0F0F0" });
+            } else {
+                $(this).css({ "background-color": "#fff" });
+            }
+        });
+
+        $("input[name=roleName]").change(function() { //科室切换
+            GetRoleDate();
+        });
+
+        function checkvalue() {
+            var str = "";
+            var abc = $("input[name=roleName]:checked").each(function() {
+                str += $(this).val() + ",";
+            });
+            return str;
+        }
+
+        function GetRoleDate() {
+            var loadingTip = $().pageUtility.loading("您请稍等...");
+            var sectionID = checkvalue();
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: '/StatisticalTable/GetTJDepartmentFormsData?roleStr=' + sectionID + '&r=' + Math.random(),
+                success: function(data) {
+                    if (data.flag === "success") {
+                        $("#net").empty();
+                        $("#tel").empty();
+                        $("#oth").empty();
+                        var head = "<tr><td><b>姓名</b></td><td>预约</td><td>到院</td><td>到院率</td><td>预约</td><td>到院</td><td>到院率</td><td>预约</td><td>到院</td><td>到院率</td><td>预约</td><td>到院</td><td>到院率</td><td>预约</td><td>到院</td></tr>";
+                        $("#net").append(head + data.net);
+                        $("#tel").append(head + data.tel);
+                        $("#oth").append(head + data.oth);
+                        if ($("#roleName_Lizhi:checked").val() === "-1") {
+                            MoveLizhi("net");
+                            MoveLizhi("tel");
+                            MoveLizhi("oth");
+                        }
+                        Antsumtd("net");
+                        Antsumtd("tel");
+                        Antsumtd("oth");
+                        $("table tbody tr:nth-child(odd)").css({ "background-color": "#F0F0F0" });
+                    }
+                    if (data.flag === "error") {
+                        $().pageUtility.alert("出错了，请稍后再试！");
+                    }
+                }
+            });
+        }
+
+        function MoveLizhi(id) {
+            $("#" + id + "").find("tr").each(function() {
+                if ($(this).eq(0).text().indexOf("离职") > 0) {
+                    $(this).remove();
+                }
+            });
+        }
+
+
+        function Antsumtd(id) {
+            var str = "<tr><td>合计</td>";
+            var v = 0;
+            $("#" + id + " tr td:nth-child(2)").each(function(i) {
+                if (i > 0) {
+                    v = parseFloat($(this).text()) + parseFloat(v);
+                }
+            });
+            var c = 0;
+            $("#" + id + " tr td:nth-child(3)").each(function(i) {
+                if (i > 0) {
+                    c = parseFloat($(this).text()) + parseFloat(c);
+                }
+            });
+            var daoyuanlv = 0;
+            if (v !== 0) {
+                daoyuanlv = c / v * 100;
+            }
+            str += "<td>" + v + "</td><td>" + c + "</td><td>" + daoyuanlv.toFixed(2) + "%</td>";
+            var mv = 0;
+            $("#" + id + " tr td:nth-child(5)").each(function(i) {
+                if (i > 0) {
+                    mv = parseFloat($(this).text()) + parseFloat(mv);
+                }
+            });
+            var mc = 0;
+            $("#" + id + " tr td:nth-child(6)").each(function(i) {
+                if (i > 0) {
+                    mc = parseFloat($(this).text()) + parseFloat(mc);
+                }
+            });
+            var mdaoyuanlv = 0;
+            if (mv !== 0) {
+                mdaoyuanlv = mc / mv * 100;
+            }
+            str += "<td>" + mv + "</td><td>" + mc + "</td><td>" + mdaoyuanlv.toFixed(2) + "%</td>";
+
+            var nmv = 0;
+            $("#" + id + " tr td:nth-child(8)").each(function(i) {
+                if (i > 0) {
+                    nmv = parseFloat($(this).text()) + parseFloat(nmv);
+                }
+            });
+            var nmc = 0;
+            $("#" + id + " tr td:nth-child(9)").each(function(i) {
+                if (i > 0) {
+                    nmc = parseFloat($(this).text()) + parseFloat(nmc);
+                }
+            });
+            var nmdaoyuanlv = 0;
+            if (v !== 0) {
+                nmdaoyuanlv = nmc / nmv * 100;
+            }
+            str += "<td>" + nmv + "</td><td>" + nmc + "</td><td>" + nmdaoyuanlv.toFixed(2) + "%</td>";
+            var nnmv = 0;
+            $("#" + id + " tr td:nth-child(11)").each(function(i) {
+                if (i > 0) {
+                    nnmv = parseFloat($(this).text()) + parseFloat(nnmv);
+                }
+            });
+            var nnmc = 0;
+            $("#" + id + " tr td:nth-child(12)").each(function(i) {
+                if (i > 0) {
+                    nnmc = parseFloat($(this).text()) + parseFloat(nnmc);
+                }
+            });
+            var nnmdaoyuanlv = 0;
+            if (v !== 0) {
+                nnmdaoyuanlv = nnmc / nnmv * 100;
+            }
+            str += "<td>" + nnmv + "</td><td>" + nnmc + "</td><td>" + nnmdaoyuanlv.toFixed(2) + "%</td>";
+            var yycb = mv - Math.max(nmv, nnmv); //预约月差比
+            var dycb = mc - Math.max(nmc, nnmc); //预约月差比
+
+            str += "<td>" + getColor(yycb) + "</td><td>" + getColor(dycb) + "</td>";
+            str += "</tr>";
+            $("#" + id + " tr:last").after(str);
+        }
+
+        function getColor(cb) {
+            var result = "";
+            if (cb > 0) {
+                result = "<b style='color:red'>↑↑&nbsp;" + Math.abs(cb) + "</b>";
+            } else if (cb === 0) {
+                result = "<b style='color:gray'>＝&nbsp;" + Math.abs(cb) + "</b>";
+            } else {
+                result = "<b style='color:green'>↓↓&nbsp;" + Math.abs(cb) + "</b>";
+            }
+            return result;
+        }
+    </script>
+
+}
+<div class="pageheader">
+    <h2><i class="fa fa-bar-chart-o"></i>角色统计报表<span>您可以在这里查看角色明细报表...</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">您的位置:</span>
+        <ol class="breadcrumb">
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="control-label">角色</label>
+                        <div>
+                            @if (ViewData["role"] != null)
+                            {
+                                foreach (var item in ViewData["role"] as IEnumerable<Role>)
+                                {
+                                    if (item != null)
+                                    {
+                                        <span style="width: 140px; float: left; display: block" class="ckbox ckbox-primary">
+                                            <input name="roleName" type="checkbox" id="roleName_@item.ID" value="@item.ID" />
+                                            <label title="@item.Name" for="roleName_@item.ID">@CHCMS.Utility.StringUtility.CutString(@item.Name,7,true)</label>
+                                        </span>
+                                    }
+                                }
+                            }
+                            <span style="width: 140px; float: left; display: block" class="ckbox ckbox-primary">
+                                <input name="roleName" type="checkbox" id="roleName_Lizhi" value="-1" />
+                                <label title="移除离职人员" for="roleName_Lizhi">移除离职人员</label>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table table-primary" id="table2">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            网络
+                                        </th>
+                                        <th colspan="3">
+                                            今天
+                                        </th>
+                                        <th colspan="3">
+                                            本月
+                                        </th>
+                                        <th colspan="3">
+                                            上月
+                                        </th>
+                                        <th colspan="3">
+                                            上上月
+                                        </th>
+                                        <th colspan="2">
+                                            月差比
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="net"></tbody>
+                            </table>
+                        </div>
+                        <!-- table-responsive -->
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table table-success" id="table2">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            电话
+                                        </th>
+                                        <th colspan="3">
+                                            今天
+                                        </th>
+                                        <th colspan="3">
+                                            本月
+                                        </th>
+                                        <th colspan="3">
+                                            上月
+                                        </th>
+                                        <th colspan="3">
+                                            上上月
+                                        </th>
+                                        <th colspan="2">
+                                            月差比
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tel"></tbody>
+
+                            </table>
+                        </div>
+                        <!-- table-responsive -->
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table table-warning" id="table2">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            其他
+                                        </th>
+                                        <th colspan="3">
+                                            今天
+                                        </th>
+                                        <th colspan="3">
+                                            本月
+                                        </th>
+                                        <th colspan="3">
+                                            上月
+                                        </th>
+                                        <th colspan="3">
+                                            上上月
+                                        </th>
+                                        <th colspan="2">
+                                            月差比
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="oth"></tbody>
+
+                            </table>
+                        </div>
+                        <!-- table-responsive -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

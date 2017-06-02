@@ -1,0 +1,100 @@
+﻿@model Easom.Core.Role
+@{
+    ViewBag.Title = "添加角色";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+@section styles
+{
+    <link rel="stylesheet" href="/files/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" href="/files/css/jquery.tagsinput.css" />
+    <link rel="stylesheet" href="/files/css/dropzone.css" />
+}
+@section scripts
+{
+    <script src="/files/js/jquery.autogrow-textarea.js"></script>
+    <script src="/files/js/bootstrap-timepicker.min.js"></script>
+    <script src="/files/js/jquery.maskedinput.min.js"></script>
+    <script src="/files/js/jquery.tagsinput.min.js"></script>
+    <script src="/files/js/jquery.mousewheel.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/dropzone.min.js"></script>
+
+    <script src="/files/js/custom.js"></script>
+<script type="text/javascript">
+
+    function initPage() {
+        $().formValidator.init("form");
+        $().formValidator.addValidator([
+                { controlID: 'name', must: true, mustMsg: '角色名称不能为空' }
+            ]);
+    }
+
+    $().pageUtility.addEvent(initPage);
+
+    $().formValidator.onPassCallBack = function () {
+        var formValues = [
+                { id: 'name', value: $("#name").val() },
+                { id: 'description', value: $("#description").val() }
+            ];
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: '/administrator/role/edit/@Model.ID',
+            data: $().pageUtility.getFormData(formValues),
+            success: function (data) {
+                if (data.flag == "success") {
+                    $().pageUtility.createNotify("growl-success", false, "提示", "角色编辑成功！正在跳转至列表页面...");
+                    setTimeout("parent.location.reload()", 1000);
+                }
+                else {
+                    $().formValidator.setSubmitButtonState(true);
+                }
+                if (data.flag == "error") {
+                    $().pageUtility.createNotify("growl-warning", false, "提示", "出错了，请稍后再试...");
+                }
+                if (data.flag == "HaveName") {
+                    $().pageUtility.createNotify("growl-warning", false, "提示", "出错了，角色名称重复！...");
+                }
+            }
+        });
+    }
+</script>
+   
+    }
+<div class="panel panel-default panel-min-hieght">
+    <div class="panel-body">
+        <form method="post" name="form1" id="form1" class="form-horizontal form-bordered">
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <strong>提示:</strong>请认真填写表单,加“*”号的是必填项
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label id="title1" class="fldTitle">
+                            角色名称<span class="asterisk">*</span>
+                        </label>
+                        <input id="name" name="name" class="form-control" title="请输入角色名称" type="text" maxlength="255"
+                               value="@Model.Name" tabindex="1" />
+                    </div>
+                </div><div class="row">
+                    <div class="col-sm-12">
+                        <label id="title4" class="fldTitle">
+                            描述
+                        </label>
+                        <textarea id="description" name="description" class="form-control" rows="10" cols="50" placeholder="请输入描述">@Model.Remark</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="fieldwrap">
+                            <button class="btn btn-primary">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

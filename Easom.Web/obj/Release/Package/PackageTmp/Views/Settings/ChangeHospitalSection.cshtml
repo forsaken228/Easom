@@ -1,0 +1,131 @@
+﻿@{
+    ViewBag.Title = "医院设置";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+@section styles
+{
+    <link rel="stylesheet" href="/files/css/jquery.tagsinput.css" />
+    <link rel="stylesheet" href="/files/css/dropzone.css" />
+}
+@section scripts
+{
+    <script src="/files/js/jquery.maskedinput.min.js"></script>
+    <script src="/files/js/jquery.tagsinput.min.js"></script>
+    <script src="/files/js/jquery.mousewheel.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/dropzone.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        $().formValidator.init("form");
+        $().formValidator.onPassCallBack = function () {
+            var formValues = checkvalue();
+            $().formValidator.addValidator([
+                { controlID: 'checkboxInput', mustMsg: '您必须至少选择一个科室！', rule: 'checkboxs' }
+            ]);
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: '/settings/ChangeHospitalSection',
+                data: "ids=" + formValues,
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.createSuccessNotify("提示信息","操作成功！正在跳转至列表页面...");
+                        setTimeout("parent.location.reload()", 1000);
+                    }
+                    else {
+                        $().pageUtility.closeLoading();
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                    if (data.flag == "error") {
+                        $().pageUtility.alert("提示","出错了，请稍后再试！");
+                    }
+                }
+            });
+        }
+
+
+        function checkvalue() {
+            var str = "";
+            var abc = $(":checkbox:checked").each(function () {
+                str += $(this).val() + ",";
+            });
+
+            return str;
+        }
+    </script>
+
+}
+<div class="panel panel-default panel-min-hieght">
+    <div class="panel-body">
+        <form method="post" name="form1" id="form1" class="form-horizontal form-bordered">
+            @if (ViewData["allSection"] != null)
+            {
+                <div class="alert alert-info">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <strong>提示:</strong> 请选择科室，点击确定即可
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="control-label">
+                                科室名称<span class="asterisk">*</span>
+                            </label>
+                            <div>
+                                @if (ViewData["allSection"] != null)
+                                {
+                                    foreach (var item in ViewData["allSection"] as IEnumerable<Section>)
+                                    {
+                                        if (ViewData["userSection"] != null)
+                                        {
+
+                                            if (Section.IsChecked(ViewData["userSection"] as IList<Section>, item.ID))
+                                            {
+                                                <span class="ckbox ckbox-primary rdioPosition">
+                                                    <input name="checkboxInput" type="checkbox" id="int_section_@item.ID" checked value="@item.ID" />
+                                                    <label for="int_section_@item.ID">@item.Name</label>
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="ckbox ckbox-primary rdioPosition">
+                                                    <input name="checkboxInput" type="checkbox" id="int_section_@item.ID" value="@item.ID" />
+                                                    <label for="int_section_@item.ID">@item.Name</label>
+                                                </span>
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            <span class="ckbox ckbox-primary rdioPosition">
+                                                <input name="checkboxInput" type="checkbox" id="int_section_@item.ID" value="@item.ID" />
+                                                <label for="int_section_@item.ID">@item.Name</label>
+                                            </span>
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            @*<div class="buttons bottom-round noboder">
+                                <div class="panel-footer">*@
+                                    <button class="btn btn-primary" type="submit">提交</button>
+                                @*</div>
+                            </div>*@
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <strong>提示:</strong>您还没有添加任何科室，请先添加科室，再进行其它操作！
+                </div>
+            }
+        </form>
+    </div>
+</div>

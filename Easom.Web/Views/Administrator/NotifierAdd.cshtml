@@ -1,0 +1,123 @@
+﻿@{
+    ViewBag.Title = "NotifierAdd";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+@section styles{
+    <link href="/files/css/jquery.datatables.css" rel="stylesheet">
+}
+@section scripts{
+    <script src="/files/js/jquery.datatables.min.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+<script type="text/javascript">
+    function setDataTable(searchData) {
+        $('#table2').dataTable({
+            "sPaginationType": "full_numbers",
+            "bProcessing": true,
+            "bDestroy": true,
+            "bServerSide": true,
+            "aLengthMenu": [[20, 30, 50, 100], [20, 30, 50, "100"]],
+            "iDisplayLength": 20,
+            "aaSorting": [[1, "Desc"]],
+            "sAjaxSource": "/administrator/notifier/GetAllUserData",
+            "fnServerParams": function (aoData) {
+                if (searchData) {
+                    $.each(searchData, function (index, obj) {
+                        aoData.push({ "name": obj.name, "value": obj.value });
+                    });
+                }
+            },
+            "oLanguage": {
+                "sUrl": "/files/js/jquery.dataTables.lang.zhcn.txt?4"
+            },
+            "aoColumns": [
+                {
+                    "sName": "CheckedALL",
+                    "sTitle": "&nbsp;&nbsp;<a href='javascript:checkedALL();'>全选</a>",
+                    "sClass": "td_wid_action",
+                    "bSearchable": false,
+                    "bSortable": false
+                },
+                {
+                    "sName": "Name",
+                    "sTitle": "用户名",
+                    "bSortable": false
+                },
+                {
+                    "sName": "TrueName",
+                    "sTitle": "真实姓名",
+                    "bSortable": true
+                },
+
+                {
+                    "sName": "Telephone",
+                    "sTitle": "手机号码",
+                    "bSortable": false
+                },
+                {
+                    "sName": "Email",
+                    "sTitle": "电子邮件",
+                    "bSortable": false
+                }
+
+            ]
+
+        });
+    }
+
+    function checkedALL() {
+        $().pageUtility.checkedAll("table2");
+    }
+
+    function Check() {
+        if (!$().pageUtility.hasChecked("lstTable")) {
+            $().pageUtility.alert("您当前没有选中任何用户!");
+            return;
+        } else {
+            che();
+        }
+    }
+
+    function che() {
+        //$().pageUtility.loading("正在添加中...");
+        var ids = $().pageUtility.getChecked("lstTable");
+
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: "/administrator/notifier/add",
+            data: "ids=" + ids,
+            success: function (data) {
+                if (data.flag == "success") {
+                    $().pageUtility.createSuccessNotify("系统提示", "用户添加成功，正在重置页面...");
+                    setTimeout('parent.location.reload()', 1000);
+                }
+                else {
+                    $().formValidator.setSubmitButtonState(true);
+                }
+                if (data.flag == "error") {
+                    $().pageUtility.alert("提示","出错了，请稍后再试！");
+                    $().formValidator.setSubmitButtonState(true);
+                }
+            }
+        });
+    }
+    $().pageUtility.addEvent(setDataTable);
+</script>
+    }
+<div class="contentpanel">
+    <div class="panel panel-default panel-min-hieght">
+        <div class="panel-heading">
+            <div class="btn-group mr10">
+                <button class="btn btn-primary" onclick="javascript: Check();" type="button"><i class="fa fa-plus mr5"></i>添加</button>
+                @*<button class="btn btn-primary" onclick="javascript:delCheck();" type="button"><i class="fa fa-trash-o mr5"></i>删除</button>*@
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table" id="table2"></table>
+            </div>
+            <!-- table-responsive -->
+        </div>
+    </div>
+</div>

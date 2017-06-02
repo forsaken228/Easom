@@ -1,0 +1,173 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "患者资源管理";
+}
+@section styles{
+    <link href="/files/css/jquery.datatables.css" rel="stylesheet">
+    <style>
+        .mediaImg {
+            text-align: center;
+        }
+
+            .mediaImg img {
+                vertical-align: middle;
+                width: 45px;
+                -moz-border-radius: 50px;
+                -webkit-border-radius: 50px;
+                border-radius: 50px;
+            }
+    </style>
+}
+@section scripts{
+    <script src="/files/js/jquery.datatables.min.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script>
+        var nowWindows_height = $(window).height() - 160;
+        var nowWindows_width = $(window).width() - 160;
+        function setDataTable(searchData) {
+            $('.table').dataTable({
+                "sPaginationType": "full_numbers",
+                "bStateSave": true,
+                "bProcessing": true,
+                "bDestroy": true,
+                "bServerSide": true,
+                "aLengthMenu": [[20, 30, 50, 100], [20, 30, 50, "100"]],
+                "iDisplayLength": 20,
+                "aaSorting": [[4, "desc"]],
+                "sAjaxSource": "/customerservice/GetlistMyData",
+                //  "sAjaxSource": "/OutReservation/GetOutOrderDataList",
+                "fnServerParams": function (aoData) {
+                    if (searchData) {
+                        $.each(searchData, function (index, obj) {
+                            aoData.push({ "name": obj.name, "value": obj.value });
+                        });
+                    }
+                },
+                "oLanguage": {
+                    "sUrl": "/files/js/jquery.dataTables.lang.zhcn.txt?4"
+                },
+                "aoColumns": [
+                    {
+                        "sName": "Name",
+                        "sTitle": "基本信息",
+                        "sClass": "td_wid_action_200",
+                        "bSearchable": true,
+                        "bSortable": false
+                    },
+                    {
+                        "sName": "ExpertIdentifier",
+                        "bSortable": false,
+                        "sClass": "td_wid_action_200",
+                        "sTitle": "预约信息"
+                    },
+                    {
+                        "sName": "remarkMsg",
+                        "bSortable": false,
+                        "sClass": "td_wid_action_200",
+                        "sTitle": "来源信息"
+                    },
+                    {
+                        "sName": "OrderTime",
+                        "bSortable": true,
+                        "sClass": "td_wid_pcturesmall",
+                        "sTitle": "下次回访时间"
+                    },
+                    {
+                        "sName": "CreateUserID",
+                        "bSortable": true,
+                        "sClass": "td_wid_action_200",
+                        "sTitle": "部门/客服信息"
+                    },
+                    {
+                        "sName": "AddTime",
+                        "sClass": "td_wid_action_200",
+                        "bSortable": true,
+                        "sTitle": "添加时间"
+                    },
+                    {
+                        "sName": "ID",
+                        "sTitle": "操作",
+                        "bSearchable": false,
+                        "sClass": "td_wid_pcturesmall"
+                    }
+                ]
+            });
+        }
+        $().pageUtility.addEvent(setDataTable);
+        function checkedALL() {
+            $().pageUtility.checkedAll("table2");
+        }
+
+        function edit(id) {
+            $().pageUtility.pop("编辑新项", "/CustomerService/MyselfOrderedit/" + id, 800, nowWindows_height);
+        }
+
+        function add() {
+            $().pageUtility.pop("添加新项", "/CustomerService/MyselfOrderadd/", 800, nowWindows_height);
+        }
+        function password(id) {
+            $().pageUtility.pop("详细信息", "/customerservice/password?id=" + id, nowWindows_width, nowWindows_height);
+        }
+        function chatcontent(id) {
+            $().pageUtility.pop("详细信息", "/customerservice/Myselfchatcontent?id=" + id, nowWindows_width, nowWindows_height);
+        }
+        function toOrder(id) {
+            $().pageUtility.pop("添加新项", "/CustomerService/Orderedit/" + id, 800, nowWindows_height);
+        }
+        function delCheck(id) {
+            if (confirm("您确定要删除该客户信息吗?")) {
+                del(id);
+            }
+        }
+        function del(id) {
+            //$().pageUtility.loading("正在删除...");
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: "/customerservice/orderdelete",
+                data: "ids=" + id,
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.createNotify("growl-success", false, "提示：", "删除成功！正在跳转至列表页面...");
+                        setTimeout('parent.location.reload()', 1000);
+                    }
+                    else {
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                    if (data.flag == "error") {
+                        alert("出错了，请稍后再试！");
+                    }
+                }
+            });
+        }
+
+        function callbackManager(id, state) {
+            $().pageUtility.pop("回访记录", "/customerservice/callback?id=" + id + "&state=" + state, 800, 600);
+        }
+
+    </script>
+}
+<div class="pageheader">
+    <h2><i class="glyphicon glyphicon-user"></i>患者资源 <span>这里用于存放您的潜在客户...</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">您的位置:</span>
+        <ol class="breadcrumb">
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="btn-group mr10">
+                <button class="btn btn-primary" onclick="javascript:add();" type="button"><i class="fa fa-plus mr5"></i>增加</button>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table" id="table2"></table>
+            </div>
+            <!-- table-responsive -->
+        </div>
+    </div>
+</div>

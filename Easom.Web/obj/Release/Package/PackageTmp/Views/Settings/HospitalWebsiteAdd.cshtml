@@ -1,0 +1,137 @@
+﻿@model IList<Easom.Core.Section>
+@{
+    ViewBag.Title = "添加网站";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+@section styles 
+{
+    <link rel="stylesheet" href="/files/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" href="/files/css/jquery.tagsinput.css" />
+    <link rel="stylesheet" href="/files/css/dropzone.css" />
+}
+@section scripts
+{
+    <script src="/files/js/jquery.autogrow-textarea.js"></script>
+    <script src="/files/js/bootstrap-timepicker.min.js"></script>
+    <script src="/files/js/jquery.maskedinput.min.js"></script>
+    <script src="/files/js/jquery.tagsinput.min.js"></script>
+    <script src="/files/js/jquery.mousewheel.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/dropzone.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        function initPage() {
+            $().formValidator.init("form");
+            $().formValidator.addValidator([
+                     { controlID: 'url', must: true, mustMsg: '请输入网址' },
+                     { controlID: 'rad', mustMsg: '你必须选择一个科室！', rule: 'radioboxs' }
+            ]);
+            $("input[name='rad']:eq(0)").attr("checked", "checked");
+        }
+        $().pageUtility.addEvent(initPage);
+        $().formValidator.onPassCallBack = function () {
+            //$().pageUtility.loading("您请稍等...");
+            var formValues = [
+                    { id: 'url', value: $("#url").val() },
+                    { id: 'sectionid', value: $("input[name='rad']:checked").val() },
+                    { id: 'source', value: $("input[name='source']:checked").val() }
+            ];
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: '/settings/hospitalwebsiteadd/',
+                data: $().pageUtility.getFormData(formValues),
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.createNotify("growl-success", false, "网址添加成功！正在跳转至列表页面...");
+                        $().formValidator.setSubmitButtonState(true);
+                        setTimeout("parent.location.reload()", 1000);
+                    }
+                 else   if (data.flag == "error") {
+                     $().formValidator.setSubmitButtonState(true);
+                     $().pageUtility.createNotify("growl-warning", false, "出错了，请稍后再试！");
+                    }
+                 else if (data.flag == "HasUrl") {
+                     $().formValidator.setSubmitButtonState(true);
+                     $().pageUtility.createNotify("growl-warning", false, "URL重复！");
+                    }
+                }
+            });
+        }
+    </script>
+}
+<div class="panel panel-default panel-min-hieght">
+    <div class="panel-body">
+        <div class="form-grid">
+            <form method="post" name="form1" id="form1" class="form-horizontal form-bordered">
+                <div class="alert alert-info">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <strong>提示:</strong> 加“*”号的是必填项
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="control-label">
+                                科室<span class="asterisk">*</span>
+                            </label>
+                            <div class="blockStyle input-uniform">
+                                @{
+                                    if (Model != null)
+                                    {
+                                        foreach (var item in Model)
+                                        {
+                                            <span class="rdio">
+                                                <input name="rad" id="sectionid_@item.ID" type="radio" value="@item.ID" tabindex="7" />
+                                                <label for="sectionid_@item.ID">
+                                                    @item.Name
+                                                </label>
+                                            </span>
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="control-label">
+                                平台类型<span class="asterisk">*</span>
+                            </label>
+                            <div>
+                                <span class="rdio">
+                                    <input type="radio" name="source" value="0" id="yes" checked>
+                                    <label for="yes">网站</label>
+                                </span>
+                                <span class="rdio">
+                                    <input type="radio" name="source" value="1" id="no">
+                                    <label for="no">微信</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="control-label">
+                                网址<span class="asterisk">*</span>
+                            </label>
+                            <input id="url" name="url" class="form-control" title="请输入网址"
+                                   type="text" maxlength="255" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="buttons bottom-round noboder">
+                                <div class="panel-footer">
+                                    <button class="btn btn-primary">提交</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

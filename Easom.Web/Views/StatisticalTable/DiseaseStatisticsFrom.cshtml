@@ -1,0 +1,101 @@
+﻿@{
+    ViewBag.Title = "疾病统计报表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <link href="/files/css/jquery.datatables.css" rel="stylesheet">
+<style type="text/css">
+    table thead tr td {
+        border-right: 1px solid #ccc;
+        text-align: center;
+    }
+</style>
+
+}
+@section scripts{
+    <script src="/files/js/jquery.datatables.min.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        $("table tr").mouseover(function () {
+            $(this).css({ "background-color": "#FFFF99" });
+        }).mouseout(function (event) {
+            var $index = $(this).index();
+            if ($index % 2 == 0) {
+                $(this).css({ "background-color": "#F0F0F0" });
+            } else {
+                $(this).css({ "background-color": "#fff" });
+            }
+        });
+        $("table  tr:nth-child(odd)").css({ "background-color": "#F0F0F0" });
+    </script>
+}
+<div class="pageheader">
+    <h2><i class="fa fa-bar-chart-o"></i>病种信息统计报表<span>您可以在这里查看媒体来源统计报表...</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">您的位置:</span>
+        <ol class="breadcrumb">
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="btn-group">
+                <button data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button">
+                    <i class="glyphicon glyphicon-calendar"></i> 月份
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    @{
+                        for (int i = 0; i < 7; i++)
+                        {
+                            <li><a title="@DateTime.Now.AddMonths(-i).ToString("yyyy-MM")" href="/StatisticalTable/DiseaseStatisticsFrom?month=@i">@DateTime.Now.AddMonths(-i).ToString("yyyy-MM")</a></li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-primary table-bordered">
+                            <thead>
+                                <tr>
+                                    @Html.Raw("" + ViewData["HeandTwo"] + "")
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        预约
+                                    </td>
+                                    <td>
+                                        到院
+                                    </td>
+                                    <td>
+                                        预约
+                                    </td>
+                                    <td>
+                                        到院
+                                    </td>
+                                    <td>
+                                        预约
+                                    </td>
+                                    <td>
+                                        到院
+                                    </td>
+                                </tr>
+                                @Html.Raw("" + ViewData["Heand"] + "")
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

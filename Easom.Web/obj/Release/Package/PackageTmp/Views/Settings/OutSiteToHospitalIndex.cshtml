@@ -1,0 +1,159 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "跨站预约接口设置";
+}
+<div class="container_12">
+    <div class="widget-panel grid_12">
+        <div class="widget-top">
+            <h4>
+                跨站预约接口设置</h4>
+        </div>
+        <div class="widget-content module">
+            <ul class="icons-b">
+                <li><a title="删除" href="javascript:delCheck();"><span class="icon-block-color cross-c">
+                </span>icon-label</a></li>
+                <li><a title="添加" href="javascript:add();"><span class="icon-block-color add-c">icon-label</span></a></li>
+            </ul>
+            <table id="lstTable" class="display data-table-theme">
+                <tfoot>
+                    <tr>
+                        <th>
+                            &nbsp;&nbsp;<a href="javascript:checkedALL();">全选</a>
+                        </th>
+                        <th>
+                            ID
+                        </th>
+                        <th>
+                            URL
+                        </th>
+                 
+                        <th>
+                            编辑
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    function setDataTable(searchData) {
+        $('.data-table-theme').dataTable({
+            "sPaginationType": "full_numbers",
+            "bProcessing": true,
+            "bDestroy": true,
+            "bServerSide": true,
+            "aLengthMenu": [[20, 30, 50, 100], [20, 30, 50, "100"]],
+            "iDisplayLength": 20,
+            "aaSorting": [[2, "desc"]],
+            "sAjaxSource": "/settings/GetOutSiteToHospitalDataList",
+            "fnServerParams": function (aoData) {
+                if (searchData) {
+                    $.each(searchData, function (index, obj) {
+                        aoData.push({ "name": obj.name, "value": obj.value });
+                    });
+                }
+            },
+            "oLanguage": {
+                "sUrl": "/files/admin/js/jquery.dataTables.lang.zhcn.txt?4"
+            },
+            "aoColumns": [
+                { "sName": "CheckedALL",
+                    "sTitle": "&nbsp;&nbsp;<a href='javascript:checkedALL();'>全选</a>",
+                    "sClass": "td_wid_checkbox",
+                    "bSearchable": false,
+                    "bSortable": false,
+                    //"asSorting": [],
+                    "fnRender": function (obj) {
+                        var sReturn = obj.aData[obj.iDataColumn];
+                        var html = '<input type="checkbox" value="' + sReturn + '"/>';
+                        return html;
+                    }
+                },
+                {
+                    "sName": "ID",
+                    "sTitle": "编号",
+                    "bSortable": false,
+                    "bSearchable": false
+                },
+                {
+                    "sName": "URL",
+                    "sTitle": "URL",
+                    "fnRender": function (obj) {
+                        var sReturn = obj.aData[obj.iDataColumn];
+                        var returns = obj.aData[1];
+                        var html = '<a href="javascript:edit(' + returns + ')">' + sReturn + '</a>';
+                        return html;
+                    }
+                },
+                {
+                    "sName": "ID",
+                    "sTitle": "编辑",
+                    "bSearchable": false,
+                    "bSortable": false,
+                    "sClass": "center",
+                    "fnRender": function (obj) {
+                        var sReturn = obj.aData[obj.iDataColumn];
+                        var html = '<span><a class="action-icons c-edit" href="javascript:edit(' + sReturn + ')" title="编辑">Edit</a></span>';
+                        return html;
+                    }
+                }
+            ],
+            "aoColumnDefs": [
+                { "bVisible": false, "aTargets": [1] }
+            ]
+
+        });
+    }
+
+    function checkedALL() {
+        $().pageUtility.checkedAll("lstTable");
+    }
+
+    function delCheck() {
+        if (!$().pageUtility.hasChecked("lstTable")) {
+            alert("您当前没有选中任何选项!");
+            return;
+        } else {
+            if (confirm("您确定要删除该选项吗?")) {
+                del();
+            };
+        }
+    }
+
+    function del() {
+        $().pageUtility.loading("正在删除...");
+        var ids = $().pageUtility.getChecked("lstTable");
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: "/settings/outsitetohospitaldelete",
+            data: "ids=" + ids,
+            success: function (data) {
+                if (data.flag == "success") {
+                    $().pageUtility.setLoading("删除成功，正在重置页面...");
+                    setTimeout("parent.location.reload()", 1000);
+                }
+                if (data.flag == "error") {
+                    $().pageUtility.closeLoading();
+                    alert("删除失败，请稍后再试!");
+                }
+            }
+        });
+    }
+
+    function add() {
+        $().pageUtility.pop("添加新项", "/settings/outsitetohospitaladd", 800, 500);
+    }
+
+
+    function goBack() {
+        history.go(-1);
+    }
+
+    function edit(id) {
+        $().pageUtility.pop("查看信息", "/settings/outsitetohospitaledit?id=" + id, 800, 500);
+    }
+    $().pageUtility.addEvent(setDataTable);
+</script>

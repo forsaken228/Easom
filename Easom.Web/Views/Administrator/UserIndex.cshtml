@@ -1,0 +1,175 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "用户管理";
+}
+@section styles{
+    <link href="/files/css/jquery.datatables.css" rel="stylesheet">
+}
+@section scripts{
+    <script src="/files/js/jquery.datatables.min.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        function setDataTable(searchData) {
+            $('.table').dataTable({
+            "sPaginationType": "full_numbers",
+            "bProcessing": true,
+            "bDestroy": true,
+            "bServerSide": true,
+            "aLengthMenu": [[20, 30, 50, 100], [20, 30, 50, "100"]],
+            "iDisplayLength": 20,
+            "aaSorting": [[1, "desc"]],
+            "sAjaxSource": "/administrator/user/getlistuserdata",
+            "fnServerParams": function (aoData) {
+                if (searchData) {
+                    $.each(searchData, function (index, obj) {
+                        aoData.push({ "name": obj.name, "value": obj.value });
+                    });
+                }
+            },
+            "oLanguage": {
+                "sUrl": "/files/js/jquery.dataTables.lang.zhcn.txt?4"
+            },
+            "aoColumns": [
+                { "sName": "CheckedALL",
+                    "sTitle": "&nbsp;&nbsp;<a href='javascript:checkedALL();'>全选</a>",
+                    "sClass": "td_wid_action",
+                    "bSearchable": false,
+                    "bSortable": false
+                },
+                {
+                    "sName": "ID",
+                    "sTitle": "编号",
+                    "sClass": "td_wid_action",
+                    "bSearchable": false
+                },
+                {
+                    "sName": "Name",
+                    "sTitle": "用户名",
+                    "sClass": "td_wid_datetime",
+                    "bSearchable": true,
+                    "bSortable": true
+                },
+                {
+                    "sName": "TrueName",
+                    "sTitle": "真实姓名",
+                    "sClass": "td_wid_pcturesmall",
+                    "bSearchable": false,
+                    "bSortable": false
+                },
+                {
+                    "sName": "RoleType",
+                    "sTitle": "角色名称",
+                    "sClass": "td_wid_left_92",
+                    "bSortable": false
+                },
+                {
+                    "sName": "Hospital",
+                    "sTitle": "所属医院",
+                    "bSortable": false
+                },
+                {
+                    "sName": "CreateTime",
+                    "sTitle": "创建时间",
+                    "sClass": "td_wid_pcturesmall",
+                    "bSortable": true
+                },
+                {
+                    "sName": "Action",
+                    "sTitle": "操作",
+                    "bSearchable": false,
+                    "bSortable": false,
+                    "sClass": "td_wid_action_92"
+                }
+            ]
+        });
+    }
+    function checkedALL() {
+        $().pageUtility.checkedAll("table2");
+    }
+
+    function delCheck() {
+        if (!$().pageUtility.hasChecked("table2")) {
+            $().pageUtility.alert("提示","您当前没有选中任何用户!");
+            return;
+        } else {
+            if (confirm("您确定要删除该用户吗?")) {
+                del();
+            };
+        }
+    }
+
+    function del() {
+        var ids = $().pageUtility.getChecked("table2");
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: "/administrator/user/delete",
+            data: "ids=" + ids,
+            success: function (data) {
+                if (data.flag == "success") {
+                    $().pageUtility.createNotify("growl-success", false, "提示：", "操作成功！正在跳转至列表页面...");
+                    setTimeout('parent.location.reload()', 1000);
+                }
+                else {
+                    $().pageUtility.closeLoading();
+                    $().formValidator.setSubmitButtonState(true);
+                }
+                if (data.flag == "error") {
+                    $().pageUtility.createNotify("growl-warning", false, "错误提示：", "请稍后再试！");
+                }
+            }
+        });
+    }
+    function add() {
+        $().pageUtility.pop("添加新项", "/administrator/user/add", 800, 500);
+    }
+    function edit(id) {
+        $().pageUtility.pop("编辑项", "/administrator/user/edit/" + id, 800, 500);
+    }
+    function setrole(id) {
+        $().pageUtility.pop("设置角色", "/administrator/user/setrole/" + id, 800, 500);
+    }
+    function sethospital(id) {
+        $().pageUtility.pop("设置医院", "/administrator/user/sethospital/" + id, 800, 500);
+    }
+    function detail(id) {
+        $().pageUtility.pop("个人详细信息", "/administrator/userdetailinformation/" + id, 800, 400);
+    }
+    function search() {
+        $().pageUtility.pop("用户搜索","/administrator/usersearch",800,500);
+    }
+      function setSearchDataForDataTable() { 
+        var searchData =@Html.Raw(ViewBag.searchDatas);
+        setDataTable(searchData);
+    }
+    $().pageUtility.addEvent(setSearchDataForDataTable);
+</script>
+    }
+<div class="pageheader">
+    <h2><i class="fa fa-users"></i>用户管理 <span>您可以在这里管理您的用户...</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">所在位置:</span>
+        <ol class="breadcrumb">
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="btn-group mr10">                
+                <button class="btn btn-primary" onclick="javascript:add();" type="button"><i class="fa fa-plus mr5"></i>添加</button>
+                <button class="btn btn-danger" onclick="javascript:delCheck();" type="button"><i class="fa fa-trash-o mr5"></i>删除</button>
+                <button class="btn btn-primary" onclick="javascript:search();" type="button"><i class="fa fa-search mr5"></i>查找</button>
+            </div>
+       </div>
+         <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table" id="table2">
+                    </table>
+                </div>
+                <!-- table-responsive -->
+             </div>
+    </div>
+</div>
+

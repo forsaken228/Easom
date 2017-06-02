@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "导入商务通信息";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+<div class="widget-panel noboder">
+    <div class="widget-content module">
+        <div class="elem-grid">
+            <div class="notification-wrap information">
+                <span class="icon-information">提示语 ：</span>请点击按钮，选择包含商务通信息的文件
+            </div>
+        </div>
+        <div class="form-grid">
+     <form method="post" name="form1" id="form1" class="topLabel">
+            <ul>
+                <li>
+                    <div class="fieldwrap">
+                        <div id="fileQueue" style="padding:10px 0;">
+                        <input type="file" name="uploadify" id="uploadify" />
+                        <input type="hidden" name="filePath" id="filePath"  value="" class="large textips" maxlength="255" tabindex="1"/>                  
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function initPage() {
+        create();
+        $().formValidator.init("form");
+    }
+    $().pageUtility.addEvent(initPage);
+
+    function create() {
+        $('#uploadify').uploadify({
+            uploader: '/JJ_SwtChatManager/InExcel',
+            swf: '/files/admin/style/uploadify/flash/uploadify.swf',
+            formData: { "flashuploadkey": '@RequestUtility.GetCookieValue(LoginManager.UserCookieName)' },
+            width: 60,
+            height: 23,
+            queueID: 'fileQueue',
+            buttonText: "上传",
+            buttonCursor: 'hand',
+            fileSizeLimit: 300000,
+            fileObjName: 'Filedata',
+            fileTypeExts: "*.xls",
+            fileTypeDesc: "请选择 EXCEL 文件",
+            auto: true,
+            multi: false,
+            onUploadSuccess: function (file, data, response) {
+
+                var savePath = data;
+                setTimeout("parent.location.reload()", 1000);
+                savePath = savePath.substring(1, savePath.length - 1);
+                
+                if (savePath == "success") {
+                    $().pageUtility.loading("操作成功，正在更新页面...");
+                    setTimeout("parent.location.reload()", 1000);
+                }
+                else {
+                    setTimeout("parent.location.reload()", 1000);
+                    alert("数据出错或重复，请检查数据！");
+                }
+            }
+
+
+        });
+    }
+</script>
+<script type="text/javascript">
+    window.onload = function () {
+        var div = document.getElementById("uniform-uploadify");
+        if (div != null) {
+            div.setAttribute("class", "");
+            var spans = div.getElementsByTagName("span");
+            if (spans != null && spans.length > 0) {
+                for (var i = 1; i < spans.length; i++) {
+                    spans[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+

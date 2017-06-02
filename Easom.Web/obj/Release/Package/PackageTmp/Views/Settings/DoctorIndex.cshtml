@@ -1,0 +1,144 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "医生设置";
+}
+@section styles{
+    <link href="/files/css/jquery.datatables.css" rel="stylesheet">
+}
+@section scripts{
+    <script src="/files/js/jquery.datatables.min.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        function setDataTable(searchData) {
+            $('#lstTable').dataTable({
+                "sPaginationType": "full_numbers",
+                "bProcessing": true,
+                "bDestroy": true,
+                "bServerSide": true,
+                "aLengthMenu": [[20, 30, 50, 100], [20, 30, 50, "100"]],
+                "iDisplayLength": 20,
+                "aaSorting": [[1, "desc"]],
+                "sAjaxSource": "/settings/getdoctorlistData",
+                "fnServerParams": function (aoData) {
+                    if (searchData) {
+                        $.each(searchData, function (index, obj) {
+                            aoData.push({ "name": obj.name, "value": obj.value });
+                        });
+                    }
+                },
+                "oLanguage": {
+                    "sUrl": "/files/js/jquery.dataTables.lang.zhcn.txt?4"
+                },
+                "aoColumns": [
+                    {
+                        "sName": "CheckedALL",
+                        "sTitle": "&nbsp;&nbsp;<a href='javascript:checkedALL();'>全选</a>",
+                        "sClass": "td_wid_action",
+                        "bSearchable": false,
+                        "bSortable": false
+                    },
+                    {
+                        "sName": "Identifier",
+                        "sTitle": "医生编号"
+                    },
+                    {
+                        "sName": "Name",
+                        "sClass": "center",
+                        "sTitle": "医生姓名"
+                    },
+                      {
+                          "sName": "SectionName",
+                          "sClass": "center",
+                          "bSortable": false,
+                          "sTitle": "科室"
+                      },
+                    {
+                        "sName": "ID",
+                        "sTitle": "操作",
+                        "bSearchable": false,
+                        "bSortable": false,
+                        "sClass": "center"
+                    }
+                ]
+
+            });
+        }
+
+        function checkedALL() {
+            $().pageUtility.checkedAll("lstTable");
+        }
+
+        function delCheck() {
+            if (!$().pageUtility.hasChecked("lstTable")) {
+                $().pageUtility.alert("提示","您当前没有选中任何医生!");
+                return;
+            } else {
+                if (confirm("您确定要删除该医生吗?")) {
+                    del();
+                };
+            }
+        }
+
+        function del() {
+            var ids = $().pageUtility.getChecked("lstTable");
+            $.ajax({
+                dataType: "json",
+                type: "GET",
+                url: "/settings/doctordelete?ids=" + ids,
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.createNotify("growl-success", false, "提示", "删除成功！正在重置页面...");
+                        setTimeout("parent.location.reload()", 1000);
+                    }
+                    if (data.flag == "error") {
+                        $().pageUtility.closeLoading();
+                        $().pageUtility.alert("提示","删除失败，请稍后再试!");
+                    }
+                }
+            });
+        }
+
+        function add() {
+            $().pageUtility.pop("添加新项", "/settings/doctoradd", 800, 500);
+        }
+        function checkchannel() {
+            if (!$().pageUtility.hasChecked("lstTable")) {
+                $().pageUtilityalert("提示", "您当前没有选中!");
+                return;
+            } else {
+                var ids = $().pageUtility.getChecked("lstTable");
+                $().pageUtility.pop("移动科室", "/settings/SectionMove?ids=" + ids + "&type=1");
+            }
+        }
+        function view(id) {
+            $().pageUtility.pop("查看信息", "/settings/DoctorEdit?id=" + id, 800, 500);
+        }
+        $().pageUtility.addEvent(setDataTable);
+</script>
+    }
+<div class="pageheader">
+    <h2><i class="fa fa-user-md" style="padding:6px 9px"></i>医生设置 <span>您可以在这里管理医生信息...</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">您的位置:</span>
+        <ol class="breadcrumb">
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+                        <div class="btn-group mr10">
+                <button class="btn btn-primary" onclick="javascript:add();" type="button"><i class="fa fa-plus mr5"></i>增加</button>
+                <button class="btn btn-danger"  onclick="javascript:delCheck();" type="button"><i class="fa fa-trash-o mr5"></i>删除</button>
+            </div>
+        </div>
+         <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table" id="lstTable">
+                    </table>
+                </div>
+                <!-- table-responsive -->
+             </div>
+    </div>
+</div>

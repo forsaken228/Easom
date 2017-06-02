@@ -1,0 +1,130 @@
+﻿@{
+    ViewBag.Title = "医院设置";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+<div class="widget-panel">
+    <div class="widget-content module">
+        <div class="form-grid">
+            <form method="post" name="form1" id="form1" class="topLabel">
+            <ul>
+                <li>
+                    <fieldset>
+                        <legend class="choiceFld">科室名称</legend>
+                        <div class="fieldwrap input-uniform">
+                            @if (ViewData["allSection"] != null)
+                            {
+                                foreach (var item in ViewData["allSection"] as IEnumerable<Section>)
+                                {
+                                    if (ViewData["userSection"] != null)
+                                    {
+
+                                        if (Section.IsChecked(ViewData["userSection"] as IList<Section>, item.ID))
+                                        {
+                                <span style="width: 140px; float: left; display: block">
+                                    <input name="checkboxInput" class="checkbox" type="checkbox" checked="checked" value="@item.ID"  />
+                                    <label title="@item.Name" class="choice">
+                                        @item.Name</label>
+                                </span>
+                                        }
+                                        else
+                                        {
+                                <span style="width: 140px; float: left; display: block">
+                                    <input name="checkboxInput" class="checkbox" type="checkbox" value="@item.ID"  />
+                                    <label title="@item.Name" class="choice">
+                                        @item.Name</label>
+                                </span>
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                <span style="width: 140px; float: left; display: block">
+                                    <input name="checkboxInput" class="checkbox" type="checkbox" value="@item.ID"  />
+                                    <label title="@item.Name" class="choice">
+                                        @item.Name</label>
+                                </span>
+                                    }
+                                }
+                            }
+                        </div>
+                    </fieldset>
+                </li>
+                <li class="buttons bottom-round noboder">
+                    <div class="fieldwrap">
+                        <input name="" type="submit" value="提交" class="submit-button" />
+                    </div>
+                </li>
+            </ul>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function initPage() {
+        $().formValidator.init("form");
+    }
+    $().pageUtility.addEvent(initPage);
+    $().formValidator.onPassCallBack = function () {
+        //var loadingTip = $().pageUtility.loading("您请稍等...");
+        var formValues = checkvalue();
+        var sectionids = checksectonvalue();
+        $().formValidator.addValidator([
+            { controlID: 'checkboxInput', mustMsg: '您必须至少选择一个医院！', rule: 'checkboxs' }
+          ]
+        );
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: '/administrator/user/sethospital/@ViewData["userid"]',
+            data: "ids=" + formValues + "&sectionids=" + sectionids,
+            success: function (data) {
+                if (data.flag == "success") {
+                    $().pageUtility.createNotify("growl-success", false, "提示", "操作成功！正在跳转至列表页面...");
+                    setTimeout("parent.location.reload()", 1000);
+                }
+                else {
+                    $().pageUtility.closeLoading();
+                    $().formValidator.setSubmitButtonState(true);
+                }
+                if (data.flag == "error") {
+                    $().pageUtility.alert("提示","出错了，请稍后再试！");
+                }
+            }
+        });
+    }
+
+
+    function reload() {
+        var formValues = checkvalue();
+        $.ajax({
+            dataType: "json",
+            type: "GET",
+            url: '/administrator/GetSectionDataByHosital?ids='+ formValues,
+            data: $().pageUtility.getFormData(formValues),
+            success: function (data) {
+                if (data.flag == "success") {
+                    $("#section").html(data.diseaseData);
+                }
+
+            }
+        });
+       
+    }
+    function checkvalue() {
+        var str = "";
+        var abc = $("[name='checkboxInput']:checked").each(function () {
+            str += $(this).val() + ",";
+        });
+
+        return str;
+    }
+
+    function checksectonvalue() {
+        var str = "";
+        var abc = $("[name='checkbox']:checked").each(function () {
+            str += $(this).val() + ",";
+        });
+
+        return str;
+    }
+</script>

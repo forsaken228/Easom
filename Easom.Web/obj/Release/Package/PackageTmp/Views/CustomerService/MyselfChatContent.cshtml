@@ -1,0 +1,313 @@
+﻿@model Easom.Core.Orders
+@{
+    ViewBag.Title = "编辑预约信息";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+@section scripts
+{
+    <script src="/files/js/custom.js"></script>
+}
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    基本资料
+                </div>
+                <div class="panel-body">
+
+                    <div class="row  editable-list-item">
+                        <div class="col-sm-4">
+                            姓名：
+                        </div>
+                        <div class="col-sm-8">
+                            @Model.Name
+                        </div>
+                    </div>
+                    <div class="row  editable-list-item">
+                        <div class="col-sm-4">
+                            性别：
+                        </div>
+                        <div class="col-sm-8">
+                            @(Model.Sex == true ? "男" : "女")
+                        </div>
+                    </div>
+                    <div class="row  editable-list-item">
+                        <div class="col-sm-4">
+                            电话：
+                        </div>
+                        <div class="col-sm-8">
+                            @Model.Telephone
+                        </div>
+                    </div>
+                    <div class="row  editable-list-item">
+                        <div class="col-sm-4">
+                            QQ：
+                        </div>
+                        <div class="col-sm-8">
+                            @Model.QQ
+                        </div>
+                    </div>
+                    <div class="row  editable-list-item">
+                        <div class="col-sm-4">
+                            咨询内容：
+                        </div>
+                        <div class="col-sm-8">
+                            @Model.Question
+                        </div>
+                    </div>
+                    <div class="row  editable-list-item">
+                        <div class="col-sm-4">
+                            专家号：
+                        </div>
+                        <div class="col-sm-8">
+                            @Model.ExpertIdentifier
+                        </div>
+                    </div>
+                    <div class="row  editable-list-item">
+                        <div class="col-sm-4">
+                            病患类型：
+                        </div>
+                        <div class="col-sm-8">
+                            @if (Model.Disease != null)
+                            { @Model.Disease.Name }
+                            else
+                            {@Html.Raw("没有疾病")}
+                        </div>
+                    </div>
+                    <div class="row  editable-list-item">
+                        <div class="col-sm-4">
+                            接待人：
+                        </div>
+                        <div class="col-sm-8">
+                            @Model.RecordUserName
+                        </div>
+                    </div>
+                    <div class="row  editable-list-item">
+                        <div class="col-sm-4">
+                            预约时间：
+                        </div>
+                        <div class="col-sm-8">
+                            @Model.OrderTime.ToString("yyyy-MM-dd HH:mm")
+                        </div>
+                    </div>
+                    <div class="row  editable-list-item">
+                        <div class="col-sm-4">
+                            媒体来源：
+                        </div>
+                        <div class="col-sm-8">
+                            @if (Model.MediaEntity != null)
+                            {
+                                @Model.MediaEntity.Name
+                                if (Model.MediaSourceExtendID > 0)
+                                {
+                                    MediaSource entitys = MediaSource.Actor.GetByID(Model.MediaSourceExtendID);
+                                    if (entitys != null)
+                                    {
+                                <span>- </span>@entitys.Name;
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="row  editable-list-item">
+                        <div class="col-sm-4">
+                            赴约状态：
+                        </div>
+                        <div class="col-sm-8">
+                            @if (Easom.Core.Support.ArriveStateEnum.NoArrive == Model.ArriveStateType)
+                            {
+                                <span>未到
+                                </span>
+                            }
+                            @if (Easom.Core.Support.ArriveStateEnum.Arrived == Model.ArriveStateType)
+                            {
+                                <span>已到
+                                </span>
+                            }
+                            @if (Easom.Core.Support.ArriveStateEnum.Wait == Model.ArriveStateType)
+                            {
+                                <span>等待
+                                </span>
+                            }
+                        </div>
+                    </div>
+                    <div class="row  editable-list-item">
+                        <div class="col-sm-4">
+                            赴约时间：
+                        </div>
+                        <div class="col-sm-8">
+                            @if (Easom.Core.Support.ArriveStateEnum.NoArrive == Model.ArriveStateType)
+                            {
+                                <span>未赴约
+                                </span>
+                            }
+                            else
+                            {
+                                <span>
+                                    @Model.RecordTime.ToString("yyyy-MM-dd HH:mm")
+                                </span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="row  editable-list-item">
+                        <div class="col-sm-4">
+                            接待医生：
+                        </div>
+                        <div class="col-sm-8">
+                            @if (@Model.Doctor != null)
+                            {
+                                @Model.Doctor.Name
+                            }
+                        </div>
+                    </div>
+                    <div class="row  editable-list-item">
+                        <div class="col-sm-4">
+                            添加时间：
+                        </div>
+                        <div class="col-sm-8">
+                            @Model.AddTime.ToString("yyyy-MM-dd HH:mm")
+                        </div>
+                    </div>
+                    <div class="row  editable-list-item">
+                        <div class="col-sm-4">
+                            添加人：
+                        </div>
+                        <div class="col-sm-8">
+                            @Model.CreateUserName
+                        </div>
+                    </div>
+                    <div class="row  editable-list-item">
+                        <div class="col-sm-4">
+                            所在部门：
+                        </div>
+                        <div class="col-sm-8">
+                            @if (Model.CountType == Easom.Core.Support.CountTypeEnum.Telephone)
+                            {
+                                <span>电话</span>
+                            }
+                            @if (Model.CountType == Easom.Core.Support.CountTypeEnum.Web)
+                            {
+                                <span>网络</span>
+                            }
+                            @if (Model.CountType == Easom.Core.Support.CountTypeEnum.Others)
+                            {
+                                <span>其他</span>
+                            }
+                        </div>
+                    </div>
+                    <div class="row  editable-list-item">
+                        <div class="col-sm-4">
+                            所在部门：
+                        </div>
+                        <div class="col-sm-8">
+                            @if (Model.CountType == Easom.Core.Support.CountTypeEnum.Telephone)
+                            {
+                                <span>电话</span>
+                            }
+                            @if (Model.CountType == Easom.Core.Support.CountTypeEnum.Web)
+                            {
+                                <span>网络</span>
+                            }
+                            @if (Model.CountType == Easom.Core.Support.CountTypeEnum.Others)
+                            {
+                                <span>其他</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    聊天记录
+                </div>
+                <div class="panel-body">
+                    @if (!string.IsNullOrEmpty(Model.ChatRecord))
+                    {
+                        string[] paras = Model.ChatRecord.Split('&');
+                        if (paras != null && paras.Length > 0)
+                        {
+                            foreach (var item in paras)
+                            {
+                        @item<br />
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    备注 / 回访
+                </div>
+                <div class="panel-body">
+                    <div class="row  editable-list-item">
+                        <div class="col-sm-4">
+                            客服备注：
+                        </div>
+                        <div class="col-sm-8">
+                            @if (string.IsNullOrEmpty(Model.Remark))
+                            {
+                                <p>
+                                    (暂无备注容)
+                                </p>
+                            }
+                            else
+                            {
+                                <p>
+                                    @Model.Remark
+                                </p>
+                            }
+                        </div>
+                    </div>
+                    <div class="row  editable-list-item">
+                        <div class="col-sm-4">
+                            导医备注：
+                        </div>
+                        <div class="col-sm-8">
+                            @if (string.IsNullOrEmpty(Model.DRemark))
+                            {
+                                <p>
+                                    (暂无备注容)
+                                </p>
+                            }
+                            else
+                            {
+                                <p>
+                                    @Model.DRemark
+                                </p>
+                            }
+                        </div>
+                    </div>
+                    <div class="row  editable-list-item">
+                        <div class="col-sm-4">
+                            回访记录：
+                        </div>
+                        <div class="col-sm-8">
+                            @if (Convert.ToInt32(ViewData["CallOnDataCount"]) > 0)
+                            {
+
+                                foreach (var item in ViewData["CallOnData"] as IList<CallOnData>)
+                                {
+                                <p>
+                                    <span style="color: Blue;">@item.CallUserName @item.CallOnDateTime.ToString("yyyy-MM-dd HH:mm")</span><br />
+                                    <span>@item.Remark</span>
+                                </p>
+                                }
+
+                            }
+                            else
+                            {
+                                <p><span>(暂无回访内容)</span></p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

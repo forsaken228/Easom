@@ -1,0 +1,305 @@
+﻿@{
+    ViewBag.Title = "预约信息";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <link href="/files/css/jquery.datatables.css" rel="stylesheet">
+    <style>
+        .mediaImg {
+            text-align: center;
+        }
+
+            .mediaImg img {
+                vertical-align: middle;
+                width: 45px;
+                -moz-border-radius: 50px;
+                -webkit-border-radius: 50px;
+                border-radius: 50px;
+            }
+    </style>
+}
+@section scripts{
+    <script src="/files/dataTables/js/jquery.datatables.min.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+
+    <script>
+        var nowWindows_height = $(window).height() - 160;
+        var nowWindows_width = $(window).width() - 160;
+        $().ready(function() {
+            $('select').select2({
+                minimumResultsForSearch: -1
+            });
+            $('select').removeClass('form-control');
+
+        });
+        function format (obj) {
+            var html="";
+            if(obj[12]!=="")
+            {
+                html+='<p>'+obj[12]+'</p>';
+            }
+            if(obj[13]!=="")
+            {
+                html+='<p>'+obj[13]+'</p>';
+            }
+            if(obj[14]!=="")
+            {
+                html+='<p>'+obj[14]+'</p>';
+            }
+            if(html==="")
+            {
+                html+='<p>没有附加信息</p>';
+            }
+            return html;
+        }
+        function setDataTable(searchData) {
+            var tables=$('#table2').DataTable({
+                "paginationType": "full_numbers",
+                "stateSave": true,
+                "processing": true,
+                "destroy": true,
+                "serverSide": true,
+                "lengthMenu": [[20, 30, 50, 100], [20, 30, 50, 100]],
+                "displayLength": 20,
+                "sorting": [[6, "desc"]],
+                "ajaxSource": "/CustomerService/GetlistOrderData?"+$().pageUtility.getFormData(searchData),
+                "language": {
+                    "sUrl": "/files/js/jquery.dataTables.lang.zhcn.txt?4"
+                },
+              
+                "columns": [
+                    {
+                        "class":'details-control',
+                        "sortable": false,
+                        "data": null,
+                        "defaultContent": ''
+                    },
+                {
+                    "name": "Name",
+                    "title": "基本信息",
+                    "sortable": true,
+                    "class": "td_wid_left_150"
+                },
+                {
+                    "name": "ExpertIdentifier",
+                    "sortable": false,
+                    "class": "td_wid_left_150",
+                    "visible":true,
+                    "title": "预约信息"
+                },
+                {
+                    "name": "remarkMsg",
+                    "sortable": false,
+                    "class": "td_wid_left_150",
+                    "title": "来源信息"
+                },
+                {
+                    "name": "OrderTime",
+                    "sortable": true,
+                    "class": "td_wid_pcturesmall",
+                    "title": "预约时间"
+                },
+                {
+                    "name": "ArriveStateType",
+                    "class": "td_wid_action",
+                    "sortable": true,
+                    "title": "状态"
+                },
+                {
+                    "name": "CreateUserID",
+                    "sortable": true,
+                    "class": "td_wid_action_92",
+                    "title": "客服信息"
+                },
+                {
+                    "name": "AddTime",
+                    "class": "td_wid_pcturesmall",
+                    "sortable": true,
+                    "title": "添加时间"
+                },
+                {
+                    "name": "ID",
+                    "class": "td_wid_pcturesmall",
+                    "sortable": false,
+                    "title": "操作"
+                }
+                ]
+            });
+            $('#table2 tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row = tables.row(tr);
+                if ( row.child.isShown() ) {
+                    row.child.hide(1000);
+                    tr.removeClass('shown');
+                }
+                else {
+                    row.child(format(row.data())).show(1000);
+                    tr.addClass('shown');
+                }
+            } );
+        }
+        function getAllDataTablesData(tables)
+        {
+            var rReturn=new Array();
+            var atrs=tables.fnGetNodes();
+            for(var i=0;i<atrs.length;i++)
+            {
+                alert(tables.fnGetdata(atrs[i]));
+            }
+        }
+        $().pageUtility.addEvent(setSearchDataForDataTable);
+        function setSearchDataForDataTable() {
+            var searchData =@Html.Raw(ViewBag.searchDatas);
+            setDataTable(searchData);
+        }
+
+        function add() {
+            $().pageUtility.pop("添加","/CustomerService/OrderAdd",900,nowWindows_height);
+        }
+        function search() {
+            $().pageUtility.pop("高级搜索","/CustomerService/OrderAdvancedSearch",900,nowWindows_height);
+        }
+        function RepeatSearch() {
+            $().pageUtility.pop("重复病人搜索","/CustomerService/RepeatSearch",900,nowWindows_height);
+        }
+        function edit(id) {
+            $().pageUtility.pop("编辑", "/CustomerService/orderedit/" + id, 800, nowWindows_height);
+        }
+        function password(id) {
+            $().pageUtility.pop("详细信息", "/customerservice/password?id="+id, nowWindows_width, nowWindows_height);
+        }
+        function chatcontent(id) {
+            $().pageUtility.pop("详细信息", "/customerservice/chatcontent?id=" +id, nowWindows_width, nowWindows_height);
+        }
+        function viewLogs(id) {
+            location.href = "/administrator/OperationLogIndex?linkID=" +id;
+        }
+        
+        function delCheck(id) {
+            if(confirm("您确定要删除该预约信息吗?")) {
+                del(id);
+            }
+        }
+        function searchNoRefresh(searchName,startTime,endTime,arriveState,timeKinds){//搜索
+            $("#guolv").text(searchName);
+            $(".pageheader h2 lable").text(searchName);
+            var searchData=[{ id: 'starttime', value:startTime},{ id: 'endtime', value:endTime},{ id: 'arrivestate', value:arriveState},{ id: 'timekinds', value:timeKinds}];
+            setDataTable(searchData);
+        }
+        function searchIndexDataNoRefresh(searchName,startTime,endTime,arriveState,timeKinds,customer){//搜索个人记录
+            $(".pageheader h2 lable").text(searchName);
+            var searchData=[{ id: 'starttime', value:startTime},{ id: 'endtime', value:endTime},{ id: 'arrivestate', value:arriveState},{ id: 'timekinds', value:timeKinds},{ id: 'customer', value:customer}];
+            setDataTable(searchData);
+        }
+        function advancedSearch() {
+            $().pageUtility.pop("高级搜索", "/CustomerService/orderAdvancedSearch/", 800, nowWindows_height);
+        }
+        function RepeatPatientSearch() {
+            $().pageUtility.pop("重复病人搜索", "/CustomerService/RepeatSearch/", 800, nowWindows_height);
+        }
+
+        function refreshData(){//刷新
+            $("#guolv").text("条件过滤");
+            $(".pageheader h2").find("lable").empty();
+            var searchData="";
+            setDataTable(searchData);
+        }
+
+        function del(id) {
+            $().formValidator.setSubmitButtonState(false);
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: "/customerservice/orderdelete",
+                data: "ids=" + id,
+                success: function (data) {
+                    if (data.flag === "success") {
+                        $().pageUtility.createNotify("growl-success", false, "操作成功，正在重置页面...");
+                        setTimeout('parent.location.reload()', 1000);
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                    else if(data.flag === "error"){
+                        $().pageUtility.createNotify("growl-warning", false, "出错了，请稍后再试！");
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                    else{
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                }
+            });
+        }
+
+        function arrivestate(id)
+        {
+            $().pageUtility.pop("来院状态", "/customerservice/arrivestate?orderid=" + id, 800, nowWindows_height);
+        }
+
+        function callbackManager(id,state) {
+            $().pageUtility.pop("回访记录", "/customerservice/callback?id="+id+"&state="+state, 800, nowWindows_height);
+        }
+
+        function checkEditAuority(createUserID,sReturn)
+        {
+            if (@LoginManager.GetUserId() === createUserID || "@LoginManager.HasAutority(AuthorityConst.AY_EDITOTHER).ToString()"=="True")
+            {
+                return "<span><a title='编辑'  class='action-icons c-edit' href='javascript:edit(" + sReturn + ")'>编辑</a></span>";
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        function sendMessage(id) {
+            $().pageUtility.pop("短信通知", "/message/SingleSend?id="+id+"&type=@ViewBag.type", 800, nowWindows_height);
+        }
+    </script>
+}
+
+<div class="pageheader">
+    <h2><i class="fa fa-calendar"></i><label>预约登记</label> <span>您可以在这里管理客户预约信息...</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">您的位置:</span>
+        <ol class="breadcrumb">
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="btn-group mr10">
+                <button class="btn btn-primary" onclick="javascript:add();" type="button"><i class="fa fa-plus mr5"></i>增加</button>
+                <button class="btn btn-primary" onclick="javascript:setSearchDataForDataTable();" type="button"><i class="fa fa-refresh mr5"></i>刷新</button>
+            </div>
+            <div class="btn-group mr10">
+                <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button"><i class="glyphicon glyphicon-search"></i> 搜索 <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <li><a href="javascript:search()">高级搜索</a></li>
+                    <li><a href="javascript:RepeatSearch()">重复病人搜索</a></li>
+                </ul>
+            </div>
+            <div class="btn-group">
+                <button data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button">
+                    <i class="fa fa-search-plus mr5"></i><span id="guolv">条件过滤</span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a title="今日新增" href='javascript:searchNoRefresh("今日新增","@System.DateTime.Now.ToString("yyyy-MM-dd 00:00:00")","@System.DateTime.Now.ToString("yyyy-MM-dd 23:59:56")",-1,0)'>今日新增</a></li>
+                    <li><a title="今日已到" href='javascript:searchNoRefresh("今日已到","@System.DateTime.Now.ToString("yyyy-MM-dd 00:00:00")","@System.DateTime.Now.ToString("yyyy-MM-dd 23:59:56")",1,1)'>今日已到</a></li>
+                    <li><a title="今日等待" href='javascript:searchNoRefresh("今日等待","@System.DateTime.Now.ToString("yyyy-MM-dd 00:00:00")","@System.DateTime.Now.ToString("yyyy-MM-dd 23:59:56")",0,2)'>今日等待</a></li>
+                    <li><a title="昨日新增" href='javascript:searchNoRefresh("昨日新增","@System.DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd 00:00:00")","@System.DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd 23:59:56")",-1,0)'>昨日新增</a></li>
+                    <li><a title="昨日已到" href='javascript:searchNoRefresh("昨日已到","@System.DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd 00:00:00")","@System.DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd 23:59:56")",1,1)'>昨日已到</a></li>
+                    <li><a title="昨日未到" href='javascript:searchNoRefresh("昨日未到","@System.DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd 00:00:00")","@System.DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd 23:59:56")",2,2)'>昨日未到</a></li>
+                    <li><a title="明日预到" href='javascript:searchNoRefresh("明日预到","@System.DateTime.Now.AddDays(1).ToString("yyyy-MM-dd 00:00:00")","@System.DateTime.Now.AddDays(1).ToString("yyyy-MM-dd 23:59:56")",0,2)'>明日预到</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table" id="table2"></table>
+            </div>
+            <!-- table-responsive -->
+        </div>
+    </div>
+</div>

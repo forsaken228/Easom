@@ -1,0 +1,498 @@
+﻿@{
+    ViewBag.placeholder = "添加预约信息";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+@section styles
+{
+    <link rel="stylesheet" href="/files/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" href="/files/css/jquery.tagsinput.css" />
+    <link rel="stylesheet" href="/files/css/dropzone.css" />
+}
+@section scripts
+{
+    <script src="/files/js/jquery.autogrow-textarea.js"></script>
+    <script src="/files/js/bootstrap-timepicker.min.js"></script>
+    <script src="/files/js/jquery.maskedinput.min.js"></script>
+    <script src="/files/js/jquery.tagsinput.min.js"></script>
+    <script src="/files/js/jquery.mousewheel.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/dropzone.min.js"></script>
+
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        /**************************************/
+        function initPage() {
+            $().formValidator.init("form");
+            $().formValidator.addValidator([
+                    { controlID: 'name', must: true, mustMsg: '请输入病人姓名' },
+                    { controlID: 'age', must: true, mustMsg: '请输入病人年龄', rule: 'num', msg: '年龄必须为整数' },
+                    { controlID: 'mediasource', must: true, mustMsg: '请选择媒体来源' },
+                    { controlID: 'sectionName', mustMsg: '你必须选择一个科室！', rule: 'radioboxs' },
+                    { controlID: 'doctorName', mustMsg: '你必须选择一个医生！', rule: 'radioboxs' },
+                    { controlID: 'diseaseName', mustMsg: '你必须选择一种疾病！', rule: 'radioboxs' },
+                    { controlID: 'areasourcetype', mustMsg: '你必须选择一个地区！', rule: 'radioboxs' },
+                    { controlID: 'countType', mustMsg: '你必须选择一个统计账户！', rule: 'radioboxs' }
+            ]);
+            $("input[name='sectionName']:eq(0)").attr("checked", "checked");
+            $("input[name='countType']:eq(0)").attr("checked", "checked");
+            getDoctorBySectionID();
+            getDiseaseBySectionID();
+            mediaSourceSelect();
+        }
+        $().pageUtility.addEvent(initPage);
+        $().formValidator.onPassCallBack = function () {
+            // $().pageUtility.loading("您请稍等...");
+            var formValues = [
+                    { id: 'name', value: $("#name").val() },
+                    { id: 'sex', value: $("input[name='gender']:checked").val() },
+                    { id: 'age', value: $("#age").val() },
+                    { id: 'tel', value: $("#mobile").val() },
+                    { id: 'qq', value: $("#qq").val() },
+                    { id: 'question', value: $("#question").val() },
+                    { id: 'chatcontent', value: $("#chatcontent").val() },
+                    { id: 'section', value: $("input[name='sectionName']:checked").val() },
+                    { id: 'doctor', value: $("input[name='doctorName']:checked").val() },
+                    { id: 'disease', value: $("input[name='diseaseName']:checked").val() },
+                    { id: 'mediasource', value: $("#mediasource").val() },
+                    { id: 'mediasourceextend', value: $("#mediasourceextend").val() }, //具体来源
+                    { id: 'keywords', value: $("#keywords").val() },
+                    { id: 'hospitalwebsite', value: $("#hospitalwebsite").val() },
+                    { id: 'areasourcetype', value: $("input[name='areasourcetype']:checked").val() },
+                    { id: 'area', value: $("#area").val() },
+                    { id: 'countnumber', value: $("input[name='countType']:checked").val() },
+                    { id: 'expertidentifier', value: $("#expertidentifier").val() },
+                    { id: 'ordertime', value: $("#ordertime").val() },
+                    { id: 'orderhour', value: $("#selecthours").val() },
+                    { id: 'remark', value: $("#remark").val() },
+                    { id: 'arrivestate', value: $("#arrivestate").val() },
+                    { id: 'recivedoctor', value: $("#recivedoctor").val() }
+            ];
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: "/customerservice/Myselforderadd",
+                data: $().pageUtility.getFormData(formValues),
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.createNotify("growl-success", false, "成功提示：", "预约信息添加成功！正在跳转至列表页面..");
+                        setTimeout("parent.location.reload()", 1000);
+                    }
+                    else if (data.flag == "error") {
+                        $().pageUtility.createNotify("growl-warning", false, "错误提示：", "错误提示", "出错了，请稍后再试！");
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
+                }
+            });
+        }
+        /*****************************************************************************/
+        $("#chatcontent").change(function () {//通过聊天记录取出搜索引擎的关键字
+            var chat = $("#chatcontent").val();
+            if (chat != null) {
+                var beginIndex = chat.indexOf("[");
+                var endIndex = chat.indexOf("]");
+                if (beginIndex >= 0 && endIndex > 0) {
+                    if (chat.indexOf("搜索引擎,搜索关键词:") > 0) {
+                        var guanjianzi = chat.substring(beginIndex + 12, endIndex);
+                        $("#keywords").val(guanjianzi);
+                    }
+                    else {
+                        $("#keywords").val("");
+                    }
+                }
+            }
+        });
+
+        $("input[name=sectionName]").change(function () {//科室切换
+            getDoctorBySectionID();
+            getDiseaseBySectionID();
+            mediaSourceSelect();
+        });
+
+        $("input[name=areasourcetype]").change(function () {//地区切换
+            var areaID = $("input[name=areasourcetype]:checked").val();
+            if (areaID == 1) {
+                $("#selectarea").css("display", "block");
+            }
+            else {
+                $("#selectarea").css("display", "none");
+            }
+        });
+
+        function getDoctorBySectionID() {//获取科室下面所有医生
+            var sectionID = $("input[name=sectionName]:checked").val();
+            $("#doctorlist").empty();
+            $("#doctorlist").append("<span class=\"rdio rdioPosition\"><input name=\"doctorName\" type=\"radio\" id=\"doctorName\" checked=\"checked\" value=\"0\" /><label for=\"doctorName\">未选择</label></span>&nbsp;");
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: '/customerservice/GetDoctorDataBySection?sectionStr=' + sectionID + '&r=' + Math.random(),
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $("#doctorlist").append(data.doctorData);
+                        $("input[name='doctorName']:eq(0)").attr("checked", "checked");
+                        //$("input[name=doctorName]").uniform();
+                    }
+                    if (data.flag == "error") {
+                        $().pageUtility.alert("出错了，请稍后再试！");
+                    }
+                }
+            });
+        }
+
+        function getDiseaseBySectionID() {//获取科室下面所有疾病
+            var sectionID = $("input[name=sectionName]:checked").val();
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: '/customerservice/GetDiseaseDataBySection?sectionStr=' + sectionID + '&r=' + Math.random(),
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $("#diseaselist").empty();
+                        $("#diseaselist").append(data.diseaseData);
+                        $("input[name='diseaseName']:eq(0)").attr("checked", "checked");
+                        $("input[name='diseaseName']").uniform();
+
+                    }
+                    if (data.flag == "error") {
+                        $().pageUtility.closeLoading();
+                        $().pageUtility.alert("出错了，请稍后再试！");
+                    }
+                }
+            });
+        }
+
+        //    function getDoctorIdentifier() {//获取医生的医生编号
+        //        var idnum = $("input[name='doctorName']:checked").val();
+        //        var identifier = $("#doctorName" + idnum + "").val();
+        //        $("#expertidentifier").val(identifier);
+        //    }
+
+        //    function setareasourcelid() {//设置媒体类型
+        //        if ($("#mediasource").val() == -1) {
+        //            document.getElementById("areasouceid").value = "";
+        //        }
+        //        else {
+        //            document.getElementById("areasouceid").value = $("#mediasource").val();
+        //        }
+        //    }
+        $("#mediasource").change(function () {//媒体来源
+            mediaSourceSelect();
+        });
+        function mediaSourceSelect() {
+            var sectionID = $("input[name=sectionName]:checked").val();
+            var text = $("#mediasource").find("option:selected").text();
+            var id = $("#mediasource").val();
+            $("#jutiID").css('display', 'none');
+            $("#mediasourceextend").empty();
+            $("#websiteID").css('display', 'none');
+            $("#selectkeys").css('display', 'none');
+            text = $.trim(text.toString())
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: "/settings/GetAllMediaSourceDataByParentid?id=" + id + "&r=" + Math.random(),
+                success: function (msg) {
+                    if (msg.length > 0) {
+                        var select = document.getElementById("mediasourceextend");
+                        if (select != null) {
+                            $("#jutiID").css('display', 'block');
+                            $("#mediasourceextend").empty();
+                            for (var i = 0; i <= msg.length - 1; i++) {
+                                select.options[i] = new Option(msg[i].Name, msg[i].ID);
+                            }
+                            $("#mediasourceextend").trigger("liszt:updated");
+                            $("#mediasourceextend").addClass("form-control");
+                            $("#mediasourceextend").chosen("destroy");
+                            return 1;
+                        }
+                    }
+                }
+            });
+            if (text == "网络") {
+                $.ajax({
+                    dataType: "json",
+                    type: "POST",
+                    url: "/settings/GetAllHospitalWebsiteData?sectionID=" + sectionID + "&n=" + Math.random(),
+                    success: function (msg) {
+                        if (msg.length > 0) {
+                            var select = document.getElementById("hospitalwebsite");
+                            if (select != null) {
+                                $("#websiteID").css('display', 'block');
+                                $("#hospitalwebsite").empty();
+                                select.options[0] = new Option("没有来源网站", -1);
+                                for (var i = 0; i <= msg.length - 1; i++) {
+                                    select.options[i + 1] = new Option(msg[i].Title, msg[i].ID);
+                                }
+                                $("#hospitalwebsite").trigger("liszt:updated");
+                                $("#hospitalwebsite").addClass("form-control");
+                                $("#hospitalwebsite").chosen("destroy");
+                                return 1;
+                            }
+                        }
+                    }
+                });
+                $("#selectkeys").css('display', 'block');
+            }
+        }
+    </script>
+
+}
+<div class="panel panel-default">
+    <div class="panel-body">
+        <form method="post" name="form1" id="form1" class="form-horizontal form-bordered">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="fldplaceholder">
+                            科室名称<span class="asterisk">*</span>
+                        </label>
+                        <div>
+                            @if (ViewData["sectionList"] != null)
+                            {
+                                foreach (var item in ViewData["sectionList"] as IEnumerable<Section>)
+                                {
+                                    <span class="rdio rdioPosition">
+                                        <input name="sectionName" id="radiosection_@item.ID" type="radio" value="@item.ID" />
+                                        <label for="radiosection_@item.ID">@item.Name</label>
+                                    </span>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="fldplaceholder">
+                            医生姓名
+                        </label>
+                        <div id="doctorlist">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="fldplaceholder">
+                            疾病类型<span class="asterisk">*</span>
+                        </label>
+                        <div id="diseaselist">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="fldTitle">
+                            专家号
+                        </label>
+                        <input id="expertidentifier" name="expertidentifier" class="form-control" placeholder="请输入专家号"
+                               type="text" maxlength="255" />
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="fldTitle">
+                            姓名<span class="asterisk">*</span>
+                        </label>
+                        <input id="name" name="name" class="form-control" placeholder="请输入姓名" type="text" maxlength="10"
+                               tabindex="1" />
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="fldTitle">
+                            年龄<span class="asterisk">*</span>
+                        </label>
+                        <input id="age" name="age" class="form-control" placeholder="请输入年龄" type="text" maxlength="10"
+                               tabindex="1" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="fldTitle">
+                            性别<span class="asterisk">*</span>
+                        </label>
+                        <div>
+                            <span class="rdio">
+                                <input name="gender" id="genderman" type="radio" checked="checked" value="0" />
+                                <label for="genderman">
+                                    男
+                                </label>
+                            </span>
+                            <span class="rdio">
+                                <input name="gender" id="genderwoman" type="radio" value="1" />
+                                <label for="genderwoman">
+                                    女
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="fldTitle">
+                            电话
+                        </label>
+                        <input id="mobile" name="mobile" class="form-control" placeholder="请输入电话号码" type="text"
+                               maxlength="15" tabindex="1" />
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label class="fldplaceholder">
+                            QQ
+                        </label>
+                        <input id="qq" name="qq" class="form-control" placeholder="请输入QQ" type="text" maxlength="30" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="fldTitle">
+                            咨询内容&nbsp;<span class="asterisk">请注意：此栏填写咨询内容摘要，不要粘贴聊天记录。聊天记录请复制到下面“聊天记录”一栏中。</span>&nbsp;&nbsp;
+                        </label>
+                        <textarea id="question" tabindex="8" placeholder="请输入患者咨询的内容，请勿粘贴聊天记录" name="question" class="form-control" rows="10" cols="50"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="fldTitle">
+                            聊天记录
+                        </label>
+                        <div class="fieldwrap">
+                            <textarea id="chatcontent" placeholder="请输入聊天记录，直接从聊天工具复制粘贴即可" tabindex="9" name="chatcontent" class="form-control" rows="10" cols="50"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="fieldwrap" id="selectmedia">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label class="fldTitle">
+                                媒体来源<span class="asterisk">*</span>
+                            </label>
+                            <select id="mediasource" class="form-control mb15">
+                                @if (ViewData["mediaList"] != null)
+                                {
+                                    foreach (var item in ViewData["mediaList"] as IEnumerable<Easom.Core.MediaSource>)
+                                    {
+                                        <option value="@item.ID">@item.Name </option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div id="jutiID" style="display: none;" class="col-sm-3">
+                            <label id="jutiLaiyuan" class="fldTitle">
+                                具体来源
+                            </label>
+                            <select id="mediasourceextend" class="form-control"></select>
+                        </div>
+                        <div id="websiteID" style="display: none;" class="col-sm-3">
+                            <label class="fldTitle">
+                                医院网站
+                            </label>
+                            <select id="hospitalwebsite" class="form-control"></select>
+                        </div>
+                        <div id="selectkeys" style="display: none;" class="col-sm-3">
+                            <label class="fldTitle">
+                                关键字：
+                            </label>
+                            <input id="keywords" name="keywords" class="form-control" type="text" placeholder="请输入关键字"
+                                   style="float: right" />
+                        </div>
+                        <input id="areasouceid" name="areasouceid" type="hidden" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label class="fldTitle">
+                            地区来源<span class="asterisk">*</span>
+                        </label>
+                        <div>
+                            <span class="rdio rdioPosition">
+                                <input type="radio" id="areaBen" name="areasourcetype" value="0" checked>
+                                <label for="areaBen">
+                                    本地
+                                </label>
+                            </span><span class="rdio rdioPosition">
+                                <input type="radio" id="areaWai" name="areasourcetype" value="1" />
+                                <label for="areaWai">
+                                    外地
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="selectarea" style="display: none;" class="col-sm-3">
+                        <label class="fldTitle">
+                            地区名称:
+                        </label>
+                        <input id="area" class="form-control" type="text" placeholder="请输入地区名称" />
+                        <input id="areatype" name="areatype" type="hidden" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="fldTitle">
+                            所属统计帐户<span class="asterisk">*</span>
+                        </label>
+                        <div>
+                            @if (Easom.Support.LoginManager.HasAutority(Easom.Core.AuthorityConst.KEY_TONGJI))
+                            {
+                                if (Easom.Support.LoginManager.HasAutority(Easom.Core.AuthorityConst.KEY_TONGJI_WEB))
+                                {
+                                    <span class="rdio rdioPosition">
+                                        <input name="countType" type="radio" value="0" id="countTypeNet" />
+                                        <label for="countTypeNet">
+                                            网络
+                                        </label>
+                                    </span>
+                                }
+                                if (Easom.Support.LoginManager.HasAutority(Easom.Core.AuthorityConst.KEY_TONGJI_TEL))
+                                {
+                                    <span class="rdio rdioPosition">
+                                        <input name="countType" type="radio" value="1" id="countTypeTel" />
+                                        <label for="countTypeTel">
+                                            电话
+                                        </label>
+                                    </span>
+                                }
+                                if (Easom.Support.LoginManager.HasAutority(Easom.Core.AuthorityConst.KEY_TONGJI_OTHER))
+                                {
+                                    <span class="rdio rdioPosition">
+                                        <input name="countType" type="radio" value="2" id="countTypeOth" />
+                                        <label for="countTypeOth">
+                                            其他
+                                        </label>
+                                    </span>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="fldTitle">
+                            备注
+                        </label>
+                        <textarea tabindex="10" id="remark" name="description" class="form-control mb15" rows="10" cols="50"></textarea>
+                        <div class="buttons bottom-round noboder">
+                            <div class="panel-footer">
+                                <input type="submit" class="btn btn-primary" value="提交" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

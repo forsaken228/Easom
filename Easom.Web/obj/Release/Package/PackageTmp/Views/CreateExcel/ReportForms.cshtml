@@ -1,0 +1,397 @@
+﻿@{
+    ViewBag.Title = "导出报表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts{
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        function form(timeID, formType) {
+            if (timeID != "role") {
+                outExcel(timeID, formType);
+            }
+            else {
+                if (checkvalue() != "") {
+                    outExcel(timeID, formType);
+                }
+                else {
+                    alert("您还没有选择角色！");
+                }
+            }
+        }
+
+        function outExcel(timeID, formType) {
+            //$().pageUtility.loading("提示：报表生成时间较长，请耐心等待...");
+            $.ajax({
+                dataType: "json",
+                type: "GET",
+                url: '/CreateExcel/SubmitExcelForms?starttime=' + $("#" + timeID + "Starttime").val() + '&endtime=' + $("#" + timeID + "Endtime").val() + '&hidFormType=' + formType + "&r=" + Math.random()
+    + "&roleStr=" + checkvalue(),
+                success: function (data) {
+                    if (data.flag == "success") {
+                       // var htmlContent = "<a href='javascript:openExcel(\"" + data.viewURL + "\")'>导出报表成功，请点击这里下载报表！</a>";
+                     //   $().pageUtility.setLoading(htmlContent);
+                        window.location.href = data.viewURL;
+                    }
+                    else {
+                        $().pageUtility.closeLoading();
+                        alert("出错了：服务器暂时不能处理您的请求，请稍候再试！");
+                    }
+                }
+            });
+        }
+
+
+        function openExcel(url) {
+            window.open(url);
+            $().pageUtility.closeLoading();
+        }
+
+        function setDate(timeID, startDate, endDate) {
+            $("#" + timeID + "Starttime").val(startDate);
+            $("#" + timeID + "Endtime").val(endDate);
+        }
+
+
+        function initPage() {
+            $('#docStarttime').datepicker({
+                format: 'yyyy-MM-dd'
+            });
+            $('#docEndtime').datepicker({
+                format: 'yyyy-MM-dd'
+            });
+            $('#orderStarttime').datepicker({
+                format: 'yyyy-MM-dd'
+            });
+            $('#orderEndtime').datepicker({
+                format: 'yyyy-MM-dd'
+            });
+            $('#roleStarttime').datepicker({
+                format: 'yyyy-MM-dd'
+            });
+            $('#roleEndtime').datepicker({
+                format: 'yyyy-MM-dd'
+            });
+            $('#disStarttime').datepicker({
+                format: 'yyyy-MM-dd'
+            });
+            $('#disEndtime').datepicker({
+                format: 'yyyy-MM-dd'
+            });
+        }
+
+        function checkvalue() {
+            var str = "";
+            var abc = $("input[name=roleName]:checked").each(function () { str += $(this).val() + ","; });
+            return str;
+        }
+
+        $().pageUtility.addEvent(initPage);
+    </script>
+}
+<div class="pageheader">
+    <h2><i class="fa fa-bar-chart-o"></i>导出报表<span>您可以在这里导出您需要的统计报表...</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">您的位置:</span>
+        <ol class="breadcrumb">
+            <li>数据统计</li>
+            <li class="active">导出报表</li>
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel-group panel-group-dark" id="accordion2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion2" href="#collapseOne2" class="">
+                                预约统计报表
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne2" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <form method="post" name="form1" id="form0" class="topLabel">
+                                <div class="form-group">
+                                    <label class="fldTitle">
+                                        请点击文本框选择查询时间段<span class="asterisk">*</span>
+                                    </label>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div>
+                                                <input name="orderStarttime" id="orderStarttime" readonly=readonly value="@DateTime.Now.ToString("yyyy-MM-01")" type="text" title="起始时间" class="form-control" />
+                                                <label class="fldLabel">
+                                                    起始时间
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div>
+                                                <input name="orderendtime" id="orderEndtime" type="text" readonly=readonly value="@System.DateTime.Now.AddMonths(1).AddDays(-(System.DateTime.Now.Day)).ToString("yyyy-MM-dd")" title="终止时间" class="form-control" />
+                                                <label class="fldLabel">
+                                                    终止时间
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label>
+                                                &nbsp;&nbsp;速填
+                                            </label>&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:setDate("order","@System.DateTime.Now.AddDays(-(System.DateTime.Now.Day) + 1).ToString("yyyy-MM-dd")","@System.DateTime.Now.AddMonths(1).AddDays(-(System.DateTime.Now.Day)).ToString("yyyy-MM-dd")")'>[本月]</a>&nbsp;
+                                            <a href='javascript:setDate("order","@DateTime.Now.AddMonths(-1).ToString("yyyy-MM-01")","@System.DateTime.Now.AddDays(-(System.DateTime.Now.Day)).ToString("yyyy-MM-dd")")'>
+                                                [上月]
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="fldTitle">
+                                                预约统计报表展示图
+                                            </label>
+                                            <img alt="导出预约列表展示图" width="100%" height="200" src="../../files/images/table/yuyueExcel.png" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="btn-demo">
+                                                <a class="btn btn-success" title="导出预约统计报表" href='javascript:form("order",1)'><i class="fa fa-file-excel-o"></i> 导出预约统计报表</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="btn-demo">
+                                                <a class="btn btn-success" title="导出预约统计到院报表" href='javascript:form("order",2)'><i class="fa fa-file-excel-o"></i> 导出预约统计到院报表</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" class="collapsed" data-parent="#accordion2" href="#collapseTwo2">
+                                部门角色统计报表
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo2" class="panel-collapse collapse" style="height: 0px;">
+                        <div class="panel-body">
+                            <form method="post" name="form1" id="form1" class="topLabel">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="fldTitle">
+                                                请点击文本框选择查询时间段<span class="asterisk">*</span>
+                                            </label>
+                                            <div>
+                                                <div class="col-sm-4">
+                                                    <input id="roleStarttime" name="starttime" readonly=readonly value="@DateTime.Now.ToString("yyyy-MM-01")" type="text" title="起始时间" class="form-control" />
+                                                    <label class="fldLabel">
+                                                        起始时间
+                                                    </label>
+                                                </div><div class="col-sm-4">
+                                                    <input type="text" readonly=readonly value="@System.DateTime.Now.AddMonths(1).AddDays(-(System.DateTime.Now.Day)).ToString("yyyy-MM-dd")" title="终止时间" class="form-control" name="endtime" id="roleEndtime" />
+                                                    <label class="fldLabel">
+                                                        终止时间
+                                                    </label>
+                                                </div><span>
+                                                    <label>
+                                                        &nbsp;&nbsp;速填
+                                                    </label>&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:setDate("role","@System.DateTime.Now.AddDays(-(System.DateTime.Now.Day) + 1).ToString("yyyy-MM-dd")","@System.DateTime.Now.AddMonths(1).AddDays(-(System.DateTime.Now.Day)).ToString("yyyy-MM-dd")")'>[本月]</a>&nbsp;
+                                                    <a href='javascript:setDate("role","@DateTime.Now.AddMonths(-1).ToString("yyyy-MM-01")","@System.DateTime.Now.AddDays(-(System.DateTime.Now.Day)).ToString("yyyy-MM-dd")")'>
+                                                        [上月]
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="fldTitle">
+                                                角色<span class="asterisk">*</span>
+                                            </label>
+                                            <div>
+                                                @if (ViewData["role"] != null)
+                                                {
+                                                    foreach (var item in ViewData["role"] as IEnumerable<Role>)
+                                                    {
+                                                        if (item != null)
+                                                        {
+                                                            <span class="ckbox ckbox-primary rdioPosition">
+                                                                <input name="roleName" type="checkbox" id="roleName_@item.ID" value="@item.ID" /><label for="roleName_@item.ID">@item.Name</label>
+                                                            </span>
+                                                        }
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="fldTitle">
+                                                部门角色统计报表展示图
+                                            </label>
+                                            <img alt="部门角色统计报表展示图" width="100%" height="200" src="../../files/images/table/jueseExcel.jpg" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="btn-demo">
+                                                <a class="btn btn-success" title="导出部门角色统计报表" href='javascript:form("role",3)'><i class="fa fa-file-excel-o"></i> 导出部门角色统计报表</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" class="collapsed" data-parent="#accordion2" href="#collapseThree2">
+                                医生就诊信息统计报表
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseThree2" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <form method="post" name="form1" id="form2" class="topLabel">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="fldTitle">
+                                                请点击文本框选择查询时间段<span class="asterisk">*</span>
+                                            </label>
+                                            <div class="fieldwrap">
+                                                <div class="col-sm-4">
+                                                    <input name="starttime" readonly=readonly value="@DateTime.Now.ToString("yyyy-MM-01")" type="text" title="起始时间" class="form-control" id="docStarttime" />
+                                                    <label class="fldLabel">
+                                                        起始时间
+                                                    </label>
+                                                </div><div class="col-sm-4">
+                                                    <input type="text" readonly=readonly value="@System.DateTime.Now.AddMonths(1).AddDays(-(System.DateTime.Now.Day)).ToString("yyyy-MM-dd")" title="终止时间" class="form-control" name="endtime" id="docEndtime" />
+                                                    <label class="fldLabel">
+                                                        终止时间
+                                                    </label>
+                                                </div><span>
+                                                    <label>
+                                                        &nbsp;&nbsp;速填
+                                                    </label>&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:setDate("doc","@System.DateTime.Now.AddDays(-(System.DateTime.Now.Day) + 1).ToString("yyyy-MM-dd")","@System.DateTime.Now.AddMonths(1).AddDays(-(System.DateTime.Now.Day)).ToString("yyyy-MM-dd")")'>[本月]</a>&nbsp;
+                                                    <a href='javascript:setDate("doc","@DateTime.Now.AddMonths(-1).ToString("yyyy-MM-01")","@System.DateTime.Now.AddDays(-(System.DateTime.Now.Day)).ToString("yyyy-MM-dd")")'>
+                                                        [上月]
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="fldTitle">
+                                                医生就诊信息统计报表展示图
+                                            </label>
+                                            <img width="100%" alt="医生就诊信息统计报表展示图" height="200" src="../../files/images/table/yishengExcel.jpg" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="btn-demo">
+                                                <a class="btn btn-success" title="导出医生就诊信息统计报表" href='javascript:form("doc",4)'><i class="fa fa-file-excel-o"></i> 导出医生就诊信息统计报表</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" class="collapsed" data-parent="#accordion2" href="#collapseFour2">
+                                疾病信息统计报表
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseFour2" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <form method="post" name="form1" id="form3" class="topLabel">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="fldTitle">
+                                                请点击文本框选择查询时间段<span class="asterisk">*</span>
+                                            </label>
+                                            <div>
+                                                <div class="col-sm-4">
+                                                    <input name="disStarttime" readonly=readonly value="@DateTime.Now.ToString("yyyy-MM-01")" type="text" title="起始时间" class="form-control" id="disStarttime" />
+                                                    <label class="fldLabel">
+                                                        起始时间
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <input type="text" readonly=readonly value="@System.DateTime.Now.AddMonths(1).AddDays(-(System.DateTime.Now.Day)).ToString("yyyy-MM-dd")" title="终止时间" class="form-control" name="endtime" id="disEndtime" />
+                                                    <label class="fldLabel">
+                                                        终止时间
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <label>
+                                                        &nbsp;&nbsp;速填
+                                                    </label>&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:setDate("dis","@System.DateTime.Now.AddDays(-(System.DateTime.Now.Day) + 1).ToString("yyyy-MM-dd")","@System.DateTime.Now.AddMonths(1).AddDays(-(System.DateTime.Now.Day)).ToString("yyyy-MM-dd")")'>[本月]</a>&nbsp;
+                                                    <a href='javascript:setDate("dis","@DateTime.Now.AddMonths(-1).ToString("yyyy-MM-01")","@System.DateTime.Now.AddDays(-(System.DateTime.Now.Day)).ToString("yyyy-MM-dd")")'>
+                                                        [上月]
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="fldTitle">
+                                                疾病信息统计报表展示图
+                                            </label>
+                                            <img width="100%" alt="疾病信息统计报表展示图" height="200" src="../../files/images/table/jibingExcel.jpg" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="btn-demo">
+                                                <a class="btn btn-success" title="导出疾病信息统计报表" href='javascript:form("dis",5)'><i class="fa fa-file-excel-o"></i> 导出疾病信息统计报表</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

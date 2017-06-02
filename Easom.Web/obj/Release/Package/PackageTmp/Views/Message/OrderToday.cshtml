@@ -1,0 +1,226 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <link href="/files/css/jquery.datatables.css" rel="stylesheet">
+}
+@section scripts{
+    <script src="/files/js/jquery.datatables.min.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        function setDataTable(searchData) {
+            $('#table2').dataTable({
+                "sPaginationType": "full_numbers",
+                "bStateSave": true,
+                "bProcessing": true,
+                "bDestroy": true,
+                "bServerSide": true,
+                "aLengthMenu": [[20, 30, 50, 100], [20, 30, 50, "100"]],
+                "iDisplayLength": 20,
+                "aaSorting": [[6, "desc"]],
+                "sAjaxSource": "/Message/GetlistOrderData",
+                "fnServerParams": function (aoData) {
+                    if (searchData) {
+                        $.each(searchData, function (index, obj) {
+                            aoData.push({ "name": obj.name, "value": obj.value });
+                        });
+                    }
+                },
+                "oLanguage": {
+                    "sUrl": "/files/js/jquery.dataTables.lang.zhcn.txt?4"
+                },
+                "aoColumns": [
+                    {
+                        "sName": "Name",
+                        "sTitle": "基本信息",
+                        "bSearchable": true,
+                        "bSortable": true,
+                        "fnRender": function (obj) {
+                            var sReturn = obj.aData[obj.iDataColumn];
+                            var html = '<a href="#">' + sReturn + '</a>';
+                            return html;
+                        }
+                    },
+                    {
+                        "sName": "ExpertIdentifier",
+                        "bSortable": true,
+                        "sTitle": "预约信息"
+                    },
+                    {
+                        "sName": "Telephone",
+                        "bSearchable": true,
+                        "bSortable": false,
+                        "sTitle": "咨询/备注/回访/来源/关键字"
+                    },
+                    {
+                        "sName": "OrderTime",
+                        "bSortable": true,
+                        "sClass": "td_wid_datetime",
+                        "sTitle": "预约时间"
+                    },
+                    {
+                        "sName": "ArriveStateType",
+                        "sClass": "td_wid_checkbox",
+                        "bSortable": true,
+                        "sTitle": "状态"
+                    },
+                    {
+                        "sName": "CreateUserID",
+                        "bSortable": true,
+                        "sClass": "td_wid_left_92",
+                        "sTitle": "部门/客服信息"
+                    },
+                    {
+                        "sName": "AddTime",
+                        "sClass": "td_wid_datetime",
+                        "bSortable": true,
+                        "sTitle": "添加时间"
+                    },
+                    {
+                        "sName": "Action",
+                        "sTitle": "操作",
+                        "bSearchable": false,
+                        "bSortable": false,
+                        "sClass": "center",
+                        "fnRender": function (obj) {
+                            var sReturn = obj.aData[obj.iDataColumn];
+                            var createUserID=obj.aData[7];
+                            var message=obj.aData[8];
+                            var html='';
+                            if(document.getElementById("message")!=null)
+                            {
+                                html += "<span><a title='短信通知' class='action-icons c-pending'  href='javascript:sendMessage(" + sReturn + ")'> 短信通知</a></span>";
+                                html+=message;
+                            }
+                            return html;
+                        }
+                    }
+                ]
+            });
+        }
+
+        function checkedALL() {
+            $().pageUtility.checkedAll("lstTable");
+        }
+
+        function edit(id) {
+            $().pageUtility.pop("编辑新项", "/CustomerService/orderedit/" + id, 800, 600);
+        }
+
+        function add() {
+            $().pageUtility.pop("添加新项", "/CustomerService/orderadd/", 800, 600);
+        }
+
+        function chatcontent(id) {
+            location.href= "/customerservice/chatcontent?id="+id;
+        }
+
+        function delCheck(id) {
+            if(confirm("您确定要删除该预约信息吗?")) {
+                del(id);
+            }
+        }
+        function advancedSearch() {
+            $().pageUtility.pop("高级搜索", "/CustomerService/orderAdvancedSearch/", 800, 600);
+        }
+        function RepeatPatientSearch() {
+            $().pageUtility.pop("重复病人搜索", "/CustomerService/RepeatSearch/", 800, 600);
+        }
+        function del(id) {
+            $().pageUtility.loading("正在删除...");
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: "/customerservice/orderdelete",
+                data: "ids=" + id,
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.setLoading("操作成功，正在重置页面...");
+                        setTimeout('parent.location.reload()', 1000);
+                    }
+                    else {
+                        $().pageUtility.closeLoading();
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                    if (data.flag == "error") {
+
+                        alert("出错了，请稍后再试！");
+                    }
+                }
+            });
+        }
+
+        function arrivestate(id)
+        {
+            $().pageUtility.pop("来院状态", "/customerservice/arrivestate?orderid=" + id, 800, 600);
+        }
+
+        function getaction()
+        {
+            var html='';
+            if($("#edit")!=null)
+            {
+
+            }
+            if($("#delete")!=null)
+            {
+
+            }
+            if($("#state")!=null)
+            {
+
+            }
+            if($("#callback")!=null)
+            {
+
+            }
+        }
+
+        function callbackManager(id) {
+            $().pageUtility.pop("回访记录", "/customerservice/callback?id="+id, 800, 600);
+        }
+
+
+        function checkEditAuority(createUserID,sReturn)
+        {
+            return "<span><a title='编辑'  class='action-icons c-edit' href='javascript:edit(" + sReturn + ")'>编辑</a></span>";
+        }
+
+        $().pageUtility.addEvent(setSearchDataForDataTable);
+        function setSearchDataForDataTable() {
+            var searchData =@Html.Raw(ViewBag.searchDatas);
+            setDataTable(searchData);
+        }
+        function sendMessage(id) {
+            $().pageUtility.pop("短信通知", "/message/SingleSend?id="+id+"&type=@ViewBag.type", 800, 600);
+        }
+
+    </script>
+}
+<div class="pageheader">
+    <h2><i class="fa fa-calendar-o"></i>@ViewBag.Title <span>您可以在这里管理短信...</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">您的位置:</span>
+        <ol class="breadcrumb">
+            <li>短信管理</li>
+            <li class="active">今日预到</li>
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="panel panel-default">
+        <input id="edit" type="hidden" />
+        <input id="delete" type="hidden" />
+        <input id="state" type="hidden" />
+        <input id="callback" type="hidden" />
+        <input id="message" type="hidden" />
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table" id="table2"></table>
+            </div>
+            <!-- table-responsive -->
+        </div>
+    </div>
+</div>
+

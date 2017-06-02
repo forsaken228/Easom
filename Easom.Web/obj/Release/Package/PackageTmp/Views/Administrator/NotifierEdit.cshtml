@@ -1,0 +1,133 @@
+﻿@model Easom.Core.Notifier
+@{
+    ViewBag.Title = "NotifierEdit";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+@section styles 
+{
+    <link rel="stylesheet" href="/files/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" href="/files/css/jquery.tagsinput.css" />
+    <link rel="stylesheet" href="/files/css/dropzone.css" />
+}
+@section scripts
+{
+    <script src="/files/js/jquery.autogrow-textarea.js"></script>
+    <script src="/files/js/bootstrap-timepicker.min.js"></script>
+    <script src="/files/js/jquery.maskedinput.min.js"></script>
+    <script src="/files/js/jquery.tagsinput.min.js"></script>
+    <script src="/files/js/jquery.mousewheel.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/dropzone.min.js"></script>
+
+    <script src="/files/js/custom.js"></script>
+<script type="text/javascript">
+    function initPage() {
+        $().formValidator.init("form");
+    }
+    $().pageUtility.addEvent(initPage);
+
+    $().formValidator.onPassCallBack = function () {
+       // $().pageUtility.loading("您请稍等...");
+        var formValues = [
+                { id: 'notifytype', value: $("input[name='notifytype']:checked").val() },
+                 { id: 'notifycycle', value: $("input[name='notifycycle']:checked").val() },
+                  { id: 'disable', value: $("input[name='disable']:checked").val() }
+            ];
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: '/administrator/notifier/edit/@Model.ID',
+            data: $().pageUtility.getFormData(formValues),
+            success: function (data) {
+                if (data.flag == "success") {
+                    $().pageUtility.createSuccessNotify("系统提示", "状态修改成功！正在跳转至列表页面...");
+                    setTimeout("parent.location.reload()", 1000);
+                }
+                else {
+                    $().formValidator.setSubmitButtonState(true);
+                }
+                if (data.flag == "error") {
+                    $().pageUtility.alert("提示","出错了，请稍后再试！");
+                }
+            }
+        });
+    }
+    function goBack() {
+        parent.location.reload();
+    }
+</script>
+    }
+<div class="widget-panel">
+    <div class="widget-content module">
+        <div class="elem-grid">
+            <div class="notification-wrap information">
+                <span class="icon-information">提示:</span> 1.选择信息中心发送方式，点击提交即可
+            </div>
+        </div>
+        <div class="form-grid">
+     @using (@Html.BeginForm())
+     {
+            <ul>
+                <li>
+                    <fieldset>
+                        <legend class="choiceFld">推送类型<abbr title="Required Field" class="require">*</abbr></legend>
+                        <div class="blockStyle input-uniform">
+                            <span>
+                                <input name="notifytype" class="radio" @if(Convert.ToInt32(@Model.NotifyType)==0){@Html.Raw("checked='checked'")} type="radio" value="0" tabindex="1"/>
+                                <label class="choice">
+                                    手机</label>
+                            </span>
+                            <span>
+                                <input name="notifytype" class="radio" @if (Convert.ToInt32(@Model.NotifyType) == 1){@Html.Raw("checked='checked'")} type="radio" value="1" tabindex="2" disabled=disabled/>
+                                <label class="choice">
+                                    Email</label>
+                            </span>
+                            <span>
+                                <input name="notifytype" class="radio" @if (Convert.ToInt32(@Model.NotifyType) == 2){@Html.Raw("checked='checked'")} type="radio" value="2" tabindex="3" disabled=disabled/>
+                                <label class="choice">
+                                    手机和Email</label>
+                            </span>
+                        </div>
+                    </fieldset>
+                </li>
+                <li>
+                    <fieldset>
+                        <legend class="choiceFld">推送周期<abbr title="Required Field" class="require">*</abbr></legend>
+                        <div class="blockStyle input-uniform">
+                            <span>
+                                <input name="notifycycle" class="radio" type="radio" value="0" tabindex="1" @if(Convert.ToInt32(@Model.NotifyCycle)==0){@Html.Raw("checked='checked'")} />
+                                <label class="choice">
+                                    天</label>
+                            </span>
+                        </div>
+                    </fieldset>
+                </li>
+                <li>
+                    <fieldset>
+                        <legend class="choiceFld">启动状态<abbr title="Required Field" class="require">*</abbr></legend>
+                        <div class="blockStyle input-uniform">
+                            <span>
+                                <input name="disable" class="radio" type="radio" value="1" tabindex="0" @if(Convert.ToInt32(@Model.Disable)==1){@Html.Raw("checked='checked'")}/>
+                                <label class="choice">
+                                    启动</label>
+                            </span>
+                            <span>
+                                <input name="disable" class="radio" type="radio" value="0" tabindex="1" @if(Convert.ToInt32(@Model.Disable)==0){@Html.Raw("checked='checked'")}/>
+                                <label class="choice">
+                                    关闭</label>
+                            </span>
+                        </div>
+                    </fieldset>
+                </li>
+                <li class="buttons bottom-round noboder">
+                    <div class="fieldwrap">
+                        <input name="" type="submit" value="提交" class="submit-button" />
+                    </div>
+                </li>
+            </ul>
+     }
+        </div>
+    </div>
+</div>
+
+

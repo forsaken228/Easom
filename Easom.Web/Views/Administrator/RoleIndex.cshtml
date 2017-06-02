@@ -1,0 +1,146 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "角色管理";
+}
+@section styles{
+    <link href="/files/css/jquery.datatables.css" rel="stylesheet">
+}
+@section scripts{
+    <script src="/files/js/jquery.datatables.min.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        function setDataTable(searchData) {
+            $('.table').dataTable({
+                "sPaginationType": "full_numbers",
+                "bProcessing": true,
+                "bDestroy": true,
+                "bServerSide": true,
+                "aLengthMenu": [[20, 30, 50, 100], [20, 30, 50, "100"]],
+                "iDisplayLength": 20,
+                "aaSorting": [[1, "desc"]],
+                "sAjaxSource": "/administrator/role/getlistdata",
+                "fnServerParams": function (aoData) {
+                    if (searchData) {
+                        $.each(searchData, function (index, obj) {
+                            aoData.push({ "name": obj.name, "value": obj.value });
+                        });
+                    }
+                },
+                "oLanguage": {
+                    "sUrl": "/files/js/jquery.dataTables.lang.zhcn.txt?4"
+                },
+                "aoColumns": [
+                    {
+                        "sName": "CheckedALL",
+                        "sTitle": "&nbsp;&nbsp;<a href='javascript:checkedALL();'>全选</a>",
+                        "sClass": "td_wid_action",
+                        "bSearchable": false,
+                        "bSortable": false
+                    },
+                    {
+                        "sName": "Name",
+                        "sTitle": "角色名称",
+                        "bSearchable": true,
+                        "bSortable": true
+                    },
+                    {
+                        "sName": "Description",
+                        "sTitle": "描述",
+                        "bSortable": false
+                    },
+                    {
+                        "sName": "Action",
+                        "sTitle": "操作",
+                        "bSearchable": false,
+                        "bSortable": false,
+                        "sClass": "td_wid_pcturesmall"
+                    }
+                ]
+
+            });
+        }
+
+        function checkedALL() {
+            $().pageUtility.checkedAll("table2");
+        }
+
+        function delCheck() {
+            if (!$().pageUtility.hasChecked("table2")) {
+                $().pageUtility.alert("提示","您当前没有选中任何角色!");
+                return;
+            } else {
+                if (confirm("您确定要删除该角色吗?")) {
+                    del();
+                };
+            }
+        }
+
+        function del() {
+            var ids = $().pageUtility.getChecked("table2");
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: "/administrator/role/delete",
+                data: "ids=" + ids,
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.createNotify("growl-success", false, "提示", "角色删除成功！正在跳转至列表页面...");
+                        setTimeout('parent.location.reload()', 1000);
+                    }
+                    else {
+                        $().pageUtility.closeLoading();
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                    if (data.flag == "error") {
+                        $().pageUtility.alert("提示：","出错了，请稍后再试！");
+                    }
+                }
+            });
+        }
+
+        function add() {
+            $().pageUtility.pop("添加新项", "/administrator/role/add", 800, 500);
+        }
+
+        function edit(id) {
+            $().pageUtility.pop("编辑项", "/administrator/role/edit/" + id, 800, 500);
+        }
+
+        function setauthor(roleID) {
+            $().pageUtility.pop("权限设置", "/administrator/role/setauthor/" + roleID, 800, 500);
+        }
+        function setmangerrole(roleID) {
+            $().pageUtility.pop("角色管理", "/administrator/role/RoleManger/" + roleID, 800, 500);
+        }
+        function search() {
+            $().pageUtility.pop("条件过滤", "/demo/search", 480, 480);
+        }
+        $().pageUtility.addEvent(setDataTable);
+</script>
+    }
+<div class="pageheader">
+    <h2><i class="fa fa-table"></i>角色设置<span>你可以在这里管理您的用户角色...</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">当前位置:</span>
+        <ol class="breadcrumb">
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="btn-group mr10">
+                <button class="btn btn-primary" onclick="javascript:add();" type="button"><i class="fa fa-plus mr5"></i>增加</button>
+                <button class="btn btn-danger" onclick="javascript:delCheck();" type="button"><i class="fa fa-trash-o mr5"></i>删除</button>
+            </div>
+       </div>
+         <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table" id="table2">
+                    </table>
+                </div>
+                <!-- table-responsive -->
+             </div>
+    </div>
+</div>

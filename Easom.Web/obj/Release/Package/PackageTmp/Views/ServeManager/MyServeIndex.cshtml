@@ -1,0 +1,153 @@
+﻿@model  IList<Easom.Core.MyServe>
+@{
+    ViewBag.Title = "区域设置";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <link href="/files/css/jquery.datatables.css" rel="stylesheet">
+}
+@section scripts{
+    <script src="/files/js/jquery.datatables.min.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        function setDataTable(searchData) {
+            $('#table2').dataTable({
+                "sPaginationType": "full_numbers",
+                "bProcessing": true,
+                "bDestroy": true,
+                "bServerSide": true,
+                "aLengthMenu": [[20, 30, 50, 100], [20, 30, 50, "100"]],
+                "iDisplayLength": 20,
+                "aaSorting": [[1, "desc"]],
+                "sAjaxSource": "/ServeManager/GetMyServeDataList",
+                "fnServerParams": function (aoData) {
+                    if (searchData) {
+                        $.each(searchData, function (index, obj) {
+                            aoData.push({ "name": obj.name, "value": obj.value });
+                        });
+                    }
+                },
+                "oLanguage": {
+                    "sUrl": "/files/js/jquery.dataTables.lang.zhcn.txt?4"
+                },
+                "aoColumns": [
+                    {
+                        "sName": "CheckedALL",
+                        "sTitle": "&nbsp;&nbsp;<a href='javascript:checkedALL();'>全选</a>",
+                        "sClass": "td_wid_action",
+                        "bSearchable": false,
+                        "bSortable": false
+                    },
+                    {
+                        "sName": "ServeName",
+                        "sTitle": "服务名称"
+
+                    },
+                     {
+                         "sName": "ServeKey",
+                         "sTitle": "键值"
+                     },
+                    {
+                        "sName": "RepertoryNum",
+                        "sTitle": "数量",
+                        "bSortable": false
+                    },
+                     {
+                         "sName": "Price",
+                         "sTitle": "单价",
+                         "bSortable": false
+                     },
+                      {
+                          "sName": "Remark",
+                          "sTitle": "备注",
+                          "bSortable": false
+                      },
+                    {
+                        "sName": "ID",
+                        "sTitle": "编辑",
+                        "bSearchable": false,
+                        "bSortable": false,
+                        "sClass": "center"
+                    }
+                ]
+
+            });
+        }
+
+        function checkedALL() {
+            $().pageUtility.checkedAll("table2");
+        }
+
+        function delCheck() {
+            if (!$().pageUtility.hasChecked("table2")) {
+                $().pageUtility.alert("您当前没有选中任何项!");
+                return;
+            } else {
+                if (confirm("您确定要删除该服务吗?")) {
+                    del();
+                };
+            }
+        }
+
+        function del() {
+            $().pageUtility.loading("正在删除...");
+            var ids = $().pageUtility.getChecked("table2");
+            $.ajax({
+                dataType: "json",
+                type: "GET",
+                url: "/ServeManager/MyServeDelete?ids=" + ids,
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.createNotify("growl-success", false, "成功提示：", "删除成功！正在跳转至列表页面..");
+                        setTimeout("parent.location.reload()", 1000);
+                    }
+                    if (data.flag == "error") {
+                        $().pageUtility.alert("提示","删除失败，请稍后再试!");
+                    }
+                }
+            });
+        }
+
+        function add() {
+            $().pageUtility.pop("添加新项", "/ServeManager/MyServeAdd/", 800, 500);
+        }
+
+        function goBack() {
+            history.go(-1);
+        }
+
+        function edit(id) {
+            $().pageUtility.pop("查看信息", "/ServeManager/MyServeEdit?id=" + id, 800, 500);
+        }
+        $().pageUtility.addEvent(setDataTable);
+    </script>
+}
+<div class="pageheader">
+    <h2><i class="fa fa-heart-o"></i>系统服务 <span>您可以在这里管理您的系统服务信息...</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">您的位置:</span>
+        <ol class="breadcrumb">
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="btn-group mr10">
+                <button class="btn btn-primary" onclick="javascript:add();" type="button"><i class="fa fa-plus mr5"></i>增加</button>
+                <button class="btn btn-danger" onclick="javascript:delCheck();" type="button"><i class="fa fa-trash-o mr5"></i>删除</button>
+            </div>
+        </div>
+        <div class="panel-body">
+            @*<div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <strong>提示:</strong>短信余额：@ViewBag.num
+            </div>*@
+            <div class="table-responsive">
+                <table class="table" id="table2"></table>
+            </div>
+            <!-- table-responsive -->
+        </div>
+    </div>
+</div>

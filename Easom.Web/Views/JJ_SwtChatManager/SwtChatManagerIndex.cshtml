@@ -1,0 +1,144 @@
+﻿@{
+    ViewBag.Title = "对话统计报表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container_12">
+ <div class="widget-panel grid_12">
+        <div class="widget-top">
+            <h4>对话统计报表</h4>
+        </div>
+        <div class="widget-content module">
+           
+            <ul class="icons-labeled">
+                <li>
+                 <span class="left">
+                                <input name="starttime" readonly=readonly value="@DateTime.Now.ToString("yyyy-MM-01")" type="text" title="起始时间" class="datepicker" id="starttime" />
+                                <label class="fldLabel">起始时间</label>
+                            </span>
+                            <span class="fldDivider left">-</span>
+                            <span class="left">
+                                <input type="text" readonly=readonly value="@System.DateTime.Now.AddMonths(1).AddDays(-(System.DateTime.Now.Day)).ToString("yyyy-MM-dd")" title="终止时间" class="datepicker" name="endtime" id="endtime" />
+                                <label class="fldLabel">终止时间</label>
+                           </span>
+                </li>
+                <li><a title="确定" href="javascript:searchNoRefreshOK()"><span class="icon-block-black create-write-b"></span>确定</a></li>
+                <li><a title="导入对话统计报表" href='javascript:InExcel()'><span class="icon-block-color doc-excel-table-c">
+                                </span>导入对话统计报表</a></li>
+            </ul>
+            <table id="lstTable" class="display data-table-theme">
+                <tfoot>
+                    <tr>
+                        <th>对话类型</th>
+                        <th>标题</th>
+                        <th>设备</th>
+                        <th>病种</th>
+                        <th>着陆页</th>
+                        <th>来源  </th>
+                        <th>关键词</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var nowWindows_height = $(window).height() - 160;
+    function setDataTable(searchData) {
+        $('.data-table-theme').dataTable({
+            "sPaginationType": "full_numbers",
+            "bStateSave": true,
+            "bProcessing": true,
+            "bDestroy": true,
+            "bServerSide": true,
+            "aLengthMenu": [[20, 30, 50, 100], [20, 30, 50, "100"]],
+            "iDisplayLength": 20,
+            "aaSorting": [[6, "desc"]],
+            "sAjaxSource": "/JJ_SwtChatManager/GetSwtReportData",
+            "fnServerParams": function (aoData) {
+                if (searchData) {
+                    $.each(searchData, function (index, obj) {  aoData.push({ "name": obj.name, "value": obj.value });
+                    });
+                }
+            },
+            "oLanguage": {
+                "sUrl": "/files/admin/js/jquery.dataTables.lang.zhcn.txt?4"
+            },
+            "aoColumns": [
+                {
+                    "sName": "ChatState",
+                    "sTitle": "对话类型",
+                     "sClass": "td_wid_datetime",
+                    "bSortable": true
+                    
+                },
+                {
+                    "sName": "Title",
+                    "bSortable": true,
+                     "sClass": "td_wid_datetime",
+                    "sTitle": "标题"
+                },
+                {
+                    "sName": "Equipment",
+                    "bSortable": true,
+                     "sClass": "td_wid_datetime",
+                    "sTitle": "设备"
+                },
+                {
+                    "sName": "Disease",
+                    "bSortable": true,
+                    "sClass": "td_wid_action",
+                    "sTitle": "病种"
+                },
+                {
+                    "sName": "BeginUrl",
+                    "sClass": "td_wid_action",
+                    "bSortable": true,
+                    "sTitle": "着陆页"
+                },
+                {
+                    "sName": "FromUrl",
+                    "bSortable": true,
+                    "sClass": "td_wid_action",
+                    "sTitle": "来源"
+                },
+                {
+                    "sName": "KeyWords",
+                    "sClass": "td_wid_action",
+                    "bSortable": true,
+                    "sTitle": "关键词"
+                }
+            ]
+        });
+    } 
+
+     function searchNoRefreshOK() {//确定
+         var begintime = $("#starttime").val();
+         var endtime = $("#endtime").val()+" 23:59:59";
+         var searchData = [{ name: 'starttime', value: begintime }, { name: 'endtime', value: endtime }, {name: 'arrivestate',value: -1 }, { name: 'timekinds',value: 0 }];
+         setDataTable(searchData);
+     }
+   
+    function InExcel() {
+        var begintime = $("#starttime").val();
+        var endtime = $("#endtime").val();
+        $().pageUtility.pop("导入[" + begintime + "]-[" + endtime + "]商务通对话信息", '/JJ_SwtChatManager/InExcel');
+    }
+
+    $().pageUtility.addEvent(setSearchDataForDataTable);
+    function setSearchDataForDataTable() {
+    $(".widget-top h4 span").empty();
+        var searchData =@Html.Raw(ViewBag.searchDatas);
+        setDataTable(searchData);
+    }
+    
+    function initPage() {
+        $(".datepicker").datepicker({
+            showButtonPanel: true
+        });
+    }
+    $().pageUtility.addEvent(initPage);
+</script>
+
+

@@ -1,0 +1,111 @@
+﻿@model  IList<Easom.Core.Hospital>
+@{
+    ViewBag.Title = "ChangeHospital";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+@section styles
+{
+    <link rel="stylesheet" href="/files/css/jquery.tagsinput.css" />
+    <link rel="stylesheet" href="/files/css/dropzone.css" />
+}
+@section scripts
+{
+    <script src="/files/js/jquery.maskedinput.min.js"></script>
+    <script src="/files/js/jquery.tagsinput.min.js"></script>
+    <script src="/files/js/jquery.mousewheel.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/dropzone.min.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+
+        function initPage() {
+            $().formValidator.init("form");
+            $().formValidator.addValidator([
+                  { controlID: 'hospitalid', mustMsg: '你必须选择一个医院！', rule: 'radioboxs' }
+            ]);
+        }
+
+        $().pageUtility.addEvent(initPage);
+
+        $().formValidator.onPassCallBack = function () {
+            var formValues = [
+                   { id: 'hospitalid', value: $("input[name='hospitalid']:checked").val() }
+            ];
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: '/settings/CurrentHospitalEdit/',
+                data: $().pageUtility.getFormData(formValues),
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.createSuccessNotify("提示：", "医院切换成功！");
+                        setTimeout("parent.location.reload()", 1000);
+                    }
+                    else {
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                    if (data.flag == "error") {
+                        $().pageUtility.createDangerNotify("错误提示：", "出错了，请稍后再试！！");
+                    }
+                }
+            });
+        }
+    </script>
+}
+<div class="panel panel-default panel-min-hieght">
+    <div class="panel-body">
+        <form method="post" name="form1" id="form1" class="form-horizontal form-bordered">
+            @if (Model != null && Model.Count > 0)
+            {
+                <div class="alert alert-info">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <strong>提示:</strong> 请选择要切换的医院名称，点击确定即可
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="control-label">
+                                医院名称<span class="asterisk">*</span>
+                            </label>
+                            <div>
+                                @{
+                if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        <span class="rdio rdioPosition">
+                            <input name="hospitalid" id="hospitalid_@item.ID" @if (@item.ID.ToString() == ViewData["Hospitalid"].ToString()) { @Html.Raw("checked='checked'")     } type="radio" value="@item.ID" tabindex="7" />
+                            <label title="@item.Name" for="hospitalid_@item.ID">
+                               @CHCMS.Utility.StringUtility.CutString(@item.Name,10, true) 
+                            </label>
+                        </span>
+                    }
+                }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            @*<div class="buttons bottom-round noboder"><div class="panel-footer">*@
+                                    <button class="btn btn-primary" type="submit">提交</button>
+                                 @*</div>
+                            </div>*@
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <strong>提示:</strong>您还没有添加任何医院，请先添加医院后，再进行其它操作！
+                </div>
+            }
+        </form>
+    </div>
+
+</div>
+

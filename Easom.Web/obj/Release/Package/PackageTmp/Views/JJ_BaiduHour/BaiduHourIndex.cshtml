@@ -1,0 +1,177 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container_12">
+    <div class="widget-panel grid_12">
+        <div class="widget-top">
+            <h4>
+               @ViewBag.tip ｜关键词报告管理</h4>
+        </div>
+        <div class="widget-content module">
+            <ul class="icons-b">
+                <li><a title="删除" href="javascript:delCheck();"><span class="icon-block-color cross-c">
+                </span>删除</a></li>
+               
+            
+                <li><a title="返回" href="javascript:callback();"><span class="icon-block-color doc-page-previous-c">
+                    返回</span></a></li>
+            </ul>
+            <table id="lstTable" class="display data-table-theme">
+                <tfoot>
+                    <tr>
+                        <th>
+                            &nbsp;&nbsp;<a href="javascript:checkedALL();">全选</a>
+                        </th>
+                     
+                        <th>
+                            推广单元
+                        </th>
+                        <th>
+                             推广计划
+                        </th>
+                        <th>
+                            关键词
+                        </th>
+                          <th>
+                            展现量
+                        </th>
+                          <th>
+                            点击量
+                        </th>
+                          <th>
+                           消费
+                        </th>
+                       
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function checkedALL() {
+        $().pageUtility.checkedAll("lstTable");
+    }
+
+    function setDataTable(searchData) {
+        $('.data-table-theme').dataTable({
+            "sPaginationType": "full_numbers",
+            "bProcessing": true,
+            "bDestroy": true,
+            "bServerSide": true,
+            "aLengthMenu": [[20000, 30, 50, 100], [20000, 30, 50, "100"]],
+            "iDisplayLength": 20000,
+            "aaSorting": [[6, "desc"]],
+            "sAjaxSource": "/JJ_BaiduHour/GetbaiduHourData?timeState=@ViewBag.TimeState&datetime=@ViewBag.datetime&accountID=@ViewBag.accountID",
+            "fnServerParams": function (aoData) {
+                if (searchData) {
+                    $.each(searchData, function (index, obj) {
+                        aoData.push({ "name": obj.name, "value": obj.value });
+                    });
+                }
+            },
+            "oLanguage": {
+                "sUrl": "/files/admin/js/jquery.dataTables.lang.zhcn.txt?4"
+            },
+            "aoColumns": [
+                { "sName": "CheckedALL",
+                    "sTitle": "&nbsp;&nbsp;<a href='javascript:checkedALL();'>全选</a>",
+                    "sClass": "td_wid_checkbox",
+                    "bSearchable": false,
+                    "bSortable": false,
+                    //"asSorting": [],
+                    "fnRender": function (obj) {
+                        var sReturn = obj.aData[obj.iDataColumn];
+                        var html = '<input type="checkbox" value="' + sReturn + '"/></a>';
+                        return html;
+                    }
+                },
+                {
+                    "sName": "JJ_Plan",
+                    "sTitle": "推广计划",
+                    "bSortable": false
+                },
+                {
+                    "sName": "JJ_Cell",
+                    "sTitle": "推广单元",
+                    "sClass": "td_wid_datetime",
+                    "sClass": "center",
+                    "bSortable": false
+                },
+                 {
+                     "sName": "JJ_KeyWordsName",
+                     "sTitle": "关键词",
+                     "bSortable": false
+                 },
+                  {
+                      "sName": "ShowNum",
+                      "sTitle": "展现量",
+                      "bSortable": true
+                  },
+                    {
+                        "sName": "ClickNum",
+                        "sTitle": "点击量",
+                        "bSortable": true
+                    },
+
+                      {
+                          "sName": "PayNum",
+                          "sTitle": "消费",
+                          "bSortable": true
+                      }
+            ]
+
+        });
+    }
+
+    $().pageUtility.addEvent(setDataTable);
+
+   
+   
+    function callback() {
+        history.go(-1);
+    }
+
+    function delCheck() {
+        if (!$().pageUtility.hasChecked("lstTable")) {
+            alert("您当前没有选中任何过滤器!");
+            return;
+        } else {
+            if (confirm("您确定要删除该过滤器吗?")) {
+                del();
+            }
+       }
+    }
+
+    function del() {
+        $().pageUtility.loading("正在删除...");
+        var ids = $().pageUtility.getChecked("lstTable");
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: "/JJ_BaiduHour/delete/",
+            data: "ids="+ids,
+            success: function (data) {
+                if (data.flag == "success") {
+                    $().pageUtility.setLoading("操作成功，正在更新页面...");
+                    setTimeout("parent.location.reload()", 1000);
+                }
+                else {
+                    $().pageUtility.closeLoading();
+                    $().formValidator.setSubmitButtonState(true);
+                }
+                if (data.flag == "error") {
+                    alert("出错了，请稍后再试！");
+                }
+            }
+        });
+    }
+
+
+ 
+
+  
+</script>
+

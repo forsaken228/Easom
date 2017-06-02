@@ -1,0 +1,136 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "医院设置";
+}
+@section styles{
+    <link href="/files/css/jquery.datatables.css" rel="stylesheet">
+}
+@section scripts{
+<script src="/files/js/jquery.datatables.min.js"></script>
+<script src="/files/js/select2.min.js"></script>
+<script src="/files/js/custom.js"></script>
+<script type="text/javascript">
+    function setDataTable(searchData) {
+        $('#table2').dataTable({
+            "sPaginationType": "full_numbers",
+            "bProcessing": true,
+            "bDestroy": true,
+            "bServerSide": true,
+            "aLengthMenu": [[20, 30, 50, 100], [20, 30, 50, "100"]],
+            "iDisplayLength": 20,
+            "aaSorting": [[1, "desc"]],
+            "sAjaxSource": "/settings/gethospitallistdata",
+            "fnServerParams": function (aoData) {
+                if (searchData) {
+                    $.each(searchData, function (index, obj) {
+                        aoData.push({ "name": obj.name, "value": obj.value });
+                    });
+                }
+            },
+            "oLanguage": {
+                "sUrl": "/files/js/jquery.dataTables.lang.zhcn.txt?4"
+            },
+            "aoColumns": [
+                {
+                    "sName": "CheckedALL",
+                    "sTitle": "&nbsp;&nbsp;<a href='javascript:checkedALL();'>全选</a>",
+                    "sClass": "td_wid_action",
+                    "bSearchable": false,
+                    "bSortable": false
+                },
+                {
+                    "sName": "Name",
+                    "sTitle": "医院名称"
+                },
+                {
+                    "sName": "Intro",
+                    "sTitle": "医院简介",
+                    "bSortable": false
+                },
+                {
+                    "sName": "ID",
+                    "sTitle": "编辑",
+                    "bSearchable": false,
+                    "bSortable": false,
+                    "sClass": "center",
+                    "fnRender": function (obj) {
+                        var sReturn = obj.aData[obj.iDataColumn];
+                        var html = '<span><a class="action-icons c-edit" href="javascript:view(' + sReturn + ')" title="编辑">Edit</a></span>';
+                        return html;
+                    }
+                }
+            ]
+
+        });
+    }
+
+    function checkedALL() {
+        $().pageUtility.checkedAll("table2");
+    }
+
+    function delCheck() {
+        if (!$().pageUtility.hasChecked("table2")) {
+            $().pageUtility.alert("提示：","您当前没有选中任何医院!");
+            return;
+        } else {
+            if (confirm("您确定要删除该医院吗?")) {
+                del();
+            };
+        }
+    }
+
+    function del() {
+        $().pageUtility.loading("正在删除...");
+        var ids = $().pageUtility.getChecked("table2");
+        $.ajax({
+            dataType: "json",
+            type: "GET",
+            url: "/settings/hospitaldelete?ids=" + ids,
+
+            success: function (data) {
+                if (data.flag == "success") {
+                    $().pageUtility.setLoading("删除成功，正在重置页面...");
+                    setTimeout("parent.location.reload()", 1000);
+                }
+                if (data.flag == "error") {
+                    $().pageUtility.closeLoading();
+                    alert("删除失败，请稍后再试!");
+                }
+            }
+        });
+    }
+
+    function add() {
+        $().pageUtility.pop("添加新项", "/settings/hospitaladd", 800, 500);
+    }
+    function view(id) {
+        $().pageUtility.pop("查看信息", "/settings/hospitaledit?id=" + id, 800, 500);
+    }
+    $().pageUtility.addEvent(setDataTable);
+</script>
+    }
+<div class="pageheader">
+    <h2><i class="fa fa-hospital-o"></i>医院设置 <span>您可以在这里管理您的医院</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">当前位置</span>
+        <ol class="breadcrumb">
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="btn-group mr10">
+                <button class="btn btn-primary" onclick="javascript:add();" type="button"><i class="fa fa-plus mr5"></i>添加</button>
+                <button class="btn btn-danger" onclick="javascript:delCheck();" type="button"><i class="fa fa-trash-o mr5"></i>删除</button>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table" id="table2"></table>
+            </div>
+            <!-- table-responsive -->
+        </div>
+    </div>
+</div>
+

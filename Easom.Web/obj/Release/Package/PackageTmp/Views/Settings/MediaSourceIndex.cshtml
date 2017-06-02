@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = "媒体来源设置";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts
+{
+    <script src="/files/js/jquery.treeview.js"></script>
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#tree").treeview({
+                collapsed: true,
+                animated: "fast",
+                control: "#sidetreecontrol",
+                prerendered: true,
+                persist: "location"
+            });
+        })
+    </script>
+    <script type="text/javascript">
+        function view(id) {
+            $().pageUtility.pop("查看信息", "/settings/Mediasourceedit?id=" + id, 800, 500);
+        }
+        function add(id) {
+            $().pageUtility.pop("添加新项", "/settings/Mediasourceadd?id=" + id, 800, 500);
+        }
+        function delCheck(id) {
+            if (confirm("您确定要删除该网址吗?")) {
+                del(id);
+            };
+        }
+        function del(id) {
+            $.ajax({
+                dataType: "json",
+                type: "GET",
+                url: "/settings/mediasourcedelete?id=" + id,
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.setLoading("删除成功，正在重置页面...");
+                        setTimeout("parent.location.reload()", 1000);
+                    }
+                    if (data.flag == "error") {
+                        $().pageUtility.closeLoading();
+                        $().pageUtility.alert("提示","删除网址失败，请稍后再试!");
+                    }
+                }
+            });
+        }
+    </script>
+}
+<div class="pageheader">
+    <h2><i class="fa fa-table"></i>媒体来源 <span>您可以在这里管理媒体来源信息...</span></h2>
+    <div class="breadcrumb-wrapper">
+        <span class="label">您的位置:</span>
+        <ol class="breadcrumb">
+        </ol>
+    </div>
+</div>
+<div class="contentpanel">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="btn-group mr10">
+                <button class="btn btn-primary" onclick="javascript:add(0);" type="button"><i class="fa fa-plus mr5"></i>增加</button>
+            </div>
+        </div>
+        <div class="panel-body">
+            <ul class="treeview" id="tree">
+               
+                @if (ViewData["mediaList"] != null)
+                {
+                    int count=0;
+                    foreach (var item in ViewData["mediaList"] as IEnumerable<MediaSource>)
+                    {
+                        count++;
+                        var children = item.ChildrenMediaSource;
+                    
+                    <li @Html.Raw(children != null && children.Count > 0 ? "class='expandable'" : "")>
+                        @if (children != null && children.Count > 0)
+                        {
+                            <div class="hitarea expandable-hitarea">
+                            </div>
+                        }
+                        <a href="javascript:view(@item.ID)" title="点击即可编辑">@item.Name</a> &nbsp;
+                        <a style="color:#008000" href="javascript:add(@item.ID)">添加</a>&nbsp;
+                    <a style="color:#ff5400" href="javascript:delCheck(@item.ID)">删除</a>
+                        @if (children != null && children.Count > 0)
+                        {
+                            <ul style="display: none;">
+                                @{
+                            int levelIndex = 1;   
+                                }
+                                @foreach (var item1 in children)
+                                {
+                                    <li @Html.Raw(levelIndex == children.Count ? "class='last'" : "")><a href="javascript:view(@item1.ID)">@item1.Name</a>&nbsp;
+                                    <a style="color:#ff5400" href="javascript:delCheck(@item1.ID)">删除</a></li>
+                                    levelIndex++;
+                                }
+                            </ul>
+                        }
+                    </li>
+                    }
+                    <li class="last">共有(&nbsp;<span style="color: red">@count</span>&nbsp;)项</li>
+                }
+                
+            </ul>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,141 @@
+﻿@model Easom.Core.MyServe
+@{
+    ViewBag.Title = "编辑区域";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+@section styles
+{
+    <link rel="stylesheet" href="/files/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" href="/files/css/jquery.tagsinput.css" />
+    <link rel="stylesheet" href="/files/css/dropzone.css" />
+}
+@section scripts
+{
+    <script src="/files/js/jquery.autogrow-textarea.js"></script>
+    <script src="/files/js/bootstrap-timepicker.min.js"></script>
+    <script src="/files/js/jquery.maskedinput.min.js"></script>
+    <script src="/files/js/jquery.tagsinput.min.js"></script>
+    <script src="/files/js/jquery.mousewheel.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/dropzone.min.js"></script>
+<script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+        function initPage() {
+            $().formValidator.init("form");
+            $().formValidator.addValidator([
+                    { controlID: 'Name', must: true, mustMsg: '请输入服务名称' },
+                     { controlID: 'Num', must: true, mustMsg: '请输入数量”' },
+                      { controlID: 'Key', must: true, mustMsg: '请输入键值' }
+            ]);
+        }
+
+        $().pageUtility.addEvent(initPage);
+
+        $().formValidator.onPassCallBack = function () {
+            $().formValidator.setSubmitButtonState(false);
+            var formValues = [
+                    { id: 'serveName', value: $("#Name").val() },
+                    { id: 'RepertoryNum', value: $("#Num").val() },
+                     { id: 'Price', value: $("#Price").val() },
+                    { id: 'Remark', value: $("#Remark").val() },
+                    { id: 'serveKey', value: $("#Key").val() }
+            ];
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: '/ServeManager/MyServeEdit?id=@Model.ID',
+                data: $().pageUtility.getFormData(formValues),
+                success: function (data) {
+                    if (data.flag == "success") {
+                        $().pageUtility.createNotify("growl-success", false, "成功提示：", "服务添加成功！正在跳转至列表页面..");
+                        setTimeout("parent.location.reload()", 1000);
+                    }
+                    else {
+                        $().formValidator.setSubmitButtonState(true);
+                    }
+                    if (data.flag == "error") {
+                        $().pageUtility.alert("提示", "出错了，请稍后再试！");
+                    }
+                }
+            });
+        }
+    </script>
+}
+<div class="panel panel-default">
+    <div class="panel-body">
+        <form method="post" name="form1" id="form1" class="form-horizontal form-bordered">
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <strong>提示:</strong>加“*”号的是必填项
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label id="title" class="fldTitle">
+                            服务名称<span class="asterisk">*</span>
+                        </label>
+                        <div class="fieldwrap">
+                            <input id="Name" name="Field1" class="form-control" title="服务名称名称必须填写" type="text"
+                                value="@Model.ServeName"   maxlength="255" tabindex="1" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label id="title" class="fldTitle">
+                            键值<span class="asterisk">*</span>
+                        </label>
+                        <div class="fieldwrap">
+                            <input id="Key" name="Field1" class="form-control" title="键值必须填写" type="text" maxlength="255"
+                                   value="@Model.ServeKey" tabindex="1" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label id="title1" class="fldTitle">
+                            数量<span class="asterisk">*</span>
+                        </label>
+                        <div class="fieldwrap">
+                            <input id="Num" name="Field1" class="form-control" title="数量必须填写" type="text" maxlength="255"
+                                   value="@Model.RepertoryNum" tabindex="1" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label id="title2" class="fldTitle">
+                            单价
+                        </label>
+                        <div class="fieldwrap">
+                            <input id="Price" name="Field1" title="请在此输入服务的单价格" class="form-control" type="text"
+                                 value="@Model.Price"  maxlength="255" tabindex="1" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label id="title3" class="fldTitle">
+                            备注
+                        </label>
+                        <div class="fieldwrap">
+                            <textarea id="Remark" name="description" class="form-control" rows="10" cols="50">@Model.Remark</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="buttons bottom-round noboder">
+                            <div class="panel-footer">
+                                <button class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

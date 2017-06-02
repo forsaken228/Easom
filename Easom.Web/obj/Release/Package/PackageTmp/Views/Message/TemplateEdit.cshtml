@@ -1,0 +1,126 @@
+﻿@model  Easom.Core.MessageTemplate
+@{
+    ViewBag.Title = "编辑医院";
+    Layout = "~/Views/Shared/_Pop.cshtml";
+}
+@section styles
+{
+    <link href="/files/css/jquery.gritter.css" rel="stylesheet">
+    <link rel="stylesheet" href="/files/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" href="/files/css/jquery.tagsinput.css" />
+    <link rel="stylesheet" href="/files/css/dropzone.css" />
+}
+@section scripts
+{
+    <script src="/files/js/jquery.gritter.min.js"></script>
+    <script src="/files/js/jquery.autogrow-textarea.js"></script>
+    <script src="/files/js/bootstrap-timepicker.min.js"></script>
+    <script src="/files/js/jquery.maskedinput.min.js"></script>
+    <script src="/files/js/jquery.tagsinput.min.js"></script>
+    <script src="/files/js/jquery.mousewheel.js"></script>
+    <script src="/files/js/select2.min.js"></script>
+    <script src="/files/js/dropzone.min.js"></script>
+
+    <script src="/files/js/custom.js"></script>
+    <script type="text/javascript">
+
+  function initPage() {
+        $().formValidator.init("form");
+        $().formValidator.addValidator([
+          { controlID: 'name', must: true, mustMsg: '模板名称不能为空' },
+       { controlID: 'intro', must: true, mustMsg: '模板内容不能为空' }
+
+        ]);
+    }
+     $().pageUtility.addEvent(initPage);
+    $().formValidator.onPassCallBack = function () {
+        $().pageUtility.loading("您请稍等...");
+        var formValues = [
+                 { id: 'content', value: $("#intro").val() },
+                 { id: 'templateType', value: $("#templateType").val() },
+                 { id: 'name', value: $("#name").val() }
+            ];
+        $.ajax({
+         dataType: "json",
+         type: "POST",
+         url: '/message/TemplateEdit?id=@Model.ID',
+         data: $().pageUtility.getFormData(formValues),
+            success: function (data) {
+                if (data.flag == "success") {
+                    $().pageUtility.setLoading("模板添加成功！正在跳转至列表页面...");
+                    setTimeout("parent.location.reload()", 1000);
+                } else {
+                    $().pageUtility.closeLoading();
+                    $().formValidator.setSubmitButtonState(true);
+
+                } if (data.flag == "error") {
+                    $().pageUtility.alert("出错了，请稍后再试！");
+                }
+            }
+        });
+    }
+    function goBack() {
+        parent.location.reload();
+    }
+    function addtitle(title) {
+        document.getElementById("intro").value += title;
+
+    }
+</script>
+}
+<div class="panel panel-default">
+    <div class="panel-body">
+        <form method="post" name="form1" id="form1" class="form-horizontal form-bordered">
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <strong>提示:</strong>加“*”号的是必填项
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="fldTitle"><b>常用过滤器标签，可直接点击添加</b></label>
+                        <a href='javascript:addtitle("#医院名称#")'>医院名称</a>&nbsp;
+                        <a href='javascript:addtitle("#预约时间#")'>预约时间</a>&nbsp;
+                        <a href='javascript:addtitle("#专家号#")'>专家号</a>&nbsp;
+                        <a href='javascript:addtitle("#姓名#")'>姓名</a>&nbsp;
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label id="title3" class="fldTitle">
+                            模板名称<span class="asterisk">*</span>
+                        </label>
+                        <div>
+                            <input id="name" name="name" class="form-control" title="名称必须填写" value="@Model.Name" type="text" maxlength="255" tabindex="1" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label id="title4" class="fldTitle">
+                            模板内容<span class="asterisk">*</span>
+                        </label>
+                        <div class="fieldwrap">
+                            <textarea id="intro" name="content" class="form-control" rows="10" cols="50" title="选填">@Model.Content</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="buttons bottom-round noboder">
+                            <div class="panel-footer">
+                                <button class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

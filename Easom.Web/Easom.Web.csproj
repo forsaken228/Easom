@@ -1,0 +1,809 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E67374D8-CBEF-4709-A9C7-4C5E8076952D}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Easom.Web</RootNamespace>
+    <AssemblyName>Easom.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CHCMS.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Easom.Core\bin\Debug\CHCMS.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20710.0\lib\net40\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="files\js\OrderApi.js" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="files\ajax\accordion.html" />
+    <Content Include="files\ajax\images\photos\photo4.jpg.html" />
+    <Content Include="files\ajax\panel.html" />
+    <Content Include="files\ajax\photo-viewer.html" />
+    <Content Include="files\ajax\remote.html" />
+    <Content Include="files\ajax\tabs.html" />
+    <Content Include="files\css\animate.delay.css" />
+    <Content Include="files\css\animate.min.css" />
+    <Content Include="files\css\bootstrap-editable.css" />
+    <Content Include="files\css\bootstrap-override.css" />
+    <Content Include="files\css\bootstrap-timepicker.min.css" />
+    <Content Include="files\css\bootstrap-wysihtml5.css" />
+    <Content Include="files\css\bootstrap.min.css" />
+    <Content Include="files\css\codemirror\codemirror.css" />
+    <Content Include="files\css\codemirror\theme\ambiance.css" />
+    <Content Include="files\css\colorpicker.css" />
+    <Content Include="files\css\dropzone.css" />
+    <Content Include="files\css\dtree.css" />
+    <Content Include="files\css\font-awesome.min.css" />
+    <Content Include="files\css\fullcalendar.css" />
+    <Content Include="files\css\helvetica.css.html" />
+    <Content Include="files\css\images\animated-overlay.gif.html" />
+    <Content Include="files\css\images\treeview-default-line.gif" />
+    <Content Include="files\css\images\treeview-default.gif" />
+    <Content Include="files\css\img\base.gif" />
+    <Content Include="files\css\img\cd.gif" />
+    <Content Include="files\css\img\empty.gif" />
+    <Content Include="files\css\img\folder.gif" />
+    <Content Include="files\css\img\folderopen.gif" />
+    <Content Include="files\css\img\globe.gif" />
+    <Content Include="files\css\img\imgfolder.gif" />
+    <Content Include="files\css\img\join.gif" />
+    <Content Include="files\css\img\joinbottom.gif" />
+    <Content Include="files\css\img\line.gif" />
+    <Content Include="files\css\img\minus.gif" />
+    <Content Include="files\css\img\minusbottom.gif" />
+    <Content Include="files\css\img\musicfolder.gif" />
+    <Content Include="files\css\img\nolines_minus.gif" />
+    <Content Include="files\css\img\nolines_plus.gif" />
+    <Content Include="files\css\img\page.gif" />
+    <Content Include="files\css\img\plus.gif" />
+    <Content Include="files\css\img\plusbottom.gif" />
+    <Content Include="files\css\img\question.gif" />
+    <Content Include="files\css\img\trash.gif" />
+    <Content Include="files\css\jquery-jvectormap-1.2.2.css" />
+    <Content Include="files\css\jquery-ui-1.10.3.css" />
+    <Content Include="files\css\jquery.datatables.css" />
+    <Content Include="files\css\jquery.gritter.css" />
+    <Content Include="files\css\jquery.tagsinput.css" />
+    <Content Include="files\css\lato.css" />
+    <Content Include="files\css\morris.css" />
+    <Content Include="files\css\prettyPhoto.css" />
+    <Content Include="files\css\roboto.css" />
+    <Content Include="files\css\select2.css" />
+    <Content Include="files\css\style.default.css" />
+    <Content Include="files\css\toggles.css" />
+    <Content Include="files\css\weather-icons.min.css" />
+    <Content Include="files\dataTables\css\dataTables.bootstrap.css" />
+    <Content Include="files\dataTables\css\dataTables.bootstrap.min.css" />
+    <Content Include="files\dataTables\css\dataTables.bootstrap4.css" />
+    <Content Include="files\dataTables\css\dataTables.bootstrap4.min.css" />
+    <Content Include="files\dataTables\css\dataTables.foundation.css" />
+    <Content Include="files\dataTables\css\dataTables.foundation.min.css" />
+    <Content Include="files\dataTables\css\dataTables.jqueryui.css" />
+    <Content Include="files\dataTables\css\dataTables.jqueryui.min.css" />
+    <Content Include="files\dataTables\css\dataTables.material.css" />
+    <Content Include="files\dataTables\css\dataTables.material.min.css" />
+    <Content Include="files\dataTables\css\dataTables.semanticui.css" />
+    <Content Include="files\dataTables\css\dataTables.semanticui.min.css" />
+    <Content Include="files\dataTables\css\dataTables.uikit.css" />
+    <Content Include="files\dataTables\css\dataTables.uikit.min.css" />
+    <Content Include="files\dataTables\css\jquery.dataTables.css" />
+    <Content Include="files\dataTables\css\jquery.dataTables.min.css" />
+    <Content Include="files\dataTables\css\jquery.dataTables_themeroller.css" />
+    <Content Include="files\dataTables\images\details_close.png" />
+    <Content Include="files\dataTables\images\details_open.png" />
+    <Content Include="files\dataTables\images\favicon.ico" />
+    <Content Include="files\dataTables\images\sort_asc.png" />
+    <Content Include="files\dataTables\images\sort_asc_disabled.png" />
+    <Content Include="files\dataTables\images\sort_both.png" />
+    <Content Include="files\dataTables\images\sort_desc.png" />
+    <Content Include="files\dataTables\images\sort_desc_disabled.png" />
+    <Content Include="files\dataTables\js\dataTables.bootstrap.js" />
+    <Content Include="files\dataTables\js\dataTables.bootstrap.min.js" />
+    <Content Include="files\dataTables\js\dataTables.bootstrap4.js" />
+    <Content Include="files\dataTables\js\dataTables.bootstrap4.min.js" />
+    <Content Include="files\dataTables\js\dataTables.foundation.js" />
+    <Content Include="files\dataTables\js\dataTables.foundation.min.js" />
+    <Content Include="files\dataTables\js\dataTables.jqueryui.js" />
+    <Content Include="files\dataTables\js\dataTables.jqueryui.min.js" />
+    <Content Include="files\dataTables\js\dataTables.material.js" />
+    <Content Include="files\dataTables\js\dataTables.material.min.js" />
+    <Content Include="files\dataTables\js\dataTables.semanticui.js" />
+    <Content Include="files\dataTables\js\dataTables.semanticui.min.js" />
+    <Content Include="files\dataTables\js\dataTables.uikit.js" />
+    <Content Include="files\dataTables\js\dataTables.uikit.min.js" />
+    <Content Include="files\dataTables\js\jquery.dataTables.js" />
+    <Content Include="files\dataTables\js\jquery.dataTables.min.js" />
+    <Content Include="files\dataTables\js\jquery.js" />
+    <Content Include="files\dataTables\js\objects.txt" />
+    <Content Include="files\fileapi\FileAPI.flash.camera.swf" />
+    <Content Include="files\fileapi\FileAPI.flash.image.swf" />
+    <Content Include="files\fileapi\FileAPI.flash.swf" />
+    <Content Include="files\fileapi\FileAPI.html5.js" />
+    <Content Include="files\fileapi\FileAPI.html5.min.js" />
+    <Content Include="files\fileapi\FileAPI.js" />
+    <Content Include="files\fileapi\FileAPI.min.js" />
+    <Content Include="files\fileapi\jquery.fileapi.min.js" />
+    <Content Include="files\fonts\fontawesome-webfont.svg" />
+    <Content Include="files\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="files\fonts\lato\Lato-Bla-webfont.svg" />
+    <Content Include="files\fonts\lato\Lato-BlaIta-webfont.svg" />
+    <Content Include="files\fonts\lato\Lato-Bol-webfont.svg" />
+    <Content Include="files\fonts\lato\Lato-BolIta-webfont.svg" />
+    <Content Include="files\fonts\lato\Lato-Hai-webfont.svg" />
+    <Content Include="files\fonts\lato\Lato-HaiIta-webfont.svg" />
+    <Content Include="files\fonts\lato\Lato-Lig-webfont.svg" />
+    <Content Include="files\fonts\lato\Lato-LigIta-webfont.svg" />
+    <Content Include="files\fonts\lato\Lato-Reg-webfont.svg" />
+    <Content Include="files\fonts\lato\Lato-RegIta-webfont.svg" />
+    <Content Include="files\fonts\roboto\Roboto-Black-webfont.svg" />
+    <Content Include="files\fonts\roboto\Roboto-BlackItalic-webfont.svg" />
+    <Content Include="files\fonts\roboto\Roboto-Bold-webfont.svg" />
+    <Content Include="files\fonts\roboto\Roboto-BoldCondensed-webfont.svg" />
+    <Content Include="files\fonts\roboto\Roboto-BoldCondensedItalic-webfont.svg" />
+    <Content Include="files\fonts\roboto\Roboto-BoldItalic-webfont.svg" />
+    <Content Include="files\fonts\roboto\Roboto-Condensed-webfont.svg" />
+    <Content Include="files\fonts\roboto\Roboto-CondensedItalic-webfont.svg" />
+    <Content Include="files\fonts\roboto\Roboto-Italic-webfont.svg" />
+    <Content Include="files\fonts\roboto\Roboto-Light-webfont.svg" />
+    <Content Include="files\fonts\roboto\Roboto-LightItalic-webfont.svg" />
+    <Content Include="files\fonts\roboto\Roboto-Medium-webfont.svg" />
+    <Content Include="files\fonts\roboto\Roboto-MediumItalic-webfont.svg" />
+    <Content Include="files\fonts\roboto\Roboto-Regular-webfont.svg" />
+    <Content Include="files\fonts\roboto\Roboto-Thin-webfont.svg" />
+    <Content Include="files\fonts\roboto\Roboto-ThinItalic-webfont.svg" />
+    <Content Include="files\fonts\weathericons-regular-webfont.svg" />
+    <Content Include="files\holder.js\100x120.html" />
+    <Content Include="files\holder.js\100x125.html" />
+    <Content Include="files\holder.js\110x110.html" />
+    <Content Include="files\holder.js\60x60.html" />
+    <Content Include="files\holder.js\80x60\80x60.html" />
+    <Content Include="files\images\calendar-arrow.png" />
+    <Content Include="files\images\clear.png" />
+    <Content Include="files\images\close-white.png" />
+    <Content Include="files\images\colorpicker\colorpicker_background.png" />
+    <Content Include="files\images\colorpicker\colorpicker_hex.png" />
+    <Content Include="files\images\colorpicker\colorpicker_hsb_b.png" />
+    <Content Include="files\images\colorpicker\colorpicker_hsb_h.png" />
+    <Content Include="files\images\colorpicker\colorpicker_hsb_s.png" />
+    <Content Include="files\images\colorpicker\colorpicker_indic.gif" />
+    <Content Include="files\images\colorpicker\colorpicker_overlay.png" />
+    <Content Include="files\images\colorpicker\colorpicker_rgb_b.png" />
+    <Content Include="files\images\colorpicker\colorpicker_rgb_g.png" />
+    <Content Include="files\images\colorpicker\colorpicker_rgb_r.png" />
+    <Content Include="files\images\colorpicker\colorpicker_select.gif" />
+    <Content Include="files\images\colorpicker\colorpicker_submit.png" />
+    <Content Include="files\images\colorpicker\select2.png" />
+    <Content Include="files\images\droparrows.png" />
+    <Content Include="files\images\dropdown-arrow.png" />
+    <Content Include="files\images\favicon.png" />
+    <Content Include="files\images\icon-search.png" />
+    <Content Include="files\images\is-document.png" />
+    <Content Include="files\images\is-money.png" />
+    <Content Include="files\images\is-user.png" />
+    <Content Include="files\images\loaders\loader1.gif" />
+    <Content Include="files\images\loaders\loader10.gif" />
+    <Content Include="files\images\loaders\loader11.gif" />
+    <Content Include="files\images\loaders\loader12.gif" />
+    <Content Include="files\images\loaders\loader13.gif" />
+    <Content Include="files\images\loaders\loader14.gif" />
+    <Content Include="files\images\loaders\loader15.gif" />
+    <Content Include="files\images\loaders\loader16.gif" />
+    <Content Include="files\images\loaders\loader17.gif" />
+    <Content Include="files\images\loaders\loader18.gif" />
+    <Content Include="files\images\loaders\loader19.gif" />
+    <Content Include="files\images\loaders\loader2.gif" />
+    <Content Include="files\images\loaders\loader20.gif" />
+    <Content Include="files\images\loaders\loader21.gif" />
+    <Content Include="files\images\loaders\loader22.gif" />
+    <Content Include="files\images\loaders\loader23.gif" />
+    <Content Include="files\images\loaders\loader24.gif" />
+    <Content Include="files\images\loaders\loader25.gif" />
+    <Content Include="files\images\loaders\loader26.gif" />
+    <Content Include="files\images\loaders\loader27.gif" />
+    <Content Include="files\images\loaders\loader28.gif" />
+    <Content Include="files\images\loaders\loader29.gif" />
+    <Content Include="files\images\loaders\loader3.gif" />
+    <Content Include="files\images\loaders\loader30.gif" />
+    <Content Include="files\images\loaders\loader4.gif" />
+    <Content Include="files\images\loaders\loader5.gif" />
+    <Content Include="files\images\loaders\loader6.gif" />
+    <Content Include="files\images\loaders\loader7.gif" />
+    <Content Include="files\images\loaders\loader8.gif" />
+    <Content Include="files\images\loaders\loader9.gif" />
+    <Content Include="files\images\loading.gif" />
+    <Content Include="files\images\locked.png" />
+    <Content Include="files\images\minus.png" />
+    <Content Include="files\images\photos\blog1.jpg" />
+    <Content Include="files\images\photos\blog2.jpg" />
+    <Content Include="files\images\photos\blog3.jpg" />
+    <Content Include="files\images\photos\blog4.jpg" />
+    <Content Include="files\images\photos\loggeduser.png" />
+    <Content Include="files\images\photos\media-audio.png" />
+    <Content Include="files\images\photos\media-doc.png" />
+    <Content Include="files\images\photos\media1.jpg" />
+    <Content Include="files\images\photos\media2.png" />
+    <Content Include="files\images\photos\media3.png" />
+    <Content Include="files\images\photos\media4.png" />
+    <Content Include="files\images\photos\media5.png" />
+    <Content Include="files\images\photos\media6.png" />
+    <Content Include="files\images\photos\media7.png" />
+    <Content Include="files\images\photos\photo1.png" />
+    <Content Include="files\images\photos\photo2.png" />
+    <Content Include="files\images\photos\photo3.png" />
+    <Content Include="files\images\photos\profile-1.png" />
+    <Content Include="files\images\photos\profilepic1.png" />
+    <Content Include="files\images\photos\user1.png" />
+    <Content Include="files\images\photos\user2.png" />
+    <Content Include="files\images\photos\user3.png" />
+    <Content Include="files\images\photos\user4.png" />
+    <Content Include="files\images\photos\user5.png" />
+    <Content Include="files\images\photos\userprofile.png" />
+    <Content Include="files\images\plus-white.png" />
+    <Content Include="files\images\plus.png" />
+    <Content Include="files\images\prettyphoto\dark_rounded\btnNext.png.html" />
+    <Content Include="files\images\prettyphoto\dark_rounded\btnPrevious.png.html" />
+    <Content Include="files\images\prettyphoto\dark_rounded\contentPattern.png.html" />
+    <Content Include="files\images\prettyphoto\dark_rounded\loader.gif.html" />
+    <Content Include="files\images\prettyphoto\dark_rounded\sprite.png.html" />
+    <Content Include="files\images\prettyphoto\dark_square\btnNext.png.html" />
+    <Content Include="files\images\prettyphoto\dark_square\btnPrevious.png.html" />
+    <Content Include="files\images\prettyphoto\dark_square\loader.gif.html" />
+    <Content Include="files\images\prettyphoto\dark_square\sprite.png.html" />
+    <Content Include="files\images\prettyphoto\default_thumb.png" />
+    <Content Include="files\images\prettyphoto\facebook\btnNext.png.html" />
+    <Content Include="files\images\prettyphoto\facebook\btnPrevious.png.html" />
+    <Content Include="files\images\prettyphoto\facebook\contentPatternBottom.png.html" />
+    <Content Include="files\images\prettyphoto\facebook\contentPatternLeft.png.html" />
+    <Content Include="files\images\prettyphoto\facebook\contentPatternRight.png.html" />
+    <Content Include="files\images\prettyphoto\facebook\contentPatternTop.png.html" />
+    <Content Include="files\images\prettyphoto\facebook\default_thumbnail.gif.html" />
+    <Content Include="files\images\prettyphoto\facebook\loader.gif.html" />
+    <Content Include="files\images\prettyphoto\facebook\sprite.png.html" />
+    <Content Include="files\images\prettyphoto\light_rounded\btnNext.png.html" />
+    <Content Include="files\images\prettyphoto\light_rounded\btnPrevious.png.html" />
+    <Content Include="files\images\prettyphoto\light_rounded\loader.gif.html" />
+    <Content Include="files\images\prettyphoto\light_rounded\sprite.png.html" />
+    <Content Include="files\images\prettyphoto\light_square\btnNext.png.html" />
+    <Content Include="files\images\prettyphoto\light_square\btnPrevious.png.html" />
+    <Content Include="files\images\prettyphoto\light_square\sprite.png.html" />
+    <Content Include="files\images\prettyphoto\loader.gif" />
+    <Content Include="files\images\prettyphoto\sprite.png" />
+    <Content Include="files\images\prettyphoto\sprite_next.png" />
+    <Content Include="files\images\prettyphoto\sprite_prev.png" />
+    <Content Include="files\images\prettyphoto\sprite_x.png" />
+    <Content Include="files\images\prettyphoto\sprite_y.png" />
+    <Content Include="files\images\screen.png" />
+    <Content Include="files\images\select2-spinner.gif" />
+    <Content Include="files\images\select2.png" />
+    <Content Include="files\images\select2x2.png" />
+    <Content Include="files\images\sort_asc.png" />
+    <Content Include="files\images\sort_asc_disabled.png" />
+    <Content Include="files\images\sort_both.png" />
+    <Content Include="files\images\sort_desc.png" />
+    <Content Include="files\images\sort_desc_disabled.png" />
+    <Content Include="files\images\spritemap%402x.png" />
+    <Content Include="files\images\spritemap.png" />
+    <Content Include="files\images\themeforest.png" />
+    <Content Include="files\images\treeview-default-line.gif" />
+    <Content Include="files\images\treeview-default.gif" />
+    <Content Include="files\images\uploadfile.png" />
+    <Content Include="files\images\user.png" />
+    <Content Include="files\jcrop\Jcrop.gif" />
+    <Content Include="files\jcrop\jquery.color.js" />
+    <Content Include="files\jcrop\jquery.Jcrop.css" />
+    <Content Include="files\jcrop\jquery.Jcrop.js" />
+    <Content Include="files\jcrop\jquery.Jcrop.min.css" />
+    <Content Include="files\jcrop\jquery.Jcrop.min.js" />
+    <Content Include="files\jcrop\jquery.min.js" />
+    <Content Include="files\jcrop\uploadPhoto.js" />
+    <Content Include="files\js\bootstrap-datetimepicker.min.js" />
+    <Content Include="files\js\bootstrap-editable.min.js" />
+    <Content Include="files\js\bootstrap-timepicker.min.js" />
+    <Content Include="files\js\bootstrap-wizard.min.js" />
+    <Content Include="files\js\bootstrap-wysihtml5.js" />
+    <Content Include="files\js\bootstrap.min.js" />
+    <Content Include="files\css\bootstrapSwitch.css" />
+    <Content Include="files\js\bootstrapSwitch.js" />
+    <Content Include="files\js\charts.js" />
+    <Content Include="files\js\chosen.jquery.min.js" />
+    <Content Include="files\js\ckeditor\adapters\jquery.js" />
+    <Content Include="files\js\ckeditor\ckeditor.js" />
+    <Content Include="files\js\ckeditor\images\spacer.gif.html" />
+    <Content Include="files\js\codemirror\codemirror.js" />
+    <Content Include="files\js\codemirror\formatting.js" />
+    <Content Include="files\js\codemirror\mode\javascript.js" />
+    <Content Include="files\js\codemirror\mode\xml.js" />
+    <Content Include="files\js\colorpicker.js" />
+    <Content Include="files\js\custom.js" />
+    <Content Include="files\js\dashboard.js" />
+    <Content Include="files\js\dropzone.min.js" />
+    <Content Include="files\js\dtree.js" />
+    <Content Include="files\js\flot\jquery.flot.categories.min.js" />
+    <Content Include="files\js\flot\jquery.flot.crosshair.min.js" />
+    <Content Include="files\js\flot\jquery.flot.min.js" />
+    <Content Include="files\js\flot\jquery.flot.pie.min.js" />
+    <Content Include="files\js\flot\jquery.flot.resize.min.js" />
+    <Content Include="files\js\flot\jquery.flot.spline.min.js" />
+    <Content Include="files\js\flot\jquery.flot.symbol.min.js" />
+    <Content Include="files\js\fullcalendar.min.js" />
+    <Content Include="files\js\gmaps.js" />
+    <Content Include="files\js\holder.js" />
+    <Content Include="files\js\html5shiv.js" />
+    <Content Include="files\js\jquery-1.11.1.min.js" />
+    <Content Include="files\js\jquery-jvectormap-1.2.2.min.js" />
+    <Content Include="files\js\jquery-jvectormap-us-aea-en.js" />
+    <Content Include="files\js\jquery-jvectormap-world-mill-en.js" />
+    <Content Include="files\js\jquery-migrate-1.2.1.min.js" />
+    <Content Include="files\js\jquery-ui-1.10.3.min.js" />
+    <Content Include="files\js\jquery.autogrow-textarea.js" />
+    <Content Include="files\js\jquery.cookies.js" />
+    <Content Include="files\js\jquery.dataTables.lang.zhcn.txt" />
+    <Content Include="files\js\jquery.datatables.min.js" />
+    <Content Include="files\js\jquery.formValidator.js" />
+    <Content Include="files\js\jquery.gritter.min.js" />
+    <Content Include="files\js\jquery.maskedinput.min.js" />
+    <Content Include="files\js\jquery.menu.js" />
+    <Content Include="files\js\jquery.mousewheel.js" />
+    <Content Include="files\js\jquery.notify.js" />
+    <Content Include="files\js\jquery.pageUtility.js" />
+    <Content Include="files\js\jquery.prettyPhoto.js" />
+    <Content Include="files\js\jquery.sparkline.min.js" />
+    <Content Include="files\js\jquery.tagsinput.min.js" />
+    <Content Include="files\js\jquery.treeview.js" />
+    <Content Include="files\js\jquery.ui.touch-punch.min.js" />
+    <Content Include="files\js\jquery.validate.min.js" />
+    <Content Include="files\js\masonry.pkgd.min.js" />
+    <Content Include="files\js\messages_cn.js" />
+    <Content Include="files\js\modernizr.min.js" />
+    <Content Include="files\js\moment.js" />
+    <Content Include="files\js\morris.min.js" />
+    <Content Include="files\js\raphael-2.1.0.min.js" />
+    <Content Include="files\js\respond.min.js" />
+    <Content Include="files\js\retina.min.js" />
+    <Content Include="files\js\select2.min.js" />
+    <Content Include="files\js\toggles.min.js" />
+    <Content Include="files\js\wysihtml5-0.3.0.min.js" />
+    <Content Include="Global.asax" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="_Start.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="files\upload\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\App.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Config\packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="files\ajax\images\photos\_div style=" />
+    <Content Include="files\css\images\_div style=" />
+    <Content Include="files\fonts\fontawesome-webfont.ttf" />
+    <Content Include="files\fonts\fontawesome-webfont.woff" />
+    <Content Include="files\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="files\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="files\fonts\lato\Lato-Bla-webfont.eot" />
+    <Content Include="files\fonts\lato\Lato-Bla-webfont.ttf" />
+    <Content Include="files\fonts\lato\Lato-Bla-webfont.woff" />
+    <Content Include="files\fonts\lato\Lato-BlaIta-webfont.eot" />
+    <Content Include="files\fonts\lato\Lato-BlaIta-webfont.ttf" />
+    <Content Include="files\fonts\lato\Lato-BlaIta-webfont.woff" />
+    <Content Include="files\fonts\lato\Lato-Bol-webfont.eot" />
+    <Content Include="files\fonts\lato\Lato-Bol-webfont.ttf" />
+    <Content Include="files\fonts\lato\Lato-Bol-webfont.woff" />
+    <Content Include="files\fonts\lato\Lato-BolIta-webfont.eot" />
+    <Content Include="files\fonts\lato\Lato-BolIta-webfont.ttf" />
+    <Content Include="files\fonts\lato\Lato-BolIta-webfont.woff" />
+    <Content Include="files\fonts\lato\Lato-Hai-webfont.eot" />
+    <Content Include="files\fonts\lato\Lato-Hai-webfont.ttf" />
+    <Content Include="files\fonts\lato\Lato-Hai-webfont.woff" />
+    <Content Include="files\fonts\lato\Lato-HaiIta-webfont.eot" />
+    <Content Include="files\fonts\lato\Lato-HaiIta-webfont.ttf" />
+    <Content Include="files\fonts\lato\Lato-HaiIta-webfont.woff" />
+    <Content Include="files\fonts\lato\Lato-Lig-webfont.eot" />
+    <Content Include="files\fonts\lato\Lato-Lig-webfont.ttf" />
+    <Content Include="files\fonts\lato\Lato-Lig-webfont.woff" />
+    <Content Include="files\fonts\lato\Lato-LigIta-webfont.eot" />
+    <Content Include="files\fonts\lato\Lato-LigIta-webfont.ttf" />
+    <Content Include="files\fonts\lato\Lato-LigIta-webfont.woff" />
+    <Content Include="files\fonts\lato\Lato-Reg-webfont.eot" />
+    <Content Include="files\fonts\lato\Lato-Reg-webfont.ttf" />
+    <Content Include="files\fonts\lato\Lato-Reg-webfont.woff" />
+    <Content Include="files\fonts\lato\Lato-RegIta-webfont.eot" />
+    <Content Include="files\fonts\lato\Lato-RegIta-webfont.ttf" />
+    <Content Include="files\fonts\lato\Lato-RegIta-webfont.woff" />
+    <Content Include="files\fonts\roboto\Roboto-Black-webfont.eot" />
+    <Content Include="files\fonts\roboto\Roboto-Black-webfont.eot~.eot" />
+    <Content Include="files\fonts\roboto\Roboto-Black-webfont.ttf" />
+    <Content Include="files\fonts\roboto\Roboto-Black-webfont.woff" />
+    <Content Include="files\fonts\roboto\Roboto-BlackItalic-webfont.eot" />
+    <Content Include="files\fonts\roboto\Roboto-BlackItalic-webfont.ttf" />
+    <Content Include="files\fonts\roboto\Roboto-BlackItalic-webfont.woff" />
+    <Content Include="files\fonts\roboto\Roboto-Bold-webfont.eot" />
+    <Content Include="files\fonts\roboto\Roboto-Bold-webfont.ttf" />
+    <Content Include="files\fonts\roboto\Roboto-Bold-webfont.woff" />
+    <Content Include="files\fonts\roboto\Roboto-BoldCondensed-webfont.eot" />
+    <Content Include="files\fonts\roboto\Roboto-BoldCondensed-webfont.ttf" />
+    <Content Include="files\fonts\roboto\Roboto-BoldCondensed-webfont.woff" />
+    <Content Include="files\fonts\roboto\Roboto-BoldCondensedItalic-webfont.eot" />
+    <Content Include="files\fonts\roboto\Roboto-BoldCondensedItalic-webfont.ttf" />
+    <Content Include="files\fonts\roboto\Roboto-BoldCondensedItalic-webfont.woff" />
+    <Content Include="files\fonts\roboto\Roboto-BoldItalic-webfont.eot" />
+    <Content Include="files\fonts\roboto\Roboto-BoldItalic-webfont.ttf" />
+    <Content Include="files\fonts\roboto\Roboto-BoldItalic-webfont.woff" />
+    <Content Include="files\fonts\roboto\Roboto-Condensed-webfont.eot" />
+    <Content Include="files\fonts\roboto\Roboto-Condensed-webfont.ttf" />
+    <Content Include="files\fonts\roboto\Roboto-Condensed-webfont.woff" />
+    <Content Include="files\fonts\roboto\Roboto-CondensedItalic-webfont.eot" />
+    <Content Include="files\fonts\roboto\Roboto-CondensedItalic-webfont.ttf" />
+    <Content Include="files\fonts\roboto\Roboto-CondensedItalic-webfont.woff" />
+    <Content Include="files\fonts\roboto\Roboto-Italic-webfont.eot" />
+    <Content Include="files\fonts\roboto\Roboto-Italic-webfont.ttf" />
+    <Content Include="files\fonts\roboto\Roboto-Italic-webfont.woff" />
+    <Content Include="files\fonts\roboto\Roboto-Light-webfont.eot" />
+    <Content Include="files\fonts\roboto\Roboto-Light-webfont.ttf" />
+    <Content Include="files\fonts\roboto\Roboto-Light-webfont.woff" />
+    <Content Include="files\fonts\roboto\Roboto-LightItalic-webfont.eot" />
+    <Content Include="files\fonts\roboto\Roboto-LightItalic-webfont.ttf" />
+    <Content Include="files\fonts\roboto\Roboto-LightItalic-webfont.woff" />
+    <Content Include="files\fonts\roboto\Roboto-Medium-webfont.eot" />
+    <Content Include="files\fonts\roboto\Roboto-Medium-webfont.ttf" />
+    <Content Include="files\fonts\roboto\Roboto-Medium-webfont.woff" />
+    <Content Include="files\fonts\roboto\Roboto-MediumItalic-webfont.eot" />
+    <Content Include="files\fonts\roboto\Roboto-MediumItalic-webfont.ttf" />
+    <Content Include="files\fonts\roboto\Roboto-MediumItalic-webfont.woff" />
+    <Content Include="files\fonts\roboto\Roboto-Regular-webfont.eot" />
+    <Content Include="files\fonts\roboto\Roboto-Regular-webfont.ttf" />
+    <Content Include="files\fonts\roboto\Roboto-Regular-webfont.woff" />
+    <Content Include="files\fonts\roboto\Roboto-Thin-webfont.eot" />
+    <Content Include="files\fonts\roboto\Roboto-Thin-webfont.ttf" />
+    <Content Include="files\fonts\roboto\Roboto-Thin-webfont.woff" />
+    <Content Include="files\fonts\roboto\Roboto-ThinItalic-webfont.eot" />
+    <Content Include="files\fonts\roboto\Roboto-ThinItalic-webfont.ttf" />
+    <Content Include="files\fonts\roboto\Roboto-ThinItalic-webfont.woff" />
+    <Content Include="files\fonts\weathericons-regular-webfont.ttf" />
+    <Content Include="files\fonts\weathericons-regular-webfont.woff" />
+    <Content Include="files\holder.js\80x60\_div style=" />
+    <Content Include="files\holder.js\_div style=" />
+    <Content Include="files\images\prettyphoto\dark_rounded\_div style=" />
+    <Content Include="files\images\prettyphoto\dark_square\_div style=" />
+    <Content Include="files\images\prettyphoto\facebook\_div style=" />
+    <Content Include="files\images\prettyphoto\light_rounded\_div style=" />
+    <Content Include="files\images\prettyphoto\light_square\_div style=" />
+    <Content Include="files\js\ckeditor\,CKEDITOR.tools.htmlEncode%28e.id__" />
+    <Content Include="files\js\ckeditor\,CKEDITOR.tools.htmlEncode%28e._[" />
+    <Content Include="files\js\ckeditor\images\_div style=" />
+    <Content Include="Views\Chat\Index.cshtml" />
+    <Content Include="Views\Forms\CodeEditor.cshtml" />
+    <Content Include="Views\Forms\FormLayouts.cshtml" />
+    <Content Include="Views\Forms\FormValidation.cshtml" />
+    <Content Include="Views\Forms\FormWizards.cshtml" />
+    <Content Include="Views\Forms\GeneralForms.cshtml" />
+    <Content Include="Views\Forms\Wysiwyg.cshtml" />
+    <Content Include="Views\Forms\XediTable.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Login\Login.cshtml" />
+    <Content Include="Views\Login\Logout.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Shared\_Head.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_Menu.cshtml" />
+    <Content Include="Views\Shared\_Pop.cshtml" />
+    <Content Include="Views\UserInfo\Index.cshtml" />
+    <Content Include="Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Easom.Support\Easom.Support.csproj">
+      <Project>{c356497e-1613-48d5-9a0a-b7458750e8d0}</Project>
+      <Name>Easom.Support</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\dbConnectionString.config" />
+    <Content Include="Config\log4net.config" />
+    <Content Include="Config\path.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CustomerService\OrderIndex.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CustomerService\OrderAdd.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Administrator\AuthorAdd.cshtml" />
+    <Content Include="Views\Administrator\AuthorEdit.cshtml" />
+    <Content Include="Views\Administrator\AuthorIndex.cshtml" />
+    <Content Include="Views\Administrator\NotifierAdd.cshtml" />
+    <Content Include="Views\Administrator\NotifierEdit.cshtml" />
+    <Content Include="Views\Administrator\NotifierIndex.cshtml" />
+    <Content Include="Views\Administrator\NotifyLogIndex.cshtml" />
+    <Content Include="Views\Administrator\RoleAdd.cshtml" />
+    <Content Include="Views\Administrator\RoleEdit.cshtml" />
+    <Content Include="Views\Administrator\RoleIndex.cshtml" />
+    <Content Include="Views\Administrator\RoleManger.cshtml" />
+    <Content Include="Views\Administrator\RoleSetAuthor.cshtml" />
+    <Content Include="Views\Administrator\SetHospital.cshtml" />
+    <Content Include="Views\Administrator\SetRole.cshtml" />
+    <Content Include="Views\Administrator\SetSection.cshtml" />
+    <Content Include="Views\Administrator\UserAdd.cshtml" />
+    <Content Include="Views\Administrator\UserDetailInformation.cshtml" />
+    <Content Include="Views\Administrator\UserEdit.cshtml" />
+    <Content Include="Views\Administrator\UserIndex.cshtml" />
+    <Content Include="Views\Administrator\UserSearch.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CustomerService\ArriveState.cshtml" />
+    <Content Include="Views\CustomerService\CallBack.cshtml" />
+    <Content Include="Views\CustomerService\ChatContent.cshtml" />
+    <Content Include="Views\CustomerService\MyselfCallBack.cshtml" />
+    <Content Include="Views\CustomerService\MyselfOrderAdd.cshtml" />
+    <Content Include="Views\CustomerService\MyselfOrderEdit.cshtml" />
+    <Content Include="Views\CustomerService\MyselfOrderIndex.cshtml" />
+    <Content Include="Views\CustomerService\OrderAdvancedSearch.cshtml" />
+    <Content Include="Views\CustomerService\OrderEdit.cshtml" />
+    <Content Include="Views\CustomerService\OutOrderIndex.cshtml" />
+    <Content Include="Views\CustomerService\RepeatSearch.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CreateExcel\ReportForms.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Error\Index.cshtml" />
+    <Content Include="Views\Error\UnAccess.cshtml" />
+    <Content Include="Views\Error\UnAccessPop.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\JJ_BaiduHour\BaiduDayIndex.cshtml" />
+    <Content Include="Views\JJ_BaiduHour\BaiduHourIndex.cshtml" />
+    <Content Include="Views\JJ_BaiduHour\CurrentAccountData.cshtml" />
+    <Content Include="Views\JJ_BaiduHour\CurrentDayData.cshtml" />
+    <Content Include="Views\JJ_BaiduHour\DayImport.cshtml" />
+    <Content Include="Views\JJ_BaiduHour\DayReport.cshtml" />
+    <Content Include="Views\JJ_BaiduHour\Import.cshtml" />
+    <Content Include="Views\JJ_BaiduHour\KeyWordStore.cshtml" />
+    <Content Include="Views\JJ_BaiduHour\KeyWordStoreImport.cshtml" />
+    <Content Include="Views\JJ_BaiduHour\Search.cshtml" />
+    <Content Include="Views\JJ_SwtChatManager\InExcel.cshtml" />
+    <Content Include="Views\JJ_SwtChatManager\SwtChatManagerIndex.cshtml" />
+    <Content Include="Views\JJ_SwtChatManager\SwtChatManagerTableView.cshtml" />
+    <Content Include="Views\JJ_SwtChat\SwtChatIndex.cshtml" />
+    <Content Include="Views\JJ_SwtChat\SwtChatTableView.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Message\Messagelog.cshtml" />
+    <Content Include="Views\Message\MessageSend.cshtml" />
+    <Content Include="Views\Message\OrderToday.cshtml" />
+    <Content Include="Views\Message\OrderTomarrow.cshtml" />
+    <Content Include="Views\Message\SingleSend.cshtml" />
+    <Content Include="Views\Message\TemplateAdd.cshtml" />
+    <Content Include="Views\Message\TemplateEdit.cshtml" />
+    <Content Include="Views\Message\TemplateIndex.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OutOrder\OutOrderAdd.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\OutReservation\OutOrderIndex.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Register\Index.cshtml" />
+    <Content Include="Views\ServeManager\HospitalServeAdd.cshtml" />
+    <Content Include="Views\ServeManager\HospitalServeEdit.cshtml" />
+    <Content Include="Views\ServeManager\HospitalServeIndex.cshtml" />
+    <Content Include="Views\ServeManager\MyServeAdd.cshtml" />
+    <Content Include="Views\ServeManager\MyServeEdit.cshtml" />
+    <Content Include="Views\ServeManager\MyServeIndex.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Settings\ChangeHospital.cshtml" />
+    <Content Include="Views\Settings\ChangeHospitalSection.cshtml" />
+    <Content Include="Views\Settings\DiseaseAdd.cshtml" />
+    <Content Include="Views\Settings\DiseaseEdit.cshtml" />
+    <Content Include="Views\Settings\DiseaseIndex.cshtml" />
+    <Content Include="Views\Settings\DoctorAdd.cshtml" />
+    <Content Include="Views\Settings\DoctorEdit.cshtml" />
+    <Content Include="Views\Settings\DoctorIndex.cshtml" />
+    <Content Include="Views\Settings\HospitalAdd.cshtml" />
+    <Content Include="Views\Settings\HospitalEdit.cshtml" />
+    <Content Include="Views\Settings\HospitalIndex.cshtml" />
+    <Content Include="Views\Settings\HospitalWebsiteAdd.cshtml" />
+    <Content Include="Views\Settings\HospitalWebsiteEdit.cshtml" />
+    <Content Include="Views\Settings\HospitalWebsiteIndex.cshtml" />
+    <Content Include="Views\Settings\JJ_AccountAdd.cshtml" />
+    <Content Include="Views\Settings\JJ_AccountEdit.cshtml" />
+    <Content Include="Views\Settings\JJ_AccountIndex.cshtml" />
+    <Content Include="Views\Settings\MediaSourceAdd.cshtml" />
+    <Content Include="Views\Settings\MediaSourceEdit.cshtml" />
+    <Content Include="Views\Settings\MediaSourceIndex.cshtml" />
+    <Content Include="Views\Settings\OutSiteToHospitalAdd.cshtml" />
+    <Content Include="Views\Settings\OutSiteToHospitalEdit.cshtml" />
+    <Content Include="Views\Settings\OutSiteToHospitalIndex.cshtml" />
+    <Content Include="Views\Settings\SectionAdd.cshtml" />
+    <Content Include="Views\Settings\SectionEdit.cshtml" />
+    <Content Include="Views\Settings\SectionIndex.cshtml" />
+    <Content Include="Views\Settings\SectionMove.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\StatisticalTable\AreaForms.cshtml" />
+    <Content Include="Views\StatisticalTable\CustomMothTrendForms.cshtml" />
+    <Content Include="Views\StatisticalTable\DiseaseStatisticsFrom.cshtml" />
+    <Content Include="Views\StatisticalTable\MediaForms.cshtml" />
+    <Content Include="Views\StatisticalTable\MothTrendForms.cshtml" />
+    <Content Include="Views\StatisticalTable\TJDepartmentFormsData.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Tool\MyInformation.cshtml" />
+    <Content Include="Views\Tool\UpdatePwd.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="files\css\img\Thumbs.db" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Tool\UploadPhoto.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CustomerService\Password.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Settings\SetHospitalPassWord.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="files\dataTables\images\Sorting icons.psd" />
+    <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\Easom.pubxml" />
+    <Content Include="Views\CustomerService\MyselfChatContent.cshtml" />
+    <Content Include="Views\Administrator\OperationAdd.cshtml" />
+    <Content Include="Views\Administrator\OperationEdit.cshtml" />
+    <Content Include="Views\Administrator\OperationLogIndex.cshtml" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:2785/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <servers defaultServer="SelfHostServer">
+            <server name="SelfHostServer" exePath="" cmdArgs="" url="http://localhost:2785/" workingDir="" />
+          </servers>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

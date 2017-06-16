@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Easom.Web", "Easom.Web\Easom.Web.csproj", "{E67374D8-CBEF-4709-A9C7-4C5E8076952D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Easom.Support", "Easom.Support\Easom.Support.csproj", "{C356497E-1613-48D5-9A0A-B7458750E8D0}"
@@ -13,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Easom.Service.Task", "Easom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Easom.Message", "Easom.Message\Easom.Message.csproj", "{E0F12232-8B53-4225-A7D9-42BEF017876A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eason.UnitTest", "Eason.UnitTest\Eason.UnitTest.csproj", "{D6820D29-B50A-4872-A244-966EC72BF955}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Easom.EntityFramework", "Easom.EntityFramework\Easom.EntityFramework.csproj", "{1D7E2E95-8229-4D13-A559-2943E1BA6608}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +39,10 @@ Global
 		{E0F12232-8B53-4225-A7D9-42BEF017876A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0F12232-8B53-4225-A7D9-42BEF017876A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0F12232-8B53-4225-A7D9-42BEF017876A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D6820D29-B50A-4872-A244-966EC72BF955}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D6820D29-B50A-4872-A244-966EC72BF955}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D6820D29-B50A-4872-A244-966EC72BF955}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D6820D29-B50A-4872-A244-966EC72BF955}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D7E2E95-8229-4D13-A559-2943E1BA6608}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D7E2E95-8229-4D13-A559-2943E1BA6608}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D7E2E95-8229-4D13-A559-2943E1BA6608}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D7E2E95-8229-4D13-A559-2943E1BA6608}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
